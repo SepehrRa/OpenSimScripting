@@ -1,0 +1,1275 @@
+Updating Model file from 20303 to latest format...
+Loaded model 3DGaitModel2354 from file gait2354_simbody.osim
+Couldn't find file 'sacrum.vtp'.
+Couldn't find file 'pelvis.vtp'.
+Couldn't find file 'l_pelvis.vtp'.
+Couldn't find file 'femur_r.vtp'.
+Couldn't find file 'tibia_r.vtp'.
+Couldn't find file 'fibula.vtp'.
+Couldn't find file 'talus.vtp'.
+Couldn't find file 'foot.vtp'.
+Couldn't find file 'bofoot.vtp'.
+Couldn't find file 'femur_l.vtp'.
+Couldn't find file 'tibia_l.vtp'.
+Couldn't find file 'l_fibula.vtp'.
+Couldn't find file 'l_talus.vtp'.
+Couldn't find file 'l_foot.vtp'.
+Couldn't find file 'l_bofoot.vtp'.
+Couldn't find file 'hat_spine.vtp'.
+Couldn't find file 'hat_jaw.vtp'.
+Couldn't find file 'hat_skull.vtp'.
+Couldn't find file 'hat_ribs.vtp'.
+ControllerSet 'Controllers' was renamed and is being reset to 'controllerset'.
+ComponentSet 'MiscComponents' was renamed and is being reset to 'componentset'.
+Loaded model subject01 from file C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_scaledOnly.osim
+Loaded model subject01 from file C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_scaledOnly.osim
+Loaded model subject01 from file C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_scaledOnly.osim
+Loaded model subject01 from file C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_scaledOnly.osim
+Loaded model subject01 from file C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_scaledOnly.osim
+Loaded model subject01 from file C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_scaledOnly.osim
+Loaded model subject01 from file C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_scaledOnly.osim
+Loaded model subject01 from file C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_scaledOnly.osim
+Loaded model subject01 from file C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_scaledOnly.osim
+Processing subject subject01
+
+Step 1: Loading generic model
+Updating Model file from 20303 to latest format...
+Loaded model 3DGaitModel2354 from file C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\gait2354_simbody.osim
+ControllerSet 'Controllers' was renamed and is being reset to 'controllerset'.
+ComponentSet 'MiscComponents' was renamed and is being reset to 'componentset'.
+Loading marker set from 'C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\gait2354_Scale_MarkerSet.xml'
+Updated markers in model 3DGaitModel2354
+
+Step 2: Scaling generic model
+Loaded marker file C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_static.trc (49 markers, 300 frames)
+Measurement 'torso'
+	pair 0 (V.Sacral, Top.Head): model = 0.701084, experimental = 0.756975
+	overall scale factor = 1.07972
+Measurement 'pelvis'
+	pair 0 (R.ASIS, L.ASIS): model = 0.256, experimental = 0.262292
+	overall scale factor = 1.02458
+Measurement 'thigh'
+	pair 0 (R.ASIS, R.Knee.Lat): model = 0.508288, experimental = 0.538738
+	pair 1 (L.ASIS, L.Knee.Lat): model = 0.508288, experimental = 0.549642
+	overall scale factor = 1.07063
+Measurement 'shank'
+	pair 0 (R.Knee.Lat, R.Ankle.Lat): model = 0.401944, experimental = 0.458672
+	pair 1 (L.Knee.Lat, L.Ankle.Lat): model = 0.401944, experimental = 0.436842
+	overall scale factor = 1.11398
+Measurement 'foot'
+	pair 0 (R.Heel, R.Toe.Tip): model = 0.280401, experimental = 0.291576
+	pair 1 (L.Heel, L.Toe.Tip): model = 0.280401, experimental = 0.284416
+	overall scale factor = 1.02708
+Wrote model file subject01_scaledOnly.osim from model subject01
+Wrote scale file subject01_scaleSet_applied.xml for model subject01
+
+Step 3: Placing markers on model
+Loaded marker file C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_static.trc (49 markers, 300 frames)
+Averaged frames from time 1 to 1.01 in C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_static.trc (frames 61 to 62)
+Deleted 0 unused markers from model subject01
+Frame at (t=1):	total squared error = 0.0427354, marker error: RMS=0.0331026, max=0.0921207 (Top.Head)
+Moved markers in model subject01 to match locations in marker file C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_static.trc
+Wrote model file subject01_simbody.osim from model subject01
+Processing subject subject01
+
+Step 1: Loading generic model
+
+Exception:
+  Object: Cannot open file
+  C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbodygait2354_simbody.osim.
+  It may not exist or you do not have permission to read it.
+  Thrown at Object.cpp:105 in Object().
+  line= 112
+
+
+===ERROR===: Unable to load generic model.
+Processing subject subject01
+
+Step 1: Loading generic model
+
+Exception:
+  Object: Cannot open file
+  C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbodygait2354_simbody.osim.
+  It may not exist or you do not have permission to read it.
+  Thrown at Object.cpp:105 in Object().
+  line= 112
+
+
+===ERROR===: Unable to load generic model.
+Processing subject subject01
+
+Step 1: Loading generic model
+Updating Model file from 20303 to latest format...
+Loaded model 3DGaitModel2354 from file C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\gait2354_simbody.osim
+ControllerSet 'Controllers' was renamed and is being reset to 'controllerset'.
+ComponentSet 'MiscComponents' was renamed and is being reset to 'componentset'.
+Loading marker set from 'C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\gait2354_Scale_MarkerSet.xml'
+Updated markers in model 3DGaitModel2354
+
+Step 2: Scaling generic model
+Loaded marker file C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_static.trc (49 markers, 300 frames)
+Measurement 'torso'
+	pair 0 (V.Sacral, Top.Head): model = 0.701084, experimental = 0.756975
+	overall scale factor = 1.07972
+Measurement 'pelvis'
+	pair 0 (R.ASIS, L.ASIS): model = 0.256, experimental = 0.262292
+	overall scale factor = 1.02458
+Measurement 'thigh'
+	pair 0 (R.ASIS, R.Knee.Lat): model = 0.508288, experimental = 0.538738
+	pair 1 (L.ASIS, L.Knee.Lat): model = 0.508288, experimental = 0.549642
+	overall scale factor = 1.07063
+Measurement 'shank'
+	pair 0 (R.Knee.Lat, R.Ankle.Lat): model = 0.401944, experimental = 0.458672
+	pair 1 (L.Knee.Lat, L.Ankle.Lat): model = 0.401944, experimental = 0.436842
+	overall scale factor = 1.11398
+Measurement 'foot'
+	pair 0 (R.Heel, R.Toe.Tip): model = 0.280401, experimental = 0.291576
+	pair 1 (L.Heel, L.Toe.Tip): model = 0.280401, experimental = 0.284416
+	overall scale factor = 1.02708
+Wrote model file subject01_scaledOnly.osim from model subject01
+Wrote scale file subject01_scaleSet_applied.xml for model subject01
+
+Step 3: Placing markers on model
+Loaded marker file C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_static.trc (49 markers, 300 frames)
+Averaged frames from time 1 to 1.01 in C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_static.trc (frames 61 to 62)
+Deleted 0 unused markers from model subject01
+Frame at (t=1):	total squared error = 0.0427354, marker error: RMS=0.0331026, max=0.0921207 (Top.Head)
+Moved markers in model subject01 to match locations in marker file C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_static.trc
+Wrote model file subject01_simbody.osim from model subject01
+Processing subject subject01
+
+Step 1: Loading generic model
+Updating Model file from 20303 to latest format...
+Loaded model 3DGaitModel2354 from file C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\gait2354_simbody.osim
+ControllerSet 'Controllers' was renamed and is being reset to 'controllerset'.
+ComponentSet 'MiscComponents' was renamed and is being reset to 'componentset'.
+Loading marker set from 'C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\gait2354_Scale_MarkerSet.xml'
+Updated markers in model 3DGaitModel2354
+
+Step 2: Scaling generic model
+Loaded marker file C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_static.trc (49 markers, 300 frames)
+Measurement 'torso'
+	pair 0 (V.Sacral, Top.Head): model = 0.701084, experimental = 0.756975
+	overall scale factor = 1.07972
+Measurement 'pelvis'
+	pair 0 (R.ASIS, L.ASIS): model = 0.256, experimental = 0.262292
+	overall scale factor = 1.02458
+Measurement 'thigh'
+	pair 0 (R.ASIS, R.Knee.Lat): model = 0.508288, experimental = 0.538738
+	pair 1 (L.ASIS, L.Knee.Lat): model = 0.508288, experimental = 0.549642
+	overall scale factor = 1.07063
+Measurement 'shank'
+	pair 0 (R.Knee.Lat, R.Ankle.Lat): model = 0.401944, experimental = 0.458672
+	pair 1 (L.Knee.Lat, L.Ankle.Lat): model = 0.401944, experimental = 0.436842
+	overall scale factor = 1.11398
+Measurement 'foot'
+	pair 0 (R.Heel, R.Toe.Tip): model = 0.280401, experimental = 0.291576
+	pair 1 (L.Heel, L.Toe.Tip): model = 0.280401, experimental = 0.284416
+	overall scale factor = 1.02708
+Wrote model file subject01_scaledOnly.osim from model subject01
+Wrote scale file subject01_scaleSet_applied.xml for model subject01
+
+Step 3: Placing markers on model
+Loaded marker file C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_static.trc (49 markers, 300 frames)
+Averaged frames from time 1 to 1.01 in C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_static.trc (frames 61 to 62)
+Deleted 0 unused markers from model subject01
+Frame at (t=1):	total squared error = 0.0427354, marker error: RMS=0.0331026, max=0.0921207 (Top.Head)
+Moved markers in model subject01 to match locations in marker file C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_static.trc
+Wrote model file subject01_simbody.osim from model subject01
+Loaded model subject01_walk1 from file C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_Setup_CMC.xml
+ControllerSet 'Controllers' was renamed and is being reset to 'controllerset'.
+Processing subject subject01
+
+Step 1: Loading generic model
+Updating Model file from 20303 to latest format...
+Loaded model 3DGaitModel2354 from file C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\gait2354_simbody.osim
+ControllerSet 'Controllers' was renamed and is being reset to 'controllerset'.
+ComponentSet 'MiscComponents' was renamed and is being reset to 'componentset'.
+Loading marker set from 'C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\gait2354_Scale_MarkerSet.xml'
+Updated markers in model 3DGaitModel2354
+
+Step 2: Scaling generic model
+Loaded marker file C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_static.trc (49 markers, 300 frames)
+Measurement 'torso'
+	pair 0 (V.Sacral, Top.Head): model = 0.701084, experimental = 0.756975
+	overall scale factor = 1.07972
+Measurement 'pelvis'
+	pair 0 (R.ASIS, L.ASIS): model = 0.256, experimental = 0.262292
+	overall scale factor = 1.02458
+Measurement 'thigh'
+	pair 0 (R.ASIS, R.Knee.Lat): model = 0.508288, experimental = 0.538738
+	pair 1 (L.ASIS, L.Knee.Lat): model = 0.508288, experimental = 0.549642
+	overall scale factor = 1.07063
+Measurement 'shank'
+	pair 0 (R.Knee.Lat, R.Ankle.Lat): model = 0.401944, experimental = 0.458672
+	pair 1 (L.Knee.Lat, L.Ankle.Lat): model = 0.401944, experimental = 0.436842
+	overall scale factor = 1.11398
+Measurement 'foot'
+	pair 0 (R.Heel, R.Toe.Tip): model = 0.280401, experimental = 0.291576
+	pair 1 (L.Heel, L.Toe.Tip): model = 0.280401, experimental = 0.284416
+	overall scale factor = 1.02708
+Wrote model file subject01_scaledOnly.osim from model subject01
+Wrote scale file subject01_scaleSet_applied.xml for model subject01
+
+Step 3: Placing markers on model
+Loaded marker file C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_static.trc (49 markers, 300 frames)
+Averaged frames from time 1 to 1.01 in C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_static.trc (frames 61 to 62)
+Deleted 0 unused markers from model subject01
+Frame at (t=1):	total squared error = 0.0427354, marker error: RMS=0.0331026, max=0.0921207 (Top.Head)
+Moved markers in model subject01 to match locations in marker file C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_static.trc
+Wrote model file subject01_simbody.osim from model subject01
+AbstractTool subject01_walk1 loading model 'C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_simbody_adjusted.osim'
+AbstractTool subject01_walk1 loading model 'C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_simbody_adjusted.osim'
+AbstractTool subject01_walk1 loading model 'C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_scaledOnly.osim'
+Loaded model subject01 from file C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_scaledOnly.osim
+Adding force object set from gait2354_CMC_Actuators.xml
+AbstractTool subject01_walk1 loading model 'C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_scaledOnly.osim'
+Loaded model subject01 from file C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_scaledOnly.osim
+Adding force object set from gait2354_CMC_Actuators.xml
+AbstractTool subject01_walk1 loading model 'C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_scaledOnly.osim'
+Loaded model subject01 from file C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_scaledOnly.osim
+Adding force object set from gait2354_CMC_Actuators.xml
+AbstractTool subject01_walk1 loading model 'C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_scaledOnly.osim'
+Loaded model subject01 from file C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_scaledOnly.osim
+Adding force object set from gait2354_CMC_Actuators.xml
+Running tool subject01_walk1.
+Object: ERR- Could not open file IO. It may not exist or you don't have permission to read it.Error: failed to construct ExternalLoads from file C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_walk_grf.mot. Please make sure the file exists and that it contains an ExternalLoadsobject or create a fresh one.
+
+Exception:
+  Object: ERR- Could not open file IO. It may not exist or you don't have
+  permission to read it.
+  file= C:\projects\opensim-build-releases\opensim-core\OpenSim\Simulation\Model\ExternalLoads.cpp
+  line= 458
+
+
+AbstractTool subject01_walk1 loading model 'C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_scaledOnly.osim'
+Loaded model subject01 from file C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_scaledOnly.osim
+Adding force object set from gait2354_CMC_Actuators.xml
+AbstractTool subject01_walk1 loading model 'C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_scaledOnly.osim'
+Loaded model subject01 from file C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_scaledOnly.osim
+Adding force object set from gait2354_CMC_Actuators.xml
+AbstractTool subject01_walk1 loading model 'C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_scaledOnly.osim'
+Loaded model subject01 from file C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_scaledOnly.osim
+Adding force object set from gait2354_CMC_Actuators.xml
+Running tool subject01_walk1.
+Object: ERR- Could not open file IO. It may not exist or you don't have permission to read it.Error: failed to construct ExternalLoads from file C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_walk_grf.mot. Please make sure the file exists and that it contains an ExternalLoadsobject or create a fresh one.
+
+Exception:
+  Object: ERR- Could not open file IO. It may not exist or you don't have
+  permission to read it.
+  file= C:\projects\opensim-build-releases\opensim-core\OpenSim\Simulation\Model\ExternalLoads.cpp
+  line= 458
+
+
+AbstractTool subject01_walk1 loading model 'C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_scaledOnly.osim'
+Loaded model subject01 from file C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_scaledOnly.osim
+Adding force object set from gait2354_CMC_Actuators.xml
+Running tool subject01_walk1.
+ExternalLoads 'Ex2' was renamed and is being reset to 'externalloads'.
+
+
+ taskSet size = 23
+
+Error: failed to read ExternalLoads data file 'subject01_walk1_grf.mot'.
+AbstractTool subject01_walk1 loading model 'C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_scaledOnly.osim'
+Loaded model subject01 from file C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_scaledOnly.osim
+Adding force object set from gait2354_CMC_Actuators.xml
+Running tool subject01_walk1.
+ExternalLoads 'Ex2' was renamed and is being reset to 'externalloads'.
+
+
+ taskSet size = 23
+
+Storage: read data file =subject01_walk1_grf.mot (nr=1501 nc=19)
+ExternalForce::right
+Data source being set to subject01_walk1_grf.mot
+ExternalForce::left
+Data source being set to subject01_walk1_grf.mot
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'glut_med1_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'glut_med2_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'glut_med3_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'bifemlh_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'bifemsh_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'sar_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'add_mag2_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'tfl_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'pect_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'grac_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'glut_max1_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'glut_max2_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'glut_max3_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'iliacus_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'psoas_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'quad_fem_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'gem_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'peri_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'rect_fem_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'vas_int_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'med_gas_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'soleus_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'tib_post_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'tib_ant_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'glut_med1_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'glut_med2_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'glut_med3_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'bifemlh_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'bifemsh_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'sar_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'add_mag2_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'tfl_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'pect_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'grac_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'glut_max1_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'glut_max2_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'glut_max3_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'iliacus_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'psoas_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'quad_fem_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'gem_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'peri_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'rect_fem_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'vas_int_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'med_gas_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'soleus_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'tib_post_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'tib_ant_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'ercspn_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'ercspn_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'intobl_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'intobl_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'extobl_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'extobl_l' has been reset to 0.02.
+
+
+WARN- a desired points file was not specified.
+
+
+
+Loading desired kinematics from file C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\OutputReference\subject0_walk1_ik.mot ...
+Storage: read data file =C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\OutputReference\subject0_walk1_ik.mot (nr=73 nc=24)
+
+
+Low-pass filtering desired kinematics with a cutoff frequency of 6...
+
+MODEL: subject01
+
+numStates = 154
+numCoordinates = 23
+numSpeeds = 23
+numActuators = 77
+numBodies = 12
+numConstraints = 0
+numProbes = 0
+
+ANALYSES (total: 2)
+analysis[0] = Kinematics
+analysis[1] = Actuation
+
+BODIES (total: 12)
+body[0] = pelvis. mass: 11.3752
+              moments of inertia:  ~[0.104233,0.0883142,0.0587072]
+              products of inertia: ~[0,0,0]
+body[1] = femur_r. mass: 8.98404
+              moments of inertia:  ~[0.170221,0.044621,0.179501]
+              products of inertia: ~[0,0,0]
+body[2] = tibia_r. mass: 3.581
+              moments of inertia:  ~[0.0475694,0.00481357,0.0482301]
+              products of inertia: ~[0,0,0]
+body[3] = talus_r. mass: 0.096588
+              moments of inertia:  ~[0.00119861,0.00119861,0.00119861]
+              products of inertia: ~[0,0,0]
+body[4] = calcn_r. mass: 1.20735
+              moments of inertia:  ~[0.00142647,0.00397375,0.00417753]
+              products of inertia: ~[0,0,0]
+body[5] = toes_r. mass: 0.20921
+              moments of inertia:  ~[0.000101891,0.000203782,0.000101891]
+              products of inertia: ~[0,0,0]
+body[6] = femur_l. mass: 8.98404
+              moments of inertia:  ~[0.170221,0.044621,0.179501]
+              products of inertia: ~[0,0,0]
+body[7] = tibia_l. mass: 3.581
+              moments of inertia:  ~[0.0475694,0.00481357,0.0482301]
+              products of inertia: ~[0,0,0]
+body[8] = talus_l. mass: 0.096588
+              moments of inertia:  ~[0.00119861,0.00119861,0.00119861]
+              products of inertia: ~[0,0,0]
+body[9] = calcn_l. mass: 1.20735
+              moments of inertia:  ~[0.00142647,0.00397375,0.00417753]
+              products of inertia: ~[0,0,0]
+body[10] = toes_l. mass: 0.20921
+              moments of inertia:  ~[0.000101891,0.000203782,0.000101891]
+              products of inertia: ~[0,0,0]
+body[11] = torso. mass: 33.0685
+              moments of inertia:  ~[1.66031,0.850707,1.61178]
+              products of inertia: ~[0,0,0]
+
+JOINTS (total: 12)
+joint[0] = ground_pelvis. parent: ground_offset, child: pelvis_offset
+joint[1] = hip_r. parent: pelvis_offset, child: femur_r_offset
+joint[2] = knee_r. parent: femur_r_offset, child: tibia_r_offset
+joint[3] = ankle_r. parent: tibia_r_offset, child: talus_r_offset
+joint[4] = subtalar_r. parent: talus_r_offset, child: calcn_r_offset
+joint[5] = mtp_r. parent: calcn_r_offset, child: toes_r_offset
+joint[6] = hip_l. parent: pelvis_offset, child: femur_l_offset
+joint[7] = knee_l. parent: femur_l_offset, child: tibia_l_offset
+joint[8] = ankle_l. parent: tibia_l_offset, child: talus_l_offset
+joint[9] = subtalar_l. parent: talus_l_offset, child: calcn_l_offset
+joint[10] = mtp_l. parent: calcn_l_offset, child: toes_l_offset
+joint[11] = back. parent: pelvis_offset, child: torso_offset
+
+ACTUATORS (total: 77)
+actuator[0] = glut_med1_r
+actuator[1] = glut_med2_r
+actuator[2] = glut_med3_r
+actuator[3] = bifemlh_r
+actuator[4] = bifemsh_r
+actuator[5] = sar_r
+actuator[6] = add_mag2_r
+actuator[7] = tfl_r
+actuator[8] = pect_r
+actuator[9] = grac_r
+actuator[10] = glut_max1_r
+actuator[11] = glut_max2_r
+actuator[12] = glut_max3_r
+actuator[13] = iliacus_r
+actuator[14] = psoas_r
+actuator[15] = quad_fem_r
+actuator[16] = gem_r
+actuator[17] = peri_r
+actuator[18] = rect_fem_r
+actuator[19] = vas_int_r
+actuator[20] = med_gas_r
+actuator[21] = soleus_r
+actuator[22] = tib_post_r
+actuator[23] = tib_ant_r
+actuator[24] = glut_med1_l
+actuator[25] = glut_med2_l
+actuator[26] = glut_med3_l
+actuator[27] = bifemlh_l
+actuator[28] = bifemsh_l
+actuator[29] = sar_l
+actuator[30] = add_mag2_l
+actuator[31] = tfl_l
+actuator[32] = pect_l
+actuator[33] = grac_l
+actuator[34] = glut_max1_l
+actuator[35] = glut_max2_l
+actuator[36] = glut_max3_l
+actuator[37] = iliacus_l
+actuator[38] = psoas_l
+actuator[39] = quad_fem_l
+actuator[40] = gem_l
+actuator[41] = peri_l
+actuator[42] = rect_fem_l
+actuator[43] = vas_int_l
+actuator[44] = med_gas_l
+actuator[45] = soleus_l
+actuator[46] = tib_post_l
+actuator[47] = tib_ant_l
+actuator[48] = ercspn_r
+actuator[49] = ercspn_l
+actuator[50] = intobl_r
+actuator[51] = intobl_l
+actuator[52] = extobl_r
+actuator[53] = extobl_l
+actuator[54] = FX
+actuator[55] = FY
+actuator[56] = FZ
+actuator[57] = MX
+actuator[58] = MY
+actuator[59] = MZ
+actuator[60] = hip_flexion_r_reserve
+actuator[61] = hip_adduction_r_reserve
+actuator[62] = hip_rotation_r_reserve
+actuator[63] = knee_angle_r_reserve
+actuator[64] = ankle_angle_r_reserve
+actuator[65] = subtalar_angle_r_reserve
+actuator[66] = mtp_angle_r_reserve
+actuator[67] = hip_flexion_l_reserve
+actuator[68] = hip_adduction_l_reserve
+actuator[69] = hip_rotation_l_reserve
+actuator[70] = knee_angle_l_reserve
+actuator[71] = ankle_angle_l_reserve
+actuator[72] = subtalar_angle_l_reserve
+actuator[73] = mtp_angle_l_reserve
+actuator[74] = lumbar_extension_reserve
+actuator[75] = lumbar_bending_reserve
+actuator[76] = lumbar_rotation_reserve
+
+STATES (total: 154)
+y[0] = /jointset/ground_pelvis/pelvis_tilt/value
+y[1] = /jointset/ground_pelvis/pelvis_tilt/speed
+y[2] = /jointset/ground_pelvis/pelvis_list/value
+y[3] = /jointset/ground_pelvis/pelvis_list/speed
+y[4] = /jointset/ground_pelvis/pelvis_rotation/value
+y[5] = /jointset/ground_pelvis/pelvis_rotation/speed
+y[6] = /jointset/ground_pelvis/pelvis_tx/value
+y[7] = /jointset/ground_pelvis/pelvis_tx/speed
+y[8] = /jointset/ground_pelvis/pelvis_ty/value
+y[9] = /jointset/ground_pelvis/pelvis_ty/speed
+y[10] = /jointset/ground_pelvis/pelvis_tz/value
+y[11] = /jointset/ground_pelvis/pelvis_tz/speed
+y[12] = /jointset/hip_r/hip_flexion_r/value
+y[13] = /jointset/hip_r/hip_flexion_r/speed
+y[14] = /jointset/hip_r/hip_adduction_r/value
+y[15] = /jointset/hip_r/hip_adduction_r/speed
+y[16] = /jointset/hip_r/hip_rotation_r/value
+y[17] = /jointset/hip_r/hip_rotation_r/speed
+y[18] = /jointset/knee_r/knee_angle_r/value
+y[19] = /jointset/knee_r/knee_angle_r/speed
+y[20] = /jointset/ankle_r/ankle_angle_r/value
+y[21] = /jointset/ankle_r/ankle_angle_r/speed
+y[22] = /jointset/subtalar_r/subtalar_angle_r/value
+y[23] = /jointset/subtalar_r/subtalar_angle_r/speed
+y[24] = /jointset/mtp_r/mtp_angle_r/value
+y[25] = /jointset/mtp_r/mtp_angle_r/speed
+y[26] = /jointset/hip_l/hip_flexion_l/value
+y[27] = /jointset/hip_l/hip_flexion_l/speed
+y[28] = /jointset/hip_l/hip_adduction_l/value
+y[29] = /jointset/hip_l/hip_adduction_l/speed
+y[30] = /jointset/hip_l/hip_rotation_l/value
+y[31] = /jointset/hip_l/hip_rotation_l/speed
+y[32] = /jointset/knee_l/knee_angle_l/value
+y[33] = /jointset/knee_l/knee_angle_l/speed
+y[34] = /jointset/ankle_l/ankle_angle_l/value
+y[35] = /jointset/ankle_l/ankle_angle_l/speed
+y[36] = /jointset/subtalar_l/subtalar_angle_l/value
+y[37] = /jointset/subtalar_l/subtalar_angle_l/speed
+y[38] = /jointset/mtp_l/mtp_angle_l/value
+y[39] = /jointset/mtp_l/mtp_angle_l/speed
+y[40] = /jointset/back/lumbar_extension/value
+y[41] = /jointset/back/lumbar_extension/speed
+y[42] = /jointset/back/lumbar_bending/value
+y[43] = /jointset/back/lumbar_bending/speed
+y[44] = /jointset/back/lumbar_rotation/value
+y[45] = /jointset/back/lumbar_rotation/speed
+y[46] = /forceset/glut_med1_r/activation
+y[47] = /forceset/glut_med1_r/fiber_length
+y[48] = /forceset/glut_med2_r/activation
+y[49] = /forceset/glut_med2_r/fiber_length
+y[50] = /forceset/glut_med3_r/activation
+y[51] = /forceset/glut_med3_r/fiber_length
+y[52] = /forceset/bifemlh_r/activation
+y[53] = /forceset/bifemlh_r/fiber_length
+y[54] = /forceset/bifemsh_r/activation
+y[55] = /forceset/bifemsh_r/fiber_length
+y[56] = /forceset/sar_r/activation
+y[57] = /forceset/sar_r/fiber_length
+y[58] = /forceset/add_mag2_r/activation
+y[59] = /forceset/add_mag2_r/fiber_length
+y[60] = /forceset/tfl_r/activation
+y[61] = /forceset/tfl_r/fiber_length
+y[62] = /forceset/pect_r/activation
+y[63] = /forceset/pect_r/fiber_length
+y[64] = /forceset/grac_r/activation
+y[65] = /forceset/grac_r/fiber_length
+y[66] = /forceset/glut_max1_r/activation
+y[67] = /forceset/glut_max1_r/fiber_length
+y[68] = /forceset/glut_max2_r/activation
+y[69] = /forceset/glut_max2_r/fiber_length
+y[70] = /forceset/glut_max3_r/activation
+y[71] = /forceset/glut_max3_r/fiber_length
+y[72] = /forceset/iliacus_r/activation
+y[73] = /forceset/iliacus_r/fiber_length
+y[74] = /forceset/psoas_r/activation
+y[75] = /forceset/psoas_r/fiber_length
+y[76] = /forceset/quad_fem_r/activation
+y[77] = /forceset/quad_fem_r/fiber_length
+y[78] = /forceset/gem_r/activation
+y[79] = /forceset/gem_r/fiber_length
+y[80] = /forceset/peri_r/activation
+y[81] = /forceset/peri_r/fiber_length
+y[82] = /forceset/rect_fem_r/activation
+y[83] = /forceset/rect_fem_r/fiber_length
+y[84] = /forceset/vas_int_r/activation
+y[85] = /forceset/vas_int_r/fiber_length
+y[86] = /forceset/med_gas_r/activation
+y[87] = /forceset/med_gas_r/fiber_length
+y[88] = /forceset/soleus_r/activation
+y[89] = /forceset/soleus_r/fiber_length
+y[90] = /forceset/tib_post_r/activation
+y[91] = /forceset/tib_post_r/fiber_length
+y[92] = /forceset/tib_ant_r/activation
+y[93] = /forceset/tib_ant_r/fiber_length
+y[94] = /forceset/glut_med1_l/activation
+y[95] = /forceset/glut_med1_l/fiber_length
+y[96] = /forceset/glut_med2_l/activation
+y[97] = /forceset/glut_med2_l/fiber_length
+y[98] = /forceset/glut_med3_l/activation
+y[99] = /forceset/glut_med3_l/fiber_length
+y[100] = /forceset/bifemlh_l/activation
+y[101] = /forceset/bifemlh_l/fiber_length
+y[102] = /forceset/bifemsh_l/activation
+y[103] = /forceset/bifemsh_l/fiber_length
+y[104] = /forceset/sar_l/activation
+y[105] = /forceset/sar_l/fiber_length
+y[106] = /forceset/add_mag2_l/activation
+y[107] = /forceset/add_mag2_l/fiber_length
+y[108] = /forceset/tfl_l/activation
+y[109] = /forceset/tfl_l/fiber_length
+y[110] = /forceset/pect_l/activation
+y[111] = /forceset/pect_l/fiber_length
+y[112] = /forceset/grac_l/activation
+y[113] = /forceset/grac_l/fiber_length
+y[114] = /forceset/glut_max1_l/activation
+y[115] = /forceset/glut_max1_l/fiber_length
+y[116] = /forceset/glut_max2_l/activation
+y[117] = /forceset/glut_max2_l/fiber_length
+y[118] = /forceset/glut_max3_l/activation
+y[119] = /forceset/glut_max3_l/fiber_length
+y[120] = /forceset/iliacus_l/activation
+y[121] = /forceset/iliacus_l/fiber_length
+y[122] = /forceset/psoas_l/activation
+y[123] = /forceset/psoas_l/fiber_length
+y[124] = /forceset/quad_fem_l/activation
+y[125] = /forceset/quad_fem_l/fiber_length
+y[126] = /forceset/gem_l/activation
+y[127] = /forceset/gem_l/fiber_length
+y[128] = /forceset/peri_l/activation
+y[129] = /forceset/peri_l/fiber_length
+y[130] = /forceset/rect_fem_l/activation
+y[131] = /forceset/rect_fem_l/fiber_length
+y[132] = /forceset/vas_int_l/activation
+y[133] = /forceset/vas_int_l/fiber_length
+y[134] = /forceset/med_gas_l/activation
+y[135] = /forceset/med_gas_l/fiber_length
+y[136] = /forceset/soleus_l/activation
+y[137] = /forceset/soleus_l/fiber_length
+y[138] = /forceset/tib_post_l/activation
+y[139] = /forceset/tib_post_l/fiber_length
+y[140] = /forceset/tib_ant_l/activation
+y[141] = /forceset/tib_ant_l/fiber_length
+y[142] = /forceset/ercspn_r/activation
+y[143] = /forceset/ercspn_r/fiber_length
+y[144] = /forceset/ercspn_l/activation
+y[145] = /forceset/ercspn_l/fiber_length
+y[146] = /forceset/intobl_r/activation
+y[147] = /forceset/intobl_r/fiber_length
+y[148] = /forceset/intobl_l/activation
+y[149] = /forceset/intobl_l/fiber_length
+y[150] = /forceset/extobl_r/activation
+y[151] = /forceset/extobl_r/fiber_length
+y[152] = /forceset/extobl_l/activation
+y[153] = /forceset/extobl_l/fiber_length
+
+Constructing function set for tracking desired kinematics...
+
+Using the generalized coordinates specified in C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\OutputReference\subject0_walk1_ik.mot to set the initial configuration.
+
+Using IPOPT optimizer algorithm.
+
+Setting optimizer print level to 0.
+Setting optimizer convergence tolerance to 0.0001.
+Setting optimizer maximum iterations to 2000.
+
+Setting cmc controller to not use verbose printing.
+
+
+
+================================================================
+================================================================
+Computing initial values for muscles states (activation, length)
+Start time = Thu Apr 16 22:38:51 2020
+
+================================================================
+CMC.computeControls:  t = 0.9
+CMC.computeControls:  t = 0.9
+
+----------------------------------------------------------------
+Finished computing initial states:
+----------------------------------------------------------------
+================================================================
+Start time   = Thu Apr 16 22:38:51 2020
+Finish time  = Thu Apr 16 22:39:01 2020
+Elapsed time = 10 seconds.
+================================================================
+
+
+
+================================================================
+================================================================
+Using CMC to track the specified kinematics
+Integrating from 0.93 to 1.1
+Start time = Thu Apr 16 22:39:01 2020
+================================================================
+CMC.computeControls:  t = 0.93
+CMC.computeControls:  t = 0.94
+CMC.computeControls:  t = 0.95
+CMC.computeControls:  t = 0.96
+CMC.computeControls:  t = 0.97
+CMC.computeControls:  t = 0.98
+CMC.computeControls:  t = 0.99
+CMC.computeControls:  t = 1
+CMC.computeControls:  t = 1.01
+CMC.computeControls:  t = 1.02
+CMC.computeControls:  t = 1.03
+CMC.computeControls:  t = 1.04
+CMC.computeControls:  t = 1.05
+CMC.computeControls:  t = 1.06
+CMC.computeControls:  t = 1.07
+CMC.computeControls:  t = 1.08
+----------------------------------------------------------------
+Finished tracking the specified kinematics
+================================================================
+Start time   = Thu Apr 16 22:39:01 2020
+Finish time  = Thu Apr 16 22:39:36 2020
+Elapsed time = 35 seconds.
+================================================================
+
+
+Printing results of investigation subject01_walk1 to C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\CMC.
+AbstractTool subject01_walk1 loading model 'C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_scaledOnly.osim'
+Loaded model subject01 from file C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\subject01_scaledOnly.osim
+Adding force object set from gait2354_CMC_Actuators.xml
+Running tool subject01_walk1.
+ExternalLoads 'Ex2' was renamed and is being reset to 'externalloads'.
+
+
+ taskSet size = 23
+
+Storage: read data file =subject01_walk1_grf.mot (nr=1501 nc=19)
+ExternalForce::right
+Data source being set to subject01_walk1_grf.mot
+ExternalForce::left
+Data source being set to subject01_walk1_grf.mot
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'glut_med1_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'glut_med2_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'glut_med3_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'bifemlh_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'bifemsh_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'sar_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'add_mag2_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'tfl_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'pect_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'grac_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'glut_max1_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'glut_max2_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'glut_max3_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'iliacus_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'psoas_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'quad_fem_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'gem_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'peri_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'rect_fem_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'vas_int_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'med_gas_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'soleus_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'tib_post_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'tib_ant_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'glut_med1_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'glut_med2_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'glut_med3_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'bifemlh_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'bifemsh_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'sar_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'add_mag2_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'tfl_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'pect_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'grac_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'glut_max1_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'glut_max2_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'glut_max3_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'iliacus_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'psoas_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'quad_fem_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'gem_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'peri_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'rect_fem_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'vas_int_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'med_gas_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'soleus_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'tib_post_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'tib_ant_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'ercspn_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'ercspn_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'intobl_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'intobl_l' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'extobl_r' has been reset to 0.02.
+CMC::Warning: CMC cannot compute controls for muscles with muscle controls < 0.02.
+The minimum control limit for muscle 'extobl_l' has been reset to 0.02.
+
+
+WARN- a desired points file was not specified.
+
+
+
+Loading desired kinematics from file C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\OutputReference\subject0_walk1_ik.mot ...
+Storage: read data file =C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\OutputReference\subject0_walk1_ik.mot (nr=73 nc=24)
+
+
+Low-pass filtering desired kinematics with a cutoff frequency of 6...
+
+MODEL: subject01
+
+numStates = 154
+numCoordinates = 23
+numSpeeds = 23
+numActuators = 77
+numBodies = 12
+numConstraints = 0
+numProbes = 0
+
+ANALYSES (total: 2)
+analysis[0] = Kinematics
+analysis[1] = Actuation
+
+BODIES (total: 12)
+body[0] = pelvis. mass: 11.3752
+              moments of inertia:  ~[0.104233,0.0883142,0.0587072]
+              products of inertia: ~[0,0,0]
+body[1] = femur_r. mass: 8.98404
+              moments of inertia:  ~[0.170221,0.044621,0.179501]
+              products of inertia: ~[0,0,0]
+body[2] = tibia_r. mass: 3.581
+              moments of inertia:  ~[0.0475694,0.00481357,0.0482301]
+              products of inertia: ~[0,0,0]
+body[3] = talus_r. mass: 0.096588
+              moments of inertia:  ~[0.00119861,0.00119861,0.00119861]
+              products of inertia: ~[0,0,0]
+body[4] = calcn_r. mass: 1.20735
+              moments of inertia:  ~[0.00142647,0.00397375,0.00417753]
+              products of inertia: ~[0,0,0]
+body[5] = toes_r. mass: 0.20921
+              moments of inertia:  ~[0.000101891,0.000203782,0.000101891]
+              products of inertia: ~[0,0,0]
+body[6] = femur_l. mass: 8.98404
+              moments of inertia:  ~[0.170221,0.044621,0.179501]
+              products of inertia: ~[0,0,0]
+body[7] = tibia_l. mass: 3.581
+              moments of inertia:  ~[0.0475694,0.00481357,0.0482301]
+              products of inertia: ~[0,0,0]
+body[8] = talus_l. mass: 0.096588
+              moments of inertia:  ~[0.00119861,0.00119861,0.00119861]
+              products of inertia: ~[0,0,0]
+body[9] = calcn_l. mass: 1.20735
+              moments of inertia:  ~[0.00142647,0.00397375,0.00417753]
+              products of inertia: ~[0,0,0]
+body[10] = toes_l. mass: 0.20921
+              moments of inertia:  ~[0.000101891,0.000203782,0.000101891]
+              products of inertia: ~[0,0,0]
+body[11] = torso. mass: 33.0685
+              moments of inertia:  ~[1.66031,0.850707,1.61178]
+              products of inertia: ~[0,0,0]
+
+JOINTS (total: 12)
+joint[0] = ground_pelvis. parent: ground_offset, child: pelvis_offset
+joint[1] = hip_r. parent: pelvis_offset, child: femur_r_offset
+joint[2] = knee_r. parent: femur_r_offset, child: tibia_r_offset
+joint[3] = ankle_r. parent: tibia_r_offset, child: talus_r_offset
+joint[4] = subtalar_r. parent: talus_r_offset, child: calcn_r_offset
+joint[5] = mtp_r. parent: calcn_r_offset, child: toes_r_offset
+joint[6] = hip_l. parent: pelvis_offset, child: femur_l_offset
+joint[7] = knee_l. parent: femur_l_offset, child: tibia_l_offset
+joint[8] = ankle_l. parent: tibia_l_offset, child: talus_l_offset
+joint[9] = subtalar_l. parent: talus_l_offset, child: calcn_l_offset
+joint[10] = mtp_l. parent: calcn_l_offset, child: toes_l_offset
+joint[11] = back. parent: pelvis_offset, child: torso_offset
+
+ACTUATORS (total: 77)
+actuator[0] = glut_med1_r
+actuator[1] = glut_med2_r
+actuator[2] = glut_med3_r
+actuator[3] = bifemlh_r
+actuator[4] = bifemsh_r
+actuator[5] = sar_r
+actuator[6] = add_mag2_r
+actuator[7] = tfl_r
+actuator[8] = pect_r
+actuator[9] = grac_r
+actuator[10] = glut_max1_r
+actuator[11] = glut_max2_r
+actuator[12] = glut_max3_r
+actuator[13] = iliacus_r
+actuator[14] = psoas_r
+actuator[15] = quad_fem_r
+actuator[16] = gem_r
+actuator[17] = peri_r
+actuator[18] = rect_fem_r
+actuator[19] = vas_int_r
+actuator[20] = med_gas_r
+actuator[21] = soleus_r
+actuator[22] = tib_post_r
+actuator[23] = tib_ant_r
+actuator[24] = glut_med1_l
+actuator[25] = glut_med2_l
+actuator[26] = glut_med3_l
+actuator[27] = bifemlh_l
+actuator[28] = bifemsh_l
+actuator[29] = sar_l
+actuator[30] = add_mag2_l
+actuator[31] = tfl_l
+actuator[32] = pect_l
+actuator[33] = grac_l
+actuator[34] = glut_max1_l
+actuator[35] = glut_max2_l
+actuator[36] = glut_max3_l
+actuator[37] = iliacus_l
+actuator[38] = psoas_l
+actuator[39] = quad_fem_l
+actuator[40] = gem_l
+actuator[41] = peri_l
+actuator[42] = rect_fem_l
+actuator[43] = vas_int_l
+actuator[44] = med_gas_l
+actuator[45] = soleus_l
+actuator[46] = tib_post_l
+actuator[47] = tib_ant_l
+actuator[48] = ercspn_r
+actuator[49] = ercspn_l
+actuator[50] = intobl_r
+actuator[51] = intobl_l
+actuator[52] = extobl_r
+actuator[53] = extobl_l
+actuator[54] = FX
+actuator[55] = FY
+actuator[56] = FZ
+actuator[57] = MX
+actuator[58] = MY
+actuator[59] = MZ
+actuator[60] = hip_flexion_r_reserve
+actuator[61] = hip_adduction_r_reserve
+actuator[62] = hip_rotation_r_reserve
+actuator[63] = knee_angle_r_reserve
+actuator[64] = ankle_angle_r_reserve
+actuator[65] = subtalar_angle_r_reserve
+actuator[66] = mtp_angle_r_reserve
+actuator[67] = hip_flexion_l_reserve
+actuator[68] = hip_adduction_l_reserve
+actuator[69] = hip_rotation_l_reserve
+actuator[70] = knee_angle_l_reserve
+actuator[71] = ankle_angle_l_reserve
+actuator[72] = subtalar_angle_l_reserve
+actuator[73] = mtp_angle_l_reserve
+actuator[74] = lumbar_extension_reserve
+actuator[75] = lumbar_bending_reserve
+actuator[76] = lumbar_rotation_reserve
+
+STATES (total: 154)
+y[0] = /jointset/ground_pelvis/pelvis_tilt/value
+y[1] = /jointset/ground_pelvis/pelvis_tilt/speed
+y[2] = /jointset/ground_pelvis/pelvis_list/value
+y[3] = /jointset/ground_pelvis/pelvis_list/speed
+y[4] = /jointset/ground_pelvis/pelvis_rotation/value
+y[5] = /jointset/ground_pelvis/pelvis_rotation/speed
+y[6] = /jointset/ground_pelvis/pelvis_tx/value
+y[7] = /jointset/ground_pelvis/pelvis_tx/speed
+y[8] = /jointset/ground_pelvis/pelvis_ty/value
+y[9] = /jointset/ground_pelvis/pelvis_ty/speed
+y[10] = /jointset/ground_pelvis/pelvis_tz/value
+y[11] = /jointset/ground_pelvis/pelvis_tz/speed
+y[12] = /jointset/hip_r/hip_flexion_r/value
+y[13] = /jointset/hip_r/hip_flexion_r/speed
+y[14] = /jointset/hip_r/hip_adduction_r/value
+y[15] = /jointset/hip_r/hip_adduction_r/speed
+y[16] = /jointset/hip_r/hip_rotation_r/value
+y[17] = /jointset/hip_r/hip_rotation_r/speed
+y[18] = /jointset/knee_r/knee_angle_r/value
+y[19] = /jointset/knee_r/knee_angle_r/speed
+y[20] = /jointset/ankle_r/ankle_angle_r/value
+y[21] = /jointset/ankle_r/ankle_angle_r/speed
+y[22] = /jointset/subtalar_r/subtalar_angle_r/value
+y[23] = /jointset/subtalar_r/subtalar_angle_r/speed
+y[24] = /jointset/mtp_r/mtp_angle_r/value
+y[25] = /jointset/mtp_r/mtp_angle_r/speed
+y[26] = /jointset/hip_l/hip_flexion_l/value
+y[27] = /jointset/hip_l/hip_flexion_l/speed
+y[28] = /jointset/hip_l/hip_adduction_l/value
+y[29] = /jointset/hip_l/hip_adduction_l/speed
+y[30] = /jointset/hip_l/hip_rotation_l/value
+y[31] = /jointset/hip_l/hip_rotation_l/speed
+y[32] = /jointset/knee_l/knee_angle_l/value
+y[33] = /jointset/knee_l/knee_angle_l/speed
+y[34] = /jointset/ankle_l/ankle_angle_l/value
+y[35] = /jointset/ankle_l/ankle_angle_l/speed
+y[36] = /jointset/subtalar_l/subtalar_angle_l/value
+y[37] = /jointset/subtalar_l/subtalar_angle_l/speed
+y[38] = /jointset/mtp_l/mtp_angle_l/value
+y[39] = /jointset/mtp_l/mtp_angle_l/speed
+y[40] = /jointset/back/lumbar_extension/value
+y[41] = /jointset/back/lumbar_extension/speed
+y[42] = /jointset/back/lumbar_bending/value
+y[43] = /jointset/back/lumbar_bending/speed
+y[44] = /jointset/back/lumbar_rotation/value
+y[45] = /jointset/back/lumbar_rotation/speed
+y[46] = /forceset/glut_med1_r/activation
+y[47] = /forceset/glut_med1_r/fiber_length
+y[48] = /forceset/glut_med2_r/activation
+y[49] = /forceset/glut_med2_r/fiber_length
+y[50] = /forceset/glut_med3_r/activation
+y[51] = /forceset/glut_med3_r/fiber_length
+y[52] = /forceset/bifemlh_r/activation
+y[53] = /forceset/bifemlh_r/fiber_length
+y[54] = /forceset/bifemsh_r/activation
+y[55] = /forceset/bifemsh_r/fiber_length
+y[56] = /forceset/sar_r/activation
+y[57] = /forceset/sar_r/fiber_length
+y[58] = /forceset/add_mag2_r/activation
+y[59] = /forceset/add_mag2_r/fiber_length
+y[60] = /forceset/tfl_r/activation
+y[61] = /forceset/tfl_r/fiber_length
+y[62] = /forceset/pect_r/activation
+y[63] = /forceset/pect_r/fiber_length
+y[64] = /forceset/grac_r/activation
+y[65] = /forceset/grac_r/fiber_length
+y[66] = /forceset/glut_max1_r/activation
+y[67] = /forceset/glut_max1_r/fiber_length
+y[68] = /forceset/glut_max2_r/activation
+y[69] = /forceset/glut_max2_r/fiber_length
+y[70] = /forceset/glut_max3_r/activation
+y[71] = /forceset/glut_max3_r/fiber_length
+y[72] = /forceset/iliacus_r/activation
+y[73] = /forceset/iliacus_r/fiber_length
+y[74] = /forceset/psoas_r/activation
+y[75] = /forceset/psoas_r/fiber_length
+y[76] = /forceset/quad_fem_r/activation
+y[77] = /forceset/quad_fem_r/fiber_length
+y[78] = /forceset/gem_r/activation
+y[79] = /forceset/gem_r/fiber_length
+y[80] = /forceset/peri_r/activation
+y[81] = /forceset/peri_r/fiber_length
+y[82] = /forceset/rect_fem_r/activation
+y[83] = /forceset/rect_fem_r/fiber_length
+y[84] = /forceset/vas_int_r/activation
+y[85] = /forceset/vas_int_r/fiber_length
+y[86] = /forceset/med_gas_r/activation
+y[87] = /forceset/med_gas_r/fiber_length
+y[88] = /forceset/soleus_r/activation
+y[89] = /forceset/soleus_r/fiber_length
+y[90] = /forceset/tib_post_r/activation
+y[91] = /forceset/tib_post_r/fiber_length
+y[92] = /forceset/tib_ant_r/activation
+y[93] = /forceset/tib_ant_r/fiber_length
+y[94] = /forceset/glut_med1_l/activation
+y[95] = /forceset/glut_med1_l/fiber_length
+y[96] = /forceset/glut_med2_l/activation
+y[97] = /forceset/glut_med2_l/fiber_length
+y[98] = /forceset/glut_med3_l/activation
+y[99] = /forceset/glut_med3_l/fiber_length
+y[100] = /forceset/bifemlh_l/activation
+y[101] = /forceset/bifemlh_l/fiber_length
+y[102] = /forceset/bifemsh_l/activation
+y[103] = /forceset/bifemsh_l/fiber_length
+y[104] = /forceset/sar_l/activation
+y[105] = /forceset/sar_l/fiber_length
+y[106] = /forceset/add_mag2_l/activation
+y[107] = /forceset/add_mag2_l/fiber_length
+y[108] = /forceset/tfl_l/activation
+y[109] = /forceset/tfl_l/fiber_length
+y[110] = /forceset/pect_l/activation
+y[111] = /forceset/pect_l/fiber_length
+y[112] = /forceset/grac_l/activation
+y[113] = /forceset/grac_l/fiber_length
+y[114] = /forceset/glut_max1_l/activation
+y[115] = /forceset/glut_max1_l/fiber_length
+y[116] = /forceset/glut_max2_l/activation
+y[117] = /forceset/glut_max2_l/fiber_length
+y[118] = /forceset/glut_max3_l/activation
+y[119] = /forceset/glut_max3_l/fiber_length
+y[120] = /forceset/iliacus_l/activation
+y[121] = /forceset/iliacus_l/fiber_length
+y[122] = /forceset/psoas_l/activation
+y[123] = /forceset/psoas_l/fiber_length
+y[124] = /forceset/quad_fem_l/activation
+y[125] = /forceset/quad_fem_l/fiber_length
+y[126] = /forceset/gem_l/activation
+y[127] = /forceset/gem_l/fiber_length
+y[128] = /forceset/peri_l/activation
+y[129] = /forceset/peri_l/fiber_length
+y[130] = /forceset/rect_fem_l/activation
+y[131] = /forceset/rect_fem_l/fiber_length
+y[132] = /forceset/vas_int_l/activation
+y[133] = /forceset/vas_int_l/fiber_length
+y[134] = /forceset/med_gas_l/activation
+y[135] = /forceset/med_gas_l/fiber_length
+y[136] = /forceset/soleus_l/activation
+y[137] = /forceset/soleus_l/fiber_length
+y[138] = /forceset/tib_post_l/activation
+y[139] = /forceset/tib_post_l/fiber_length
+y[140] = /forceset/tib_ant_l/activation
+y[141] = /forceset/tib_ant_l/fiber_length
+y[142] = /forceset/ercspn_r/activation
+y[143] = /forceset/ercspn_r/fiber_length
+y[144] = /forceset/ercspn_l/activation
+y[145] = /forceset/ercspn_l/fiber_length
+y[146] = /forceset/intobl_r/activation
+y[147] = /forceset/intobl_r/fiber_length
+y[148] = /forceset/intobl_l/activation
+y[149] = /forceset/intobl_l/fiber_length
+y[150] = /forceset/extobl_r/activation
+y[151] = /forceset/extobl_r/fiber_length
+y[152] = /forceset/extobl_l/activation
+y[153] = /forceset/extobl_l/fiber_length
+
+Constructing function set for tracking desired kinematics...
+
+Using the generalized coordinates specified in C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\OutputReference\subject0_walk1_ik.mot to set the initial configuration.
+
+Using IPOPT optimizer algorithm.
+
+Setting optimizer print level to 0.
+Setting optimizer convergence tolerance to 0.0001.
+Setting optimizer maximum iterations to 2000.
+
+Setting cmc controller to not use verbose printing.
+
+
+
+================================================================
+================================================================
+Computing initial values for muscles states (activation, length)
+Start time = Thu Apr 16 22:40:29 2020
+
+================================================================
+CMC.computeControls:  t = 0.9
+CMC.computeControls:  t = 0.9
+
+----------------------------------------------------------------
+Finished computing initial states:
+----------------------------------------------------------------
+================================================================
+Start time   = Thu Apr 16 22:40:29 2020
+Finish time  = Thu Apr 16 22:40:39 2020
+Elapsed time = 10 seconds.
+================================================================
+
+
+
+================================================================
+================================================================
+Using CMC to track the specified kinematics
+Integrating from 0.93 to 1.1
+Start time = Thu Apr 16 22:40:39 2020
+================================================================
+CMC.computeControls:  t = 0.93
+CMC.computeControls:  t = 0.94
+CMC.computeControls:  t = 0.95
+CMC.computeControls:  t = 0.96
+CMC.computeControls:  t = 0.97
+CMC.computeControls:  t = 0.98
+CMC.computeControls:  t = 0.99
+CMC.computeControls:  t = 1
+CMC.computeControls:  t = 1.01
+CMC.computeControls:  t = 1.02
+CMC.computeControls:  t = 1.03
+CMC.computeControls:  t = 1.04
+CMC.computeControls:  t = 1.05
+CMC.computeControls:  t = 1.06
+CMC.computeControls:  t = 1.07
+CMC.computeControls:  t = 1.08
+----------------------------------------------------------------
+Finished tracking the specified kinematics
+================================================================
+Start time   = Thu Apr 16 22:40:39 2020
+Finish time  = Thu Apr 16 22:41:15 2020
+Elapsed time = 36 seconds.
+================================================================
+
+
+Printing results of investigation subject01_walk1 to C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\CMC.
