@@ -48,6 +48,9 @@ ikTool.setOutputMotionFileName([results_folder name '_ik.mot']);
 ikTool.print([results_folder name '_IK_Setup.xml']);
 % ikTool.getIKTaskSet() % to change the scale files
 ikTool.run();
+
+%%  SOP %%
+
 %%  CMC  %%
 
 % look at AbstractTool () to find more subclass for time range 
