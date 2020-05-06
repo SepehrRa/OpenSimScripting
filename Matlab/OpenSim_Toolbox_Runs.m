@@ -77,7 +77,6 @@ analysis.setResultsDir([results_folder 'SOP']);
 analysis.run();
 % static optim
 %%  CMC  %%
-
 % look at AbstractTool () to find more subclass for time range 
 cmc = CMCTool([folder CMCSetup]);
 cmc.setDesiredKinematicsFileName([results_folder name '_ik.mot']);
