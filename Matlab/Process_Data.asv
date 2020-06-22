@@ -29,7 +29,7 @@ for i = 1:length(data.fp_data.FP_data)
    data.fp_data.GRF_data(i).F =  [data.fp_data.GRF_data(i).F(:,3) data.fp_data.GRF_data(i).F(:,1) data.fp_data.GRF_data(i).F(:,2)];
    data.fp_data.GRF_data(i).M =  [data.fp_data.GRF_data(i).M(:,3) data.fp_data.GRF_data(i).M(:,1) data.fp_data.GRF_data(i).M(:,2)]/p_sc;
 end
-data.fp_data.GRF_data.Time= data.fp_data.Time; 
+  
    
-generate_GRF_Mot(data.fp_data.GRF_data,data.fp_data.Info)
+generate_Mot(data.fp_data.GRF_data,data.fp_data.Info)
 
