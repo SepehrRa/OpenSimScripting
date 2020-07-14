@@ -1,6 +1,6 @@
 % Add btk library to MATLAB path  -> https://code.google.com/archive/p/b-tk/downloads
 clear all
-folder = 'C:\MyCloud\OneDriveUcf\Real\Simulation\Passive_Parameter_prediction\Data\';
+folder = 'C:\MyCloud\OneDriveUcf\Real\Simulation\Passive_Parameter_prediction\Data\Test2\';
 fname = 'Static_Functional.c3d';
 q=1;
 %% C3D file reading 
