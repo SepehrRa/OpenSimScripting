@@ -1,29 +1,29 @@
-clearvars
-close all
-clc
+clear all;
+close all;
+clc;
 
-%loading required packages
-pkg load io
-pkg load control
-pkg load signal
-
+folder =[fileparts(mfilename('fullpath')) '\Data\'];
+fname = 'P005_T001_Isokinetic_Knee_Extension_Right_Leg_60.xlsx';
+data=importdata([folder fname]);
 %imports biodex data
 fdata=importdata('C:\Users\jo801202\Desktop\OctaveWorkspace\Pilot Data\P001_T001\T001_BiodexTot.csv',',');
 %imports goniometer data
 data=importdata('C:\Users\jo801202\Desktop\OctaveWorkspace\Pilot Data\P001_T001\T001_GonioTot.csv',',');
+
+
 sr=fdata.data(3,1)-fdata.data(2,1); %finds sampling rates 
 srg=data.data(3,1)-data.data(2,1);
 
 %Interpolates goniometer data to match force data
 B=[0];
 ends=[0 0 0 0 0 0 0 0];
-for i=1:length(data.colheaders)/2;
+for i=1:length(data.colheaders)/2
   k=1;
   for j=1:length(data.data)%# of data points in a given trial
     if ~isnan(data.data(j,i*2))&&data.data(j,i*2)~=0
       k=j;
-    endif
-  endfor 
+    end
+  end 
   t=srg*(k-1); %time duration of trial based on # of data points
   y=interp1(0:srg:t,data.data(1:k,i*2),linspace(0,t,t/(sr))); %interpolates data to match sampling rate to force data
   b=y';
@@ -37,7 +37,7 @@ for i=1:length(data.colheaders)/2;
   elseif (length(b) >  length(B(:,1)))
     B = [[B; NaN(length(b)-length(B(:,1)),length(B(1,:)))] b];
   end
-endfor
+ end
 
 %calibrating goniometer angles
 %  0deg
@@ -54,7 +54,7 @@ figure
 hold on
 for i=1:8
   plot([(sr.*10):sr:sr.*(ends(i)-50)]',B(10:ends(i)-50,i))
-endfor
+end
 legend('I0','I30','I60','I90','IOpt','K120','K240','K360')
 
 %asking user for subject # are creates corresponding .mot file names
@@ -62,7 +62,7 @@ subn=inputdlg('Enter Subject Number','Input Subject # (3 digits)');
 type={'I0','I30','I60','I90','IOpt','K120','K240','K360'};
 for i=1:length(ends)
   fnames{i}=['Rajagopal_Biodex_kinematics_P001_T',char(subn),'_',char(type{i}),'.mot'];
-endfor
+end
 
 %saving kinematic data
 for i=1:length(ends)
@@ -73,7 +73,7 @@ for i=1:length(ends)
   dlmwrite(fid,head,'\0');
   dlmwrite(fid,[[0:sr:sr.*(ends(i)-1)]',ones(ends(i),1)*0,ones(ends(i),1)*0.055,ones(ends(i),1)*1.059,ones(ends(i),1)*90,-B(1:ends(i),i),ones(ends(i),1)*0],'\t');
   fclose(fid);
-endfor
+end
 
 %calculating reaction force
 A=[];
@@ -84,11 +84,11 @@ for i=1:8
   Mb=6.0046.*x.^4+40.776.*x.^3+91.388.*x.^2-73.177.*x+9.5647; %finds moment about biodex arm
   Fr=Mb(1:rows(B))./l-mg.*sin((pi/2)-B(:,i))./2; %solves for reaction force
   A=[A Fr];
-endfor
+end
 
 for i=1:8
   gnames{i}=['Rajagopal_Biodex_reaction_force_P001_T',char(subn),'_',char(type{i}),'.mot'];
-endfor
+end
 
 %saving reaction force data
 for i=1:8
@@ -99,4 +99,4 @@ for i=1:8
   dlmwrite(fid,head,'\0');
   dlmwrite(fid,[[0:sr:sr.*(ends(i)-1)]',A(1:ends(i),i),ones(ends(i),1)*0,ones(ends(i),1)*0,ones(ends(i),1)*0,-ones(ends(i),1)*0.15,ones(ends(i),1)*0,ones(ends(i),1)*0,ones(ends(i),1)*0,ones(ends(i),1)*0],'\t');
   fclose(fid);
-endfor
+end
