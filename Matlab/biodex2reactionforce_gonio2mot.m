@@ -1,4 +1,4 @@
-% clear all;
+clear all;
 % close all;
 clc;
 
@@ -93,7 +93,7 @@ for T1=1:length(Terials1)
             A=[];
 %             l=.15;
 %             mg=0;
-            x=Data(:,cb(1)); %data of a trial
+            x=-1*Data(:,cb(1)); %data of a trial
             Mb=6.0046.*x.^4+40.776.*x.^3+91.388.*x.^2-73.177.*x+9.5647; %finds moment about biodex arm
             %   Fr=Mb(1:rows(B))./l-mg.*sin((pi/2)-B(:,i))./2; %solves for reaction force
             %   A=[A Fr];
