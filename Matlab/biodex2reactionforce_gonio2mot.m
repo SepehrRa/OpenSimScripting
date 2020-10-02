@@ -1,102 +1,115 @@
-clear all;
-close all;
+% clear all;
+% close all;
 clc;
 
 folder =[fileparts(mfilename('fullpath')) '\Data\'];
-fname = 'P005_T001_Isokinetic_Knee_Extension_Right_Leg_60.xlsx';
-data=importdata([folder fname]);
-%imports biodex data
-fdata=importdata('C:\Users\jo801202\Desktop\OctaveWorkspace\Pilot Data\P001_T001\T001_BiodexTot.csv',',');
-%imports goniometer data
-data=importdata('C:\Users\jo801202\Desktop\OctaveWorkspace\Pilot Data\P001_T001\T001_GonioTot.csv',',');
-
-
-sr=fdata.data(3,1)-fdata.data(2,1); %finds sampling rates 
-srg=data.data(3,1)-data.data(2,1);
-
-%Interpolates goniometer data to match force data
-B=[0];
-ends=[0 0 0 0 0 0 0 0];
-for i=1:length(data.colheaders)/2
-  k=1;
-  for j=1:length(data.data)%# of data points in a given trial
-    if ~isnan(data.data(j,i*2))&&data.data(j,i*2)~=0
-      k=j;
+fname = 'P005_T001_RKnee_';
+Terials1=["EX";"FL"];
+Terials2=["I60";"IK60"];
+Fdata=[];
+k=0;
+%%
+% for T1=1:length(Terials1)
+%         k=k+1;
+%     for T2=1:length(Terials2)
+%         
+%         Namedr(k)=append(Terials1(T1),"_",Terials2(T2));
+%         Datadr=append(folder,fname,Terials1(T1),"_",Terials2(T2),".xlsx");
+%         data=importdata(Datadr);
+%         [rf,cf]=find(strncmp(data.textdata,'Biodex',6));
+%         [rg,cg]=find(strncmp(data.textdata,'Gn',2));
+%         [rt,cT]=find(strncmp(data.textdata,'Biodex',6)|strncmp(data.textdata,'Gn',2));
+%         sr = data.data(3,cf-1)-data.data(2,cf-1);%finds sampling rates force 
+%         srg =data.data(3,cT-1)-data.data(2,cT-1);%finds sampling rates Gonio
+%             for ii=1:length(cT) 
+%             kk=1;
+%                 for jj=1:length(data.data)%# of data points in a given trial
+%                     if ~isnan(data.data(jj,cT(ii)))&&data.data(jj,cT(ii))~=0
+%                         kk=jj;
+%                     end
+%                 end 
+%             t=srg(ii)*(kk-1); %time duration of trial based on # of data points
+%             y=interp1(0:srg(ii):t,data.data(1:kk,cT(ii)),linspace(0,t,t/(sr(1))+1)); %interpolates data to match sampling rate to force data
+%             b=y';
+%             ends(ii)=length(b);
+%                 if (size(Gdata(:,1)) == 1) %recombines data into a matrix padded with NaN
+%                     Gdata = [[0:sr(1):t]' b];
+%                 elseif (length(b) <  length(Gdata(:,1)))
+%                     Gdata = [Gdata [b; NaN(length(Gdata(:,1))-length(b),1)]];
+%                 elseif (length(b) == length(Gdata(:,1)))
+%                     Gdata = [Gdata b];
+%                 elseif (length(b) >  length(Gdata(:,1)))
+%                     Gdata = [[Gdata; NaN(length(b)-length(Gdata(:,1)),length(Gdata(1,:)))] b];
+%                 end
+%                 
+%             end
+%             FinalData.(Namedr(k)).data=Gdata;
+%             FinalData.(Namedr(k)).colheaders=["time" data.textdata(cT)];
+%             clear Gdata
+%             Gdata=[0];
+%             
+%             
+% %             t=sr(1)*(kk-1);
+% %             Gdata=[[0:sr(1):t]' Gdata];
+% %             Fdata=[Fdata data.data(:,[cf(1)-1:cf(end)])];
+%     end
+% end
+% save FinalData.mat FinalData;
+% save Gdata.mat Gdata;
+%%
+load FinalData.mat
+for T1=1:length(Terials1)
+        k=k+1;
+    for T2=1:length(Terials2)        
+        Namedr(k)=append(Terials1(T1),"_",Terials2(T2));
+        Data=FinalData.(Namedr(k)).data;
+        HData=FinalData.(Namedr(k)).colheaders;
+        [rg,cg]=find(strncmp(HData,'Gn',2));
+        [rk,ck]=find(strncmp(HData,'Gn K',4));
+        [rh,ch]=find(strncmp(HData,'Gn H',4));
+        [rb,cb]=find(strncmp(HData,'Biodex',6));
+        [r,c]=size(Data);
+%       zer=mean(B(600:2600,1));
+%       B=B-zer;
+%       deg=mean(B(600:2600,4))./90;
+%       B=B./deg;
+        Data(:,cg)=Data(:,cg).*pi()./180;
+%% Motion
+        fnames=['P005_T001_Motion_',char(Namedr{k}),'.mot'];
+        fid=fopen(char(fnames), "w");
+        if fid < 0
+            fprintf('\nERROR: %s could not be opened for writing...\n\n', name);
+            return
+        end
+        fprintf(fid,[char(fnames) '\nversion=1\nnRows=%d\nnColumns=%d\nInDegrees=no\nendheader\n'],r,c);
+        fprintf(fid,'time\tpelvis_tilt\tpelvis_tx\tpelvis_ty\thip_flexion_r\tknee_angle_r\tankle_angle_r\n');
+        for i = 1:r
+            fprintf(fid,'%.5f\t%.5f\t%.5f\t%.5f\t%.5f\t%.5f\t%.5f\t',Data(i,1),0,0.055,1.059,Data(i,ch(1)),-Data(i,ck(1)),0);
+            fprintf(fid, '\n');
+        end
+            fclose(fid);
+            fprintf('Saved %s\n', fnames)
+%% Force
+            A=[];
+%             l=.15;
+%             mg=0;
+            x=Data(:,cb(1)); %data of a trial
+            Mb=6.0046.*x.^4+40.776.*x.^3+91.388.*x.^2-73.177.*x+9.5647; %finds moment about biodex arm
+            %   Fr=Mb(1:rows(B))./l-mg.*sin((pi/2)-B(:,i))./2; %solves for reaction force
+            %   A=[A Fr];
+            fnames=['P005_T001_Torque_',char(Namedr{k}),'.mot'];
+            fid=fopen(char(fnames), "w");
+            if fid < 0
+                fprintf('\nERROR: %s could not be opened for writing...\n\n', name);
+            return
+            end
+            fprintf(fid,[char(fnames) '\nversion=1\nnRows=%d\nnColumns=%d\nInDegrees=no\nendheader\n'],r,c);
+            fprintf(fid,['time\treaction_force_vx\treaction_force_vy\treaction_force_vz\treaction_force_px\treaction_force_py\treaction_force_pz\treaction_torque_x\treaction_torque_y\treaction_torque_z\n']);
+                for i = 1:r
+                    fprintf(fid,'%.5f\t%.5f\t%.5f\t%.5f\t%.5f\t%.5f\t%.5f\t%.5f\t%.5f\t%.5f\t',Data(i,1),0,0,0,0,0,0,0,0,Mb(i));
+                    fprintf(fid, '\n');
+                end
+            fclose(fid);
+            fprintf('Saved %s\n', fnames)
     end
-  end 
-  t=srg*(k-1); %time duration of trial based on # of data points
-  y=interp1(0:srg:t,data.data(1:k,i*2),linspace(0,t,t/(sr))); %interpolates data to match sampling rate to force data
-  b=y';
-  ends(i)=length(b);
-  if (size(B(:,1)) == 1) %recombines data into a matrix padded with NaN
-    B = b;
-  elseif (length(b) <  length(A(:,1)))
-    B = [B [b; NaN(length(B(:,1))-length(b),1)]];
-  elseif (length(b) == length(B(:,1)))
-    B = [B b];
-  elseif (length(b) >  length(B(:,1)))
-    B = [[B; NaN(length(b)-length(B(:,1)),length(B(1,:)))] b];
-  end
- end
-
-%calibrating goniometer angles
-%  0deg
-zer=mean(B(600:2600,1));
-B=B-zer;
-% 90deg
-deg=mean(B(600:2600,4))./90;
-B=B./deg;
-%convert to radians
-B=-B.*pi()./180;
-
-%plotting results
-figure
-hold on
-for i=1:8
-  plot([(sr.*10):sr:sr.*(ends(i)-50)]',B(10:ends(i)-50,i))
-end
-legend('I0','I30','I60','I90','IOpt','K120','K240','K360')
-
-%asking user for subject # are creates corresponding .mot file names
-subn=inputdlg('Enter Subject Number','Input Subject # (3 digits)');
-type={'I0','I30','I60','I90','IOpt','K120','K240','K360'};
-for i=1:length(ends)
-  fnames{i}=['Rajagopal_Biodex_kinematics_P001_T',char(subn),'_',char(type{i}),'.mot'];
-end
-
-%saving kinematic data
-for i=1:length(ends)
-  fid=fopen(char(fnames{i}), "w");
-  title=[char(fnames{i});'version=1';'datacolumns 7';['datarows ',num2str(ends(i))];['range 0 ',num2str((ends(i)-1)*sr)];'endheader'];
-  head=["time\tpelvis_tilt\tpelvis_tx\tpelvis_ty\thip_flexion_r\tknee_angle_r\tankle_angle_r"];
-  dlmwrite(fid,title,'\0');
-  dlmwrite(fid,head,'\0');
-  dlmwrite(fid,[[0:sr:sr.*(ends(i)-1)]',ones(ends(i),1)*0,ones(ends(i),1)*0.055,ones(ends(i),1)*1.059,ones(ends(i),1)*90,-B(1:ends(i),i),ones(ends(i),1)*0],'\t');
-  fclose(fid);
-end
-
-%calculating reaction force
-A=[];
-l=.15;
-mg=0;
-for i=1:8
-  x=fdata.data(:,i*2); %data of a trial
-  Mb=6.0046.*x.^4+40.776.*x.^3+91.388.*x.^2-73.177.*x+9.5647; %finds moment about biodex arm
-  Fr=Mb(1:rows(B))./l-mg.*sin((pi/2)-B(:,i))./2; %solves for reaction force
-  A=[A Fr];
-end
-
-for i=1:8
-  gnames{i}=['Rajagopal_Biodex_reaction_force_P001_T',char(subn),'_',char(type{i}),'.mot'];
-end
-
-%saving reaction force data
-for i=1:8
-  fid=fopen(char(gnames{i}), "w");
-  title=[char(gnames{i});'version=1';'datacolumns 10';['datarows ',num2str(ends(i))];['range 0 ',num2str((ends(i)-1).*sr)];'endheader'];
-  head=["time\treaction_force_vx\treaction_force_vy\treaction_force_vz\treaction_force_px\treaction_force_py\treaction_force_pz\treaction_torque_x\treaction_torque_y\treaction_torque_z"];
-  dlmwrite(fid,title,'\0');
-  dlmwrite(fid,head,'\0');
-  dlmwrite(fid,[[0:sr:sr.*(ends(i)-1)]',A(1:ends(i),i),ones(ends(i),1)*0,ones(ends(i),1)*0,ones(ends(i),1)*0,-ones(ends(i),1)*0.15,ones(ends(i),1)*0,ones(ends(i),1)*0,ones(ends(i),1)*0,ones(ends(i),1)*0],'\t');
-  fclose(fid);
 end
