@@ -4,58 +4,59 @@ clc;
 
 folder =[fileparts(mfilename('fullpath')) '\Data\'];
 fname = 'P005_T001_RKnee_';
-Terials1=["EX";"FL"];
-Terials2=["I60";"IK60"];
+Terials1=["Fl"];
+Terials2=["Quasi_Hip85"];
 Fdata=[];
+Gdata=[0];
 k=0;
 %%
-% for T1=1:length(Terials1)
-%         k=k+1;
-%     for T2=1:length(Terials2)
-%         
-%         Namedr(k)=append(Terials1(T1),"_",Terials2(T2));
-%         Datadr=append(folder,fname,Terials1(T1),"_",Terials2(T2),".xlsx");
-%         data=importdata(Datadr);
-%         [rf,cf]=find(strncmp(data.textdata,'Biodex',6));
-%         [rg,cg]=find(strncmp(data.textdata,'Gn',2));
-%         [rt,cT]=find(strncmp(data.textdata,'Biodex',6)|strncmp(data.textdata,'Gn',2));
-%         sr = data.data(3,cf-1)-data.data(2,cf-1);%finds sampling rates force 
-%         srg =data.data(3,cT-1)-data.data(2,cT-1);%finds sampling rates Gonio
-%             for ii=1:length(cT) 
-%             kk=1;
-%                 for jj=1:length(data.data)%# of data points in a given trial
-%                     if ~isnan(data.data(jj,cT(ii)))&&data.data(jj,cT(ii))~=0
-%                         kk=jj;
-%                     end
-%                 end 
-%             t=srg(ii)*(kk-1); %time duration of trial based on # of data points
-%             y=interp1(0:srg(ii):t,data.data(1:kk,cT(ii)),linspace(0,t,t/(sr(1))+1)); %interpolates data to match sampling rate to force data
-%             b=y';
-%             ends(ii)=length(b);
-%                 if (size(Gdata(:,1)) == 1) %recombines data into a matrix padded with NaN
-%                     Gdata = [[0:sr(1):t]' b];
-%                 elseif (length(b) <  length(Gdata(:,1)))
-%                     Gdata = [Gdata [b; NaN(length(Gdata(:,1))-length(b),1)]];
-%                 elseif (length(b) == length(Gdata(:,1)))
-%                     Gdata = [Gdata b];
-%                 elseif (length(b) >  length(Gdata(:,1)))
-%                     Gdata = [[Gdata; NaN(length(b)-length(Gdata(:,1)),length(Gdata(1,:)))] b];
-%                 end
-%                 
-%             end
-%             FinalData.(Namedr(k)).data=Gdata;
-%             FinalData.(Namedr(k)).colheaders=["time" data.textdata(cT)];
-%             clear Gdata
-%             Gdata=[0];
-%             
-%             
-% %             t=sr(1)*(kk-1);
-% %             Gdata=[[0:sr(1):t]' Gdata];
-% %             Fdata=[Fdata data.data(:,[cf(1)-1:cf(end)])];
-%     end
-% end
-% save FinalData.mat FinalData;
-% save Gdata.mat Gdata;
+for T1=1:length(Terials1)
+        k=k+1;
+    for T2=1:length(Terials2)
+        
+        Namedr(k)=append(Terials1(T1),"_",Terials2(T2));
+        Datadr=append(folder,fname,Terials1(T1),"_",Terials2(T2),".CSV");
+        data=importdata(Datadr);
+        [rf,cf]=find(strncmp(data.textdata,'Biodex',6));
+        [rg,cg]=find(strncmp(data.textdata,'Gn',2));
+        [rt,cT]=find(strncmp(data.textdata,'Biodex',6)|strncmp(data.textdata,'Gn',2));
+        sr = data.data(3,cf-1)-data.data(2,cf-1);%finds sampling rates force 
+        srg =data.data(3,cT-1)-data.data(2,cT-1);%finds sampling rates Gonio
+            for ii=1:length(cT) 
+            kk=1;
+                for jj=1:length(data.data)%# of data points in a given trial
+                    if ~isnan(data.data(jj,cT(ii)))&&data.data(jj,cT(ii))~=0
+                        kk=jj;
+                    end
+                end 
+            t=srg(ii)*(kk-1); %time duration of trial based on # of data points
+            y=interp1(0:srg(ii):t,data.data(1:kk,cT(ii)),linspace(0,t,t/(sr(1))+1)); %interpolates data to match sampling rate to force data
+            b=y';
+            ends(ii)=length(b);
+                if (size(Gdata(:,1)) == 1) %recombines data into a matrix padded with NaN
+                    Gdata = [[0:sr(1):t]' b];
+                elseif (length(b) <  length(Gdata(:,1)))
+                    Gdata = [Gdata [b; NaN(length(Gdata(:,1))-length(b),1)]];
+                elseif (length(b) == length(Gdata(:,1)))
+                    Gdata = [Gdata b];
+                elseif (length(b) >  length(Gdata(:,1)))
+                    Gdata = [[Gdata; NaN(length(b)-length(Gdata(:,1)),length(Gdata(1,:)))] b];
+                end
+                
+            end
+            FinalData.(Namedr(k)).data=Gdata;
+            FinalData.(Namedr(k)).colheaders=["time" data.textdata(cT)];
+            clear Gdata
+            Gdata=[0];
+            
+            
+%             t=sr(1)*(kk-1);
+%             Gdata=[[0:sr(1):t]' Gdata];
+%             Fdata=[Fdata data.data(:,[cf(1)-1:cf(end)])];
+    end
+end
+save FinalData.mat FinalData;
+save Gdata.mat Gdata;
 %%
 load FinalData.mat
 for T1=1:length(Terials1)
@@ -93,7 +94,7 @@ for T1=1:length(Terials1)
             A=[];
 %             l=.15;
 %             mg=0;
-            x=-1*Data(:,cb(1)); %data of a trial
+            x=1*Data(:,cb(1)); %data of a trial
             Mb=6.0046.*x.^4+40.776.*x.^3+91.388.*x.^2-73.177.*x+9.5647; %finds moment about biodex arm
             %   Fr=Mb(1:rows(B))./l-mg.*sin((pi/2)-B(:,i))./2; %solves for reaction force
             %   A=[A Fr];
