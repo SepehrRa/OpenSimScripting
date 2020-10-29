@@ -1,23 +1,25 @@
-% clear all;
+clear all;
 % close all;
 clc;
 readflage=0;
 % folder =[fileparts(mfilename('fullpath')) '\Data\'];
 folder= 'C:\MyCloud\OneDriveUcf\Real\Simulation\Data\S1\RawData\';
 fname = 'P005_T001_RKnee_';
-Terials1=["Fl","Ex"];
+Terials1=["Ex","Fl"];
 Terials2=["IsoK60","IsoK120","IsoK180","IsoK240","IsoM10","IsoM30","IsoM60","IsoM90"];
-% Terials2=["IsoM30","IsoM60","IsoM90"];
+% Terials1=["Fl"];
+% Terials2=["IsoK60"];
 Fdata=[];
 Gdata=[0];
 k=0;
+DStime=0.01; % desierd sampling time 
 %
 if readflage 
     for T1=1:length(Terials1)
         k=k+1;
         for T2=1:length(Terials2)
             
-            Namedr(k)=append(Terials1(T1),"_",Terials2(T2));
+            Namedr(k)=append(Terials1(T1),'_',Terials2(T2));
             Datadr=append(folder,fname,Terials1(T1),"_",Terials2(T2),".csv");
             data=importdata(Datadr);
             [rf,cf]=find(strncmp(data.textdata,'Biodex',6));
@@ -32,19 +34,18 @@ if readflage
                         kk=jj;
                     end
                 end
-                t=srg(ii)*(kk-1); %time duration of trial based on # of data points
-                y=interp1(0:srg(ii):t,data.data(1:kk,cT(ii)),linspace(0,t,t/(sr(1))+1)); %interpolates data to match sampling rate to force data
+
+                if ii==1 
+                    t=data.data(kk,1); % final time of first chanel to set as final time for every other channel. 
+                end 
+                y=interp1(data.data(1:kk,cT(ii)-1),data.data(1:kk,cT(ii)),[0:DStime:t]); %Interpolates data to match sampling time to desierd sampling time 
                 b=y';
                 ends(ii)=length(b);
                 if (size(Gdata(:,1)) == 1) %recombines data into a matrix padded with NaN
-                    Gdata = [[0:sr(1):t]' b];
-                elseif (length(b) <  length(Gdata(:,1)))
-                    Gdata = [Gdata [b; NaN(length(Gdata(:,1))-length(b),1)]];
-                elseif (length(b) == length(Gdata(:,1)))
+                    Gdata = [[0:DStime:data.data(kk,1)]' b];
+                else 
                     Gdata = [Gdata b];
-                elseif (length(b) >  length(Gdata(:,1)))
-                    Gdata = [[Gdata; NaN(length(b)-length(Gdata(:,1)),length(Gdata(1,:)))] b];
-                end
+                 end
                 
             end
             FinalData.(Namedr(k)).data=Gdata;
@@ -67,51 +68,54 @@ for T1=1:length(Terials1)
         Data=FinalData.(Namedr(k)).data;
         HData=FinalData.(Namedr(k)).colheaders;
         [rg,cg]=find(strncmp(HData,'Gn',2));
+        %find Knee Goniometer
         [rk,ck]=find(strncmp(HData,'Gn K',4));
+        %find Hip goniometer
         [rh,ch]=find(strncmp(HData,'Gn H',4));
         [rb,cb]=find(strncmp(HData,'Biodex',6));
         [r,c]=size(Data);
 %% Process on Motion Data
         Gon=Data(:,cg);
-        CalGon=-0.0058.*Gon.^2-1.699.*Gon;
+        CalGon=-0.0058.*Gon.^2-1.62.*Gon+1.14;  % Goniometer calibration, This equation would change base on ne calibration curve
+        CalGon(CalGon<0)=0;
         Data(:,cg)=CalGon.*pi()./180;
 %% Save Motion
         fnames=['P005_T001_Motion_',char(Namedr{k}),'.mot'];
         fid=fopen([folder char(fnames)], "w");
         if fid < 0
-            fprintf('\nERROR: %s could not be opened for writing...\n\n', name);
+            fprintf('\nERROR: %s could not be opened for writing...\n\n', fname);
             return
         end
-        fprintf(fid,[char(fnames) '\nversion=1\nnRows=%d\nnColumns=%d\nInDegrees=no\nendheader\n'],r,c);
+        fprintf(fid,[char(fnames) '\nversion=1\nnRows=%d\nnColumns=%d\nInDegrees=no\nendheader\n'],r,7);
         fprintf(fid,'time\tpelvis_tilt\tpelvis_tx\tpelvis_ty\thip_flexion_r\tknee_angle_r\tankle_angle_r\n');
         for i = 1:r
             fprintf(fid,'%.5f\t%.5f\t%.5f\t%.5f\t%.5f\t%.5f\t%.5f\t',Data(i,1),0,0.055,1.059,Data(i,ch(2)),Data(i,ck(2)),0);
             fprintf(fid, '\n');
         end
             fclose(fid);
-            fprintf('Saved %s\n', fnames)
+            fprintf('Saved %s\n', [folder char(fnames)])
 %% Process Force
             A=[];
             x=1*Data(:,cb(1)); %data of a trial
-            if x<0.176
-                Mb=(-142.25).*x+24.8;
+            if x<0.176  %Converting votage of biodex to the torque
+                Mb=-1.*((-142.25).*x+24.8);
             else
-                Mb=142.07.*x-25.32;
+                Mb=-1*(142.07.*x-25.32);
             end
 %% Save Force
-            fnames=['P005_T001_Torque_',char(Namedr{k}),'.mot'];
-            fid=fopen([folder char(fnames)], "w");
+            F_fnames=['P005_T001_Torque_',char(Namedr{k}),'.mot'];
+            fid=fopen([folder char(F_fnames)], "w");
             if fid < 0
-                fprintf('\nERROR: %s could not be opened for writing...\n\n', name);
+                fprintf('\nERROR: %s could not be opened for writing...\n\n', fname);
             return
             end
-            fprintf(fid,[char(fnames) '\nversion=1\nnRows=%d\nnColumns=%d\nInDegrees=no\nendheader\n'],r,c);
+            fprintf(fid,[char(F_fnames) '\nversion=1\nnRows=%d\nnColumns=%d\nInDegrees=no\nendheader\n'],r,10);
             fprintf(fid,['time\treaction_force_vx\treaction_force_vy\treaction_force_vz\treaction_force_px\treaction_force_py\treaction_force_pz\treaction_torque_x\treaction_torque_y\treaction_torque_z\n']);
                 for i = 1:r
                     fprintf(fid,'%.5f\t%.5f\t%.5f\t%.5f\t%.5f\t%.5f\t%.5f\t%.5f\t%.5f\t%.5f\t',Data(i,1),0,0,0,0,0,0,0,0,Mb(i));
                     fprintf(fid, '\n');
                 end
             fclose(fid);
-            fprintf('Saved %s\n', fnames)
+            fprintf('Saved %s\n', [folder char(F_fnames)])
     end
 end
