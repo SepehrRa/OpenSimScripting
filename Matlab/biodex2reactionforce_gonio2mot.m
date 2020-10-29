@@ -1,9 +1,10 @@
 clear all;
 % close all;
 clc;
-readflage=0;
-% folder =[fileparts(mfilename('fullpath')) '\Data\'];
-folder= 'C:\MyCloud\OneDriveUcf\Real\Simulation\Data\S1\RawData\';
+ % Some times there is no need to import raw data because all data will
+ % save in FinalDatafor first time. readflage=1 means import files again.
+readflage=1; 
+folder=uigetdir(); % get Data directory 
 fname = 'P005_T001_RKnee_';
 Terials1=["Ex","Fl"];
 Terials2=["IsoK60","IsoK120","IsoK180","IsoK240","IsoM10","IsoM30","IsoM60","IsoM90"];
@@ -20,7 +21,7 @@ if readflage
         for T2=1:length(Terials2)
             
             Namedr(k)=append(Terials1(T1),'_',Terials2(T2));
-            Datadr=append(folder,fname,Terials1(T1),"_",Terials2(T2),".csv");
+            Datadr=append(folder,"\",fname,Terials1(T1),"_",Terials2(T2),".csv");
             data=importdata(Datadr);
             [rf,cf]=find(strncmp(data.textdata,'Biodex',6));
             [rg,cg]=find(strncmp(data.textdata,'Gn',2));
