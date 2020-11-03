@@ -30,20 +30,26 @@ if readflage
             srg =data.data(3,cT-1)-data.data(2,cT-1);%finds sampling rates Gonio
             for ii=1:length(cT)
                 kk=1;
+                tflage=0;
+                ww=0;
                 for jj=1:length(data.data)%# of data points in a given trial
                     if ~isnan(data.data(jj,cT(ii)))&&data.data(jj,cT(ii))~=0
-                        kk=jj;
+                        kk=jj;  %finding zero data at the end of each chanel
+                        tflage=1;                        
+                    elseif tflage==0 
+                        ww=jj;  %finding zero data at the begining 
                     end
                 end
 
-                if ii==1 
-                    t=data.data(kk,1); % final time of first chanel to set as final time for every other channel. 
+                if ii==1
+                    ts=data.data(ww+1,1);
+                    te=data.data(kk,1); % final time of first chanel to set as final time for every other channel.
                 end 
-                y=interp1(data.data(1:kk,cT(ii)-1),data.data(1:kk,cT(ii)),[0:DStime:t]); %Interpolates data to match sampling time to desierd sampling time 
+                y=interp1(data.data(ww+1:kk,cT(ii)-1),data.data(ww+1:kk,cT(ii)),[ts:DStime:te]); %Interpolates data to match sampling time to desierd sampling time 
                 b=y';
                 ends(ii)=length(b);
                 if (size(Gdata(:,1)) == 1) %recombines data into a matrix padded with NaN
-                    Gdata = [[0:DStime:data.data(kk,1)]' b];
+                    Gdata = [[data.data(ww+1,1):DStime:data.data(kk,1)]' b];
                 else 
                     Gdata = [Gdata b];
                  end
@@ -81,8 +87,8 @@ for T1=1:length(Terials1)
         CalGon(CalGon<0)=0;
         Data(:,cg)=CalGon.*pi()./180;
 %% Save Motion
-        fnames=['P005_T001_Motion_',char(Namedr{k}),'.mot'];
-        fid=fopen([folder char(fnames)], "w");
+        fnames=[fname,char(Namedr{k}),'_Motion.mot'];
+        fid=fopen([folder '\' char(fnames)], "w");
         if fid < 0
             fprintf('\nERROR: %s could not be opened for writing...\n\n', fname);
             return
@@ -104,8 +110,8 @@ for T1=1:length(Terials1)
                 Mb=-1*(142.07.*x-25.32);
             end
 %% Save Force
-            F_fnames=['P005_T001_Torque_',char(Namedr{k}),'.mot'];
-            fid=fopen([folder char(F_fnames)], "w");
+            F_fnames=[fname,char(Namedr{k}),'_Torque.mot'];
+            fid=fopen([folder '\' char(F_fnames)], "w");
             if fid < 0
                 fprintf('\nERROR: %s could not be opened for writing...\n\n', fname);
             return
