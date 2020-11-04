@@ -91,13 +91,13 @@ TimeT=zeros(4,2);
 %                 analysis.run();
                 %% CMC %%%%%
                 cmc = CMCTool(append(results_folder,"P005_T001_CMC_Setup_ref.xml"));
-                cmc.setName(append(Modelname(m),'_',filename,'_CMC'))
+                cmc.setName(append('CMC_',Modelname(m),'_',Terials(k)))
                 cmc.setDesiredKinematicsFileName(IkFile);
                 cmc.setExternalLoadsFileName(NewExForcefile);
-                cmc.setStartTime(Stime(1));
-                cmc.setFinalTime(Etime(1));
+                cmc.setStartTime(Stime);
+                cmc.setFinalTime(Etime);
                 cmc.setResultsDir(append(results_folder2(2)));
-                cmc.print(append(results_folder2(2),filename,"_",AnalyzeMethod(2),"_Setup.xml"));
+                cmc.print(append(results_folder2(2),filename,"_",AnalyzeMethod(2),"_CMC.xml"));
                 cmc.run();
                 clear cmc ExLoad FTable idTool analysis
             end
