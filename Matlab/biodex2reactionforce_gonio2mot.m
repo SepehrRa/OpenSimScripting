@@ -1,9 +1,9 @@
-clear all;
+% clear all;
 % close all;
 clc;
  % Some times there is no need to import raw data because all data will
  % save in FinalDatafor first time. readflage=1 means import files again.
-readflage=1; 
+readflage=0; 
 folder=uigetdir(); % get Data directory 
 fname = 'P005_T001_RKnee_';
 Terials1=["Ex","Fl"];
@@ -104,11 +104,7 @@ for T1=1:length(Terials1)
 %% Process Force
             A=[];
             x=1*Data(:,cb(1)); %data of a trial
-            if x<0.176  %Converting votage of biodex to the torque
-                Mb=-1.*((-142.25).*x+24.8);
-            else
-                Mb=-1*(142.07.*x-25.32);
-            end
+            Mb=-1.*(141.81.*x-25.047);
 %% Save Force
             F_fnames=[fname,char(Namedr{k}),'_Torque.mot'];
             fid=fopen([folder '\' char(F_fnames)], "w");
