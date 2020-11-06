@@ -88,7 +88,7 @@ TimeT=zeros(4,2);
                 analysis.setLoadModelAndInput(true);
                 analysis.setResultsDir(append(results_folder2(1)));
                 analysis.print(append(results_folder2(1),filename,"_",AnalyzeMethod(1),"_Setup.xml"))
-%                 analysis.run();
+                analysis.run();
                 %% CMC %%%%%
                 cmc = CMCTool(append(results_folder,"P005_T001_CMC_Setup_ref.xml"));
                 cmc.setName(append(Modelname(m),'_',filename,'_CMC'))
