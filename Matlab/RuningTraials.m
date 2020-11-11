@@ -56,10 +56,10 @@ TimeT=zeros(4,2);
                 FTable=importdata(ExForcefile);
 %                 [r,c]=find(strncmp(FTable.textdata,'reaction_torque_z',17));
                 [indx,c]=find(abs(FTable.data(:,10))>35);
-                Stime=FTable.data(indx([1;find(diff(indx)>10)]),1);
-                Etime=FTable.data(indx([(find(diff(indx)>10));end]),1);
-%                 Stime=FTable.data(indx(1),1);
-%                 Etime=FTable.data(indx(end),1);
+%                 Stime=FTable.data(indx([1;find(diff(indx)>10)]),1);
+%                 Etime=FTable.data(indx([(find(diff(indx)>10));end]),1);
+                Stime=FTable.data(1,1);
+                Etime=FTable.data(end,1);
                 % Stime=2;
                 % Etime=2.1;
 %                 TimeT(k,:)=[Stime(1),Etime(1)];
@@ -71,7 +71,7 @@ TimeT=zeros(4,2);
                 %% ID %%%%
                 idTool=	InverseDynamicsTool(append(results_folder,"P005_T001_ID_Setup_ref.xml"));
                 idTool.setStartTime(Stime(1));
-                idTool.setEndTime(Etime(1));
+                idTool.setEndTime(Etime(end));
                 idTool.setCoordinatesFileName(IkFile);
                 idTool.setExternalLoadsFileName(NewExForcefile);
                 idTool.setResultsDir(append(results_folder,"ID\"))
