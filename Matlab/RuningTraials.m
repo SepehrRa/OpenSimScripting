@@ -40,13 +40,6 @@ TimeT=zeros(4,2);
         %   NewExForcesetup=append(results_folder,'New_subject01_walk1_grf.xml');
         CMCSetup=append('CMC\',Modelname(m),'\CMC_Setup_I0.xml');
         IDSetup=append('CMC\',Modelname(m),'\ID_Setup.xml');
-        if Modelname(m)=="Rajagopal"
-            Sw=2;
-            Extention="_Rajagopal";
-        else
-            Sw=1;
-            Extention="";
-        end
         for T1=1:length(Terials1)
             for T2=1:length(Terials2)
                 filename=append(Terials1(T1),"_",Terials2(T2));
@@ -57,7 +50,7 @@ TimeT=zeros(4,2);
                 ExForcefile=append(folder,"Data\P005_T001_Rknee_",filename,"_Torque.mot");
                 FTable=importdata(ExForcefile);
 %                 [r,c]=find(strncmp(FTable.textdata,'reaction_torque_z',17));
-                [indx,c]=find(abs(FTable.data(:,10))>35);
+%                 [indx,c]=find(abs(FTable.data(:,10))>35);
 %                 Stime=FTable.data(indx([1;find(diff(indx)>10)]),1);
 %                 Etime=FTable.data(indx([(find(diff(indx)>10));end]),1);
                 Stime=FTable.data(1,1);
