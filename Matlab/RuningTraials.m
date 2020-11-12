@@ -51,6 +51,8 @@ TimeT=zeros(4,2);
             for T2=1:length(Terials2)
                 filename=append(Terials1(T1),"_",Terials2(T2));
                 results_folder2=append(results_folder,AnalyzeMethod,"\",filename,"\");
+                status = mkdir(results_folder2(1));
+                status = mkdir(results_folder2(2));
                 ExLoad=ExternalLoads(append(results_folder,"P005_T001_ExForce_RLeg.xml"),true);
                 ExForcefile=append(folder,"Data\P005_T001_Rknee_",filename,"_Torque.mot");
                 FTable=importdata(ExForcefile);
@@ -71,7 +73,7 @@ TimeT=zeros(4,2);
                 %% ID %%%%
                 idTool=	InverseDynamicsTool(append(results_folder,"P005_T001_ID_Setup_ref.xml"));
                 idTool.setStartTime(Stime(1));
-                idTool.setEndTime(Etime(end));
+                idTool.setEndTime(Etime(1));
                 idTool.setCoordinatesFileName(IkFile);
                 idTool.setExternalLoadsFileName(NewExForcefile);
                 idTool.setResultsDir(append(results_folder,"ID\"))
