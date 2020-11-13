@@ -1,4 +1,4 @@
-% clear all;
+clear all;
 % close all;
 clc;
  % Some times there is no need to import raw data because all data will
@@ -101,7 +101,7 @@ for T1=1:length(Terials1)
             Datadata=[1,0,0.055,1.059,1,1,0].*ones(r,7);
             Datadata(:,[1,5,6])=[Data(:,1),Data(:,ch(2)),Data(:,ck(2))];
             Titledata=[r,length(Datadata(1,:))];
-            makefile(folder,F_fnames,Title,Titledata,Dataheadermotion,Datadata);
+            makefile(folder,F_fnames,Title,Titledata,Dataheadermotion,Datadata,5);
 %% Process Force
             A=[];
             x=1*Data(:,cb(1)); %data of a trial
@@ -110,7 +110,7 @@ for T1=1:length(Terials1)
             F_fnames=[fname,char(Namedr{k}),'_Torque.mot'];
             Datadata=[Data(:,1),zeros(r,8),Mb];
             Titledata=[r,length(Datadata(1,:))];
-            makefile(folder,F_fnames,Title,Titledata,Dataheaderforce,Datadata);
+            makefile(folder,F_fnames,Title,Titledata,Dataheaderforce,Datadata,5);
            
 %% Process on EMG
         EMGfilt = EMGFilter(Data(:,ce),0.5,5,4,1/DStime);
@@ -121,7 +121,7 @@ for T1=1:length(Terials1)
          end
          Datadata=[Data(:,1),EMGfilt];
          Titledata=[r,length(Datadata(1,:))];
-         makefile (folder,F_fnames,Title,Titledata,DataheaderEMG,Datadata);
+         makefile (folder,F_fnames,Title,Titledata,DataheaderEMG,Datadata,8);
     end
 end
 
