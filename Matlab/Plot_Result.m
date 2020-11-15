@@ -17,7 +17,7 @@ for A=2:length(AnalyzeMethod)
         CMCSetup=append('CMC\',Modelname(m),'\CMC_Setup_I0.xml');
         IDSetup=append('CMC\',Modelname(m),'\ID_Setup.xml');
         for T1=2:length(Terials1)
-            for T2=1:length(Terials2)
+            for T2=3:length(Terials2)
                 filename=append(Terials1(T1),"_",Terials2(T2));
                 results_folder2=append(results_folder,AnalyzeMethod(A),"\",filename,"\");
                 ExForcefile=append(folder,"Data\P005_T001_Rknee_",filename,"_Torque.mot");
@@ -50,20 +50,44 @@ for A=2:length(AnalyzeMethod)
                 ARtime=ActuateForce.data(:,1);
                 FRtime=FTable.data(:,1);
                 RefT=0:.05:100;
-                ResultData=cell(5,3);
+%                 ResultData=cell(5,11,3);
                 %MuscleForce=
+                
                 for k=1:length(Stime)
                     Aindx=find(ARtime>=Stime(k)&ARtime<=Etime(k));
                     Findx=find(FTable.data(:,1)>=Stime(k)&FTable.data(:,1)<=Etime(k));
                     NormalT=((ARtime(Aindx)-ARtime(Aindx(1)))./(ARtime(Aindx(end))-ARtime(Aindx(1)))).*100;
                     FNormalT=((FRtime(Findx)-FRtime(Findx(1)))./(FRtime(Findx(end))-FRtime(Findx(1)))).*100;
-                    ResultData(1,k)={interp1(NormalT,ActuateForce.data(Aindx,2:length(Musclename)),RefT')};
-                    ResultData(2,k)={interp1(NormalT,MuscleActivation.data(Aindx,2:length(Musclename)),RefT')};
-                    ResultData(3,k)={interp1(FNormalT,MTable.data(Findx,6),RefT')};
-                    ResultData(4,k)={interp1(FNormalT,FTable.data(Findx,10),RefT')};
-                    ResultData(5,k)={interp1(FNormalT,EMGable.data(Findx,2:end),RefT')};
+                    for Mu=1:length(Musclename)
+                    ResultData.(Muscle).(Force)={interp1(NormalT,ActuateForce.data(Aindx,2:length(Musclename)+1),RefT')};
+                    ResultData.(Muscle).(Activation)={interp1(NormalT,MuscleActivation.data(Aindx,2:length(Musclename)+1),RefT')};
+                    end 
+                    ResultData.(Motion)={interp1(FNormalT,MTable.data(Findx,6),RefT')};
+                    ResultData.(ExForce)={interp1(FNormalT,FTable.data(Findx,10),RefT')};
+                    ResultData.(EMG)={interp1(FNormalT,EMGable.data(Findx,2:end),RefT')};
                 end
+                figure
+                x=0:0.02:4;
+                RA1=mean(ResultData{2,:}(:,2))-std(ResultData(:,1:4),0,2);
+                RA2=mean(ResultData(:,1:4),2)+std(ResultData(:,1:4),0,2);
+                RA3=mean(ResultData(:,1:4),2);
+                LA1=mean(LForceData(:,1:4),2)-std(LForceData(:,1:4),0,2);
+                LA2=mean(LForceData(:,1:4),2)+std(LForceData(:,1:4),0,2);
+                LA3=mean(LForceData(:,1:4),2);
+                x2 = [x, fliplr(x)];
+                RABetween = [RA1', fliplr(RA2')];
+                fill(x2, RABetween,[0.6 1 0.6]*.8,'EdgeAlpha',0,'FaceAlpha',0.2)
+                LABetween = [LA1', fliplr(LA2')];
+                hold on
+                fill(x2, LABetween,[1 0.5 1]*.8,'EdgeAlpha',0,'FaceAlpha',0.2)
+                title('Mean +/- sd  (Vastus lateralis Force Without Barce)');
                 
+                xlabel('Time (s)');
+                ylabel('Force (N)');
+                plot(x,RA3,'color',[[0.4660 0.6740 0.1880]]);
+                plot(x,LA3,'color',[0.4940 0.1840 0.5560]);
+                legend('SD of Left','SD of Right','Mean of Left','Mean of Right');
+                hold off
             end
         end
     end
