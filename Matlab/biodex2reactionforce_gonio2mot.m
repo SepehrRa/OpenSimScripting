@@ -3,7 +3,7 @@ clear all;
 clc;
  % Some times there is no need to import raw data because all data will
  % save in FinalDatafor first time. readflage=1 means import files again.
-readflage=0; 
+readflage= 0;
 % folder=uigetdir(); % get Data directory 
 folder='C:\MyCloud\OneDriveUcf\Real\Simulation\Source\T001\Data';
 fname = 'P005_T001_RKnee_';
@@ -18,10 +18,9 @@ DStime=0.01; % desierd sampling time
 %
 if readflage 
     for T1=1:length(Terials1)
-        k=k+1;
         for T2=1:length(Terials2)
             
-            Namedr(k)=append(Terials1(T1),'_',Terials2(T2));
+            Namedr=append(Terials1(T1),'_',Terials2(T2));
             Datadr=append(folder,"\",fname,Terials1(T1),"_",Terials2(T2),".csv");
             data=importdata(Datadr);
             %             [rf,cf]=find(strncmp(data.textdata,'Biodex',6));
@@ -57,8 +56,8 @@ if readflage
                 end
                 
             end
-            FinalData.(Namedr(k)).data=Gdata;
-            FinalData.(Namedr(k)).colheaders=["time" data.textdata(2:2:end)];
+            FinalData.(Namedr).data=Gdata;
+            FinalData.(Namedr).colheaders=["time" data.textdata(2:2:end)];
             clear Gdata
             Gdata=[0];
 
@@ -74,11 +73,10 @@ Dataheadermotion=['time\tpelvis_tilt\tpelvis_tx\tpelvis_ty\thip_flexion_r\tknee_
 Dataheaderforce=['time\treaction_force_vx\treaction_force_vy\treaction_force_vz\treaction_force_px\treaction_force_py\treaction_force_pz\treaction_torque_x\treaction_torque_y\treaction_torque_z'];
 DataheaderEMG=['time\t'];
 for T1=1:length(Terials1)
-         k=k+1;
     for T2=1:length(Terials2)        
-        Namedr(k)=append(Terials1(T1),"_",Terials2(T2));
-        Data=FinalData.(Namedr(k)).data;
-        HData=FinalData.(Namedr(k)).colheaders;
+        Namedr=append(Terials1(T1),"_",Terials2(T2));
+        Data=FinalData.(Namedr).data;
+        HData=FinalData.(Namedr).colheaders;
         [rg,cg]=find(strncmp(HData,'Gn',2));
         %find Knee Goniometer
         [rk,ck]=find(strncmp(HData,'Gn K',4));
@@ -96,28 +94,44 @@ for T1=1:length(Terials1)
         Data(:,cg)=CalGon.*pi()./180;
 
 %% Save Motion
-            F_fnames=[fname,char(Namedr{k}),'_Motion.mot'];
+            F_fnames=[fname,char(Namedr),'_Motion.mot'];
             Title='\nversion=1\nnRows=%d\nnColumns=%d\nInDegrees=no\nendheader\n';
             Datadata=[1,0,0.055,1.059,1,1,0].*ones(r,7);
             Datadata(:,[1,5,6])=[Data(:,1),Data(:,ch(2)),Data(:,ck(2))];
             Titledata=[r,length(Datadata(1,:))];
-            makefile(folder,F_fnames,Title,Titledata,Dataheadermotion,Datadata,5);
+%             makefile(folder,F_fnames,Title,Titledata,Dataheadermotion,Datadata,5);
 %% Process Force
             A=[];
             x=1*Data(:,cb(1)); %data of a trial
             Mb=-1.*(141.81.*x-25.047);
 %% Save Force
-            F_fnames=[fname,char(Namedr{k}),'_Torque.mot'];
+            F_fnames=[fname,char(Namedr),'_Torque.mot'];
             Datadata=[Data(:,1),zeros(r,8),Mb];
             Titledata=[r,length(Datadata(1,:))];
-            makefile(folder,F_fnames,Title,Titledata,Dataheaderforce,Datadata,5);
+%             makefile(folder,F_fnames,Title,Titledata,Dataheaderforce,Datadata,5);
            
 %% Process on EMG
         EMGfilt = EMGFilter(Data(:,ce),0.5,5,4,1/DStime);
 %% Save EMG
-         F_fnames=[fname,char(Namedr{k}),'_EMG.mot'];
+         F_fnames=[fname,char(Namedr),'_EMG.mot'];
+         DataheaderEMG=['time\t'];
          for hh=1:length(ce)
-            DataheaderEMG=[DataheaderEMG char(HData(ce(hh))) '\t']; 
+             HD=char(HData(ce(hh)));
+             switch HD([1:3])
+                 case 'LLH'
+                     HData(ce(hh))='bflh_r';
+                 case 'LRF'
+                     HData(ce(hh))='recfem_r';
+                 case 'LVL'
+                     HData(ce(hh))='vaslat_r';
+                 case 'LVM'
+                     HData(ce(hh))='vasmed_r';
+                 case 'LMH'
+                     HData(ce(hh))='semiten_r';
+                 case 'LMG'
+                     HData(ce(hh))='gasmed_r';
+             end
+             DataheaderEMG=[DataheaderEMG char(HData(ce(hh))) '\t'];
          end
          Datadata=[Data(:,1),EMGfilt];
          Titledata=[r,length(Datadata(1,:))];
