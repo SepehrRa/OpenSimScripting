@@ -1,4 +1,4 @@
-function makefile (folder,F_fnames,Title,Titledata,Dataheader,Datadata,Resulotion,delimiterIn)
+function makefile (folder,F_fnames,Title,Titledata,Dataheader,Datadata,Resulotion)
 % Resulotion number of digit after zero
            fid=fopen([folder '\' char(F_fnames)], "w");
             if fid < 0
@@ -8,7 +8,7 @@ function makefile (folder,F_fnames,Title,Titledata,Dataheader,Datadata,Resulotio
             [r,c]=size(Datadata);
             ft=[];
             for f=1:c
-                ft=[ft '%.' num2str(Resulotion) 'f' delimiterIn];
+                ft=[ft '%.' num2str(Resulotion) 'f\t'];
             end
             fprintf(fid,[char(F_fnames) Title],Titledata);
             fprintf(fid,[Dataheader '\n']);
