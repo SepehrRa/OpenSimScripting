@@ -94,12 +94,13 @@ for T1=1:length(Terials1)
         Data(:,cg)=CalGon.*pi()./180;
 
 %% Save Motion
+            delimiterIn='\t';
             F_fnames=[fname,char(Namedr),'_Motion.mot'];
             Title='\nversion=1\nnRows=%d\nnColumns=%d\nInDegrees=no\nendheader\n';
             Datadata=[1,0,0.055,1.059,1,1,0].*ones(r,7);
             Datadata(:,[1,5,6])=[Data(:,1),Data(:,ch(2)),Data(:,ck(2))];
             Titledata=[r,length(Datadata(1,:))];
-%             makefile(folder,F_fnames,Title,Titledata,Dataheadermotion,Datadata,5);
+%             makefile(folder,F_fnames,Title,Titledata,Dataheadermotion,Datadata,5,delimiterIn);
 %% Process Force
             A=[];
             x=1*Data(:,cb(1)); %data of a trial
@@ -108,34 +109,35 @@ for T1=1:length(Terials1)
             F_fnames=[fname,char(Namedr),'_Torque.mot'];
             Datadata=[Data(:,1),zeros(r,8),Mb];
             Titledata=[r,length(Datadata(1,:))];
-%             makefile(folder,F_fnames,Title,Titledata,Dataheaderforce,Datadata,5);
+%             makefile(folder,F_fnames,Title,Titledata,Dataheaderforce,Datadata,5,delimiterIn);
            
 %% Process on EMG
         EMGfilt = EMGFilter(Data(:,ce),0.5,5,4,1/DStime);
 %% Save EMG
-         F_fnames=[fname,char(Namedr),'_EMG.mot'];
-         DataheaderEMG=['time\t'];
+         delimiterIn=',';
+         F_fnames=[fname,char(Namedr),'_EMG.csv'];
+         DataheaderEMG=['time' delimiterIn];
          for hh=1:length(ce)
              HD=char(HData(ce(hh)));
              switch HD([1:3])
                  case 'LLH'
-                     HData(ce(hh))='bflh_r';
+                     HData(ce(hh))='RBICF';
                  case 'LRF'
-                     HData(ce(hh))='recfem_r';
+                     HData(ce(hh))='RRECF';
                  case 'LVL'
-                     HData(ce(hh))='vaslat_r';
+                     HData(ce(hh))='RVASL';
                  case 'LVM'
-                     HData(ce(hh))='vasmed_r';
+                     HData(ce(hh))='RVASM';
                  case 'LMH'
-                     HData(ce(hh))='semiten_r';
+                     HData(ce(hh))='RSEMT';
                  case 'LMG'
-                     HData(ce(hh))='gasmed_r';
+                     HData(ce(hh))='RMGAS';
              end
-             DataheaderEMG=[DataheaderEMG char(HData(ce(hh))) '\t'];
+             DataheaderEMG=[DataheaderEMG char(HData(ce(hh))) delimiterIn];
          end
          Datadata=[Data(:,1),EMGfilt];
          Titledata=[r,length(Datadata(1,:))];
-         makefile (folder,F_fnames,Title,Titledata,DataheaderEMG,Datadata,8);
+         makefile (folder,F_fnames,Title,Titledata,DataheaderEMG,Datadata,8,delimiterIn);
     end
 end
 
