@@ -3,7 +3,7 @@ clear all;
 clc;
  % Some times there is no need to import raw data because all data will
  % save in FinalDatafor first time. readflage=1 means import files again.
-readflage= 0;
+readflage= 1;
 % folder=uigetdir(); % get Data directory 
 folder='C:\MyCloud\OneDriveUcf\Real\Simulation\Source\T001\Data';
 fname = 'P005_T001_RKnee_';
@@ -23,12 +23,6 @@ if readflage
             Namedr=append(Terials1(T1),'_',Terials2(T2));
             Datadr=append(folder,"\",fname,Terials1(T1),"_",Terials2(T2),".csv");
             data=importdata(Datadr);
-            %             [rf,cf]=find(strncmp(data.textdata,'Biodex',6));
-            %             [rg,cg]=find(strncmp(data.textdata,'Gn',2));
-            %             [rt,cT]=find(strncmp(data.textdata,'Biodex',6)|strncmp(data.textdata,'Gn',2));
-%             [rt,cT]=size(data);
-            %             sr = data.data(3,cf-1)-data.data(2,cf-1);%finds sampling rates force
-            %             srg= data.data(3,cT-1)-data.data(2,cT-1);%finds sampling rates Gonio
             for ii=2:2:length(data.textdata)
                 kk=1;
                 tflage=0;
@@ -46,7 +40,8 @@ if readflage
                     ts=data.data(ww+1,1); % first time of first chanel to set as final time for every other channel.
                     te=data.data(kk,1); % final time of first chanel to set as final time for every other channel.
                 end 
-                y=interp1(data.data(ww+1:kk,ii-1),data.data(ww+1:kk,ii),[ts:DStime:te]); %Interpolates data to match sampling time to desierd sampling time 
+                y=interp1(data.data(ww+1:kk,ii-1),data.data(ww+1:kk,ii),[ts:DStime:te],'linear','extrap'); %Interpolates data to match sampling time to desierd sampling time 
+                
                 b=y';
 %                 ends(ii)=length(b);
                 if (size(Gdata(:,1)) == 1) %recombines data into a matrix padded with NaN
