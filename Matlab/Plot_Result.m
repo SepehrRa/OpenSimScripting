@@ -94,6 +94,7 @@ ExpMuscle=["RBICF","RSEMT","RMGAS","RRECF","RVASL","RVASM"];
          %% Finding maximum EMG
           ResultData.('MaxEMG').colheaders= ExpMuscle;
           ResultData.('MaxEMG').data=max(MaxEMG);
+          save ([folder '\Data\FinalData_Seperated.mat'],'ResultData');
           
             %%
 for A=2:length(AnalyzeMethod)
