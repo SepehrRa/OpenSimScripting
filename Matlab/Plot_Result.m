@@ -11,13 +11,13 @@ M_ThresholdMin=10*3.14/180;
 M_ThresholdMax=90*3.14/180;
 ForceRatio=0.4;
 TrialCounter=0;
-readflage=1;
+readflage=0;
 
 SimMusclename=["bflh_r","semiten_r","gasmed_r","recfem_r","vaslat_r","vasmed_r","gaslat_r","gasmed_r","grac_r","sart_r","semimem_r","soleus_r","tfl_r","vasint_r","bfsh_r"];
 ExpMuscle=["RBICF","RSEMT","RMGAS","RRECF","RVASL","RVASM"];
         %%
 if readflage        
-        for T1=2:length(Terials1)
+        for T1=1:length(Terials1)
             for T2=1:length(Terials2)
                 TrialCounter=TrialCounter+1;
                filename=append(Terials1(T1),"_",Terials2(T2));
@@ -28,15 +28,14 @@ if readflage
                MTable=importdata(IkFile);
                EMGtable=importdata(EMGFile,delimiterIn);
                ExpRtime=FTable.data(:,1);
+               ResultData.(filename).('ExForce').('full')=FTable.data(:,[1,10]);
+               ResultData.(filename).('Motion').('full')=MTable.data(:,[1,6]);
+               ResultData.(filename).('Motion').('full')=EMGTable.data;
                %% Finding time of iterative
                if strncmp(Terials2(T2),"IsoM",4)
                    [indx,c]=find(abs(FTable.data(:,10))>ForceRatio.*max(abs(FTable.data(:,10))));
                    Stime=FTable.data(indx([1;find(diff(indx)>10)+1]),1);
                    Etime=FTable.data(indx([(find(diff(indx)>10));end]),1);
-         
-                   %finding Maximum activation
-                  
-                   
                else
                    if strncmp(Terials1(T1),"Fl",2)
                        [indx,c]=find(MTable.data(:,6)>M_ThresholdMin & MTable.data(:,6)<M_ThresholdMax);
@@ -83,6 +82,8 @@ if readflage
                     ResultData.(filename).('ExForce').(Terials3(k))=FTable.data(Expindx,10);
                    
                     for Flmus=1:length(ExpMuscle)
+                        
+                        
                         ResultData.(filename).('ExpEMG').(ExpMuscle(Flmus)).(Terials3(k))=EMGtable.data(Expindx,strncmp(EMGtable.colheaders,ExpMuscle(Flmus),5));
                         MeanEmg(k,Flmus)=mean(EMGtable.data(Expindx,strncmp(EMGtable.colheaders,ExpMuscle(Flmus),5)));
                     end
@@ -105,7 +106,7 @@ for A=2:length(AnalyzeMethod)
         %   IK_file=append(results_folder,name,'_ik.mot');
         %   NewExForcesetup=append(results_folder,'New_subject01_walk1_grf.xml');
         for T1=1:length(Terials1)
-            for T2=6:length(Terials2)
+            for T2=1:length(Terials2)
                 filename=append(Terials1(T1),"_",Terials2(T2));
                 for itr=1:length(fieldnames(ResultData.(filename).time))
                     results_folder2=append(results_folder,AnalyzeMethod(A),"\",filename,"\",Terials3(itr),"\");
@@ -141,41 +142,80 @@ for A=2:length(AnalyzeMethod)
                         y3=interp1(ExpNormalT,ResultData.(filename).ExpEMG.(ExpMuscle(Flexmus)).(Terials3(itr)),RefT','linear','extrap');
                         ResultData.(filename).('NormalExpEMG').(ExpMuscle(Flexmus))(:,itr)=y3;
                      end
-                      
+                       y4=interp1(ExpNormalT,ResultData.(filename).ExForce.(Terials3(itr)),RefT','linear','extrap');
+                       ResultData.(filename).('NormalExForce')(:,itr)=y4;
+                       y4=interp1(ExpNormalT,ResultData.(filename).Motion.(Terials3(itr)),RefT','linear','extrap');
+                       ResultData.(filename).('NormalMotion')(:,itr)=y4;
                 end
-                for Flexmus=1:length(ExpMuscle)
                 figure
                 x=RefT;
-                ExpMucs=ResultData.(filename).NormalExpEMG.(ExpMuscle(Flexmus))/ResultData.MaxEMG.data(Flexmus);
-                SimMusc=ResultData.(filename).NormalSimEMG.(SimMusclename(Flexmus));
-%                 if strncmp(Terials1(T1),"Fl",2)
-                RA1=mean(ExpMucs,2)-std(ExpMucs,0,2);
-                RA2=mean(ExpMucs,2)+std(ExpMucs,0,2);
-                RA3=mean(ExpMucs,2);
-                
-                
-                LA1=mean(SimMusc,2)-std(SimMusc,0,2);
-                LA2=mean(SimMusc,2)+std(SimMusc,0,2);
-                LA3=mean(SimMusc,2);
-                yyaxis left
+                t = tiledlayout(4,2);
+                nexttile;
+                title(t,[filename])
+                ExpMotion=ResultData.(filename).NormalMotion; %scaling
+                ExpForce=ResultData.(filename).NormalExForce;
+                RA1=mean(ExpMotion,2)-std(ExpMotion,0,2);
+                RA2=mean(ExpMotion,2)+std(ExpMotion,0,2);
+                RA3=mean(ExpMotion,2);
+                                
+                LA1=mean(ExpForce,2)-std(ExpForce,0,2);
+                LA2=mean(ExpForce,2)+std(ExpForce,0,2);
+                LA3=mean(ExpForce,2);
                 x2 = [x, fliplr(x)];
-                RABetween = [RA1', fliplr(RA2')];
-                fill(x2, RABetween,[0.6 1 0.6]*.8,'EdgeAlpha',0,'FaceAlpha',0.2)
-                LABetween = [LA1', fliplr(LA2')];
-                plot(x,RA3,'color',[[0.4660 0.6740 0.1880]]);
-                
-               
-%                 hold on
-                yyaxis right
-                fill(x2, LABetween,[1 0.5 1]*.8,'EdgeAlpha',0,'FaceAlpha',0.2)
-                title([filename SimMusclename(Flexmus)]);
-                plot(x,LA3,'color',[0.4940 0.1840 0.5560]);
-                xlabel('Normalized Time (%)');
-                ylabel('activation ');
-                legend('SD of Exp','SD of Sim','Mean of Exp','Mean of Sim');
-                hold off
+                    RABetween = [RA1', fliplr(RA2')];
+                    colororder([0.4940 0.1840 0.5560;0.4660 0.6740 0.1880])
+                    yyaxis left
+                    fill(x2, RABetween,[0.6 1 0.6]*.8,'EdgeAlpha',0,'FaceAlpha',0.2)
+                    hold on
+                    plot(x,RA3,'color',[[0.4660 0.6740 0.1880]],'LineStyle','-');
+                    ylabel('Force(N)');
+%                     hold off
+                    
+                    %                 hold on
+                    yyaxis right
+                    LABetween = [LA1', fliplr(LA2')];
+                    fill(x2, LABetween,[1 0.5 1]*.8,'EdgeAlpha',0,'FaceAlpha',0.2)
+                    plot(x,LA3,'color',[0.4940 0.1840 0.5560],'LineStyle','-');
+                    xlabel('Normalized Time (%)');
+                    ylabel('Angle(degree)');
+                    hold off
+                    
+                for Flexmus=1:length(ExpMuscle)
+                    
+                    nexttile
+                    
+                    ExpMucs=ResultData.(filename).NormalExpEMG.(ExpMuscle(Flexmus)); %scaling
+                    SimMusc=ResultData.(filename).NormalSimEMG.(SimMusclename(Flexmus));
+                    %                 if strncmp(Terials1(T1),"Fl",2)
+                    RA1=mean(ExpMucs,2)-std(ExpMucs,0,2);
+                    RA2=mean(ExpMucs,2)+std(ExpMucs,0,2);
+                    RA3=mean(ExpMucs,2);
+                    
+                    
+                    LA1=mean(SimMusc,2)-std(SimMusc,0,2);
+                    LA2=mean(SimMusc,2)+std(SimMusc,0,2);
+                    LA3=mean(SimMusc,2);
+                    
+                    x2 = [x, fliplr(x)];
+                    RABetween = [RA1', fliplr(RA2')];
+                    yyaxis right
+                    fill(x2, RABetween,[0.6 1 0.6]*.8,'EdgeAlpha',0,'FaceAlpha',0.2)
+                    hold on
+                    plot(x,RA3,'color',[0.4660 0.6740 0.1880],'LineStyle','-');
+%                     ylabel('Experiment activation');
+                    
+                    hold on
+                    yyaxis left
+                    LABetween = [LA1', fliplr(LA2')];
+                    fill(x2, LABetween,[1 0.5 1]*.8,'EdgeAlpha',0,'FaceAlpha',0.2)
+                    plot(x,LA3,'color',[0.4940 0.1840 0.5560],'LineStyle','-');
+                    title([SimMusclename(Flexmus)])
+                    xlabel('Normalized Time (%)');
+                    ylabel('activation ');
+%                     legend('SD of Exp','SD of Sim','Mean of Exp','Mean of Sim');
+                    hold off
                 end
-%                 end
+                %                 end
             end
         end
     end
