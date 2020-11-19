@@ -11,13 +11,13 @@ M_ThresholdMin=10*3.14/180;
 M_ThresholdMax=90*3.14/180;
 ForceRatio=0.4;
 TrialCounter=0;
-readflage=0;
+readflage=1;
 
 SimMusclename=["bflh_r","semiten_r","gasmed_r","recfem_r","vaslat_r","vasmed_r","gaslat_r","gasmed_r","grac_r","sart_r","semimem_r","soleus_r","tfl_r","vasint_r","bfsh_r"];
 ExpMuscle=["RBICF","RSEMT","RMGAS","RRECF","RVASL","RVASM"];
         %%
 if readflage        
-        for T1=1:length(Terials1)
+        for T1=2:length(Terials1)
             for T2=1:length(Terials2)
                 TrialCounter=TrialCounter+1;
                filename=append(Terials1(T1),"_",Terials2(T2));
@@ -35,15 +35,8 @@ if readflage
                    Etime=FTable.data(indx([(find(diff(indx)>10));end]),1);
          
                    %finding Maximum activation
-                   MeanEmg=[];
-                   for k=1:length(Stime)
-                       Expindx=find(ExpRtime>=Stime(k)&ExpRtime<=Etime(k));
-                       for Flmus=1:length(ExpMuscle)
-                           MeanEmg(k,Flmus)=mean(EMGtable.data(Expindx,strncmp(EMGtable.colheaders,ExpMuscle(Flmus),5)));
-                       end
-                       
-                   end
-                   MaxEMG(TrialCounter,:)=mean(MeanEmg);
+                  
+                   
                else
                    if strncmp(Terials1(T1),"Fl",2)
                        [indx,c]=find(MTable.data(:,6)>M_ThresholdMin & MTable.data(:,6)<M_ThresholdMax);
@@ -75,21 +68,27 @@ if readflage
                             end
                         end
                     end
-                end
+               end
+                
+    
                 if length(Stime)~=3||length(Etime)~=3
                     fprintf('\nERROR: %s Wrong trail ...\n\n', filename);
                 end
+                MeanEmg=[];
                 for k=1:length(Stime)
                     Expindx=find(ExpRtime>=Stime(k)&ExpRtime<=Etime(k));
 
                     ResultData.(filename).('time').(Terials3(k))=MTable.data(Expindx,1);
                     ResultData.(filename).('Motion').(Terials3(k))=MTable.data(Expindx,6);
                     ResultData.(filename).('ExForce').(Terials3(k))=FTable.data(Expindx,10);
-                  
+                   
                     for Flmus=1:length(ExpMuscle)
                         ResultData.(filename).('ExpEMG').(ExpMuscle(Flmus)).(Terials3(k))=EMGtable.data(Expindx,strncmp(EMGtable.colheaders,ExpMuscle(Flmus),5));
+                        MeanEmg(k,Flmus)=mean(EMGtable.data(Expindx,strncmp(EMGtable.colheaders,ExpMuscle(Flmus),5)));
                     end
+                    
                 end
+                MaxEMG(TrialCounter,:)=mean(MeanEmg);
 
             end
         end
@@ -153,22 +152,26 @@ for A=2:length(AnalyzeMethod)
                 RA1=mean(ExpMucs,2)-std(ExpMucs,0,2);
                 RA2=mean(ExpMucs,2)+std(ExpMucs,0,2);
                 RA3=mean(ExpMucs,2);
+                
+                
                 LA1=mean(SimMusc,2)-std(SimMusc,0,2);
                 LA2=mean(SimMusc,2)+std(SimMusc,0,2);
                 LA3=mean(SimMusc,2);
-                
+                yyaxis left
                 x2 = [x, fliplr(x)];
                 RABetween = [RA1', fliplr(RA2')];
                 fill(x2, RABetween,[0.6 1 0.6]*.8,'EdgeAlpha',0,'FaceAlpha',0.2)
                 LABetween = [LA1', fliplr(LA2')];
-                hold on
+                plot(x,RA3,'color',[[0.4660 0.6740 0.1880]]);
+                
+               
+%                 hold on
+                yyaxis right
                 fill(x2, LABetween,[1 0.5 1]*.8,'EdgeAlpha',0,'FaceAlpha',0.2)
                 title([filename SimMusclename(Flexmus)]);
-                
+                plot(x,LA3,'color',[0.4940 0.1840 0.5560]);
                 xlabel('Normalized Time (%)');
                 ylabel('activation ');
-                plot(x,RA3,'color',[[0.4660 0.6740 0.1880]]);
-                plot(x,LA3,'color',[0.4940 0.1840 0.5560]);
                 legend('SD of Exp','SD of Sim','Mean of Exp','Mean of Sim');
                 hold off
                 end
