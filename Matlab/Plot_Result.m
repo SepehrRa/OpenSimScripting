@@ -12,8 +12,12 @@ M_ThresholdMax=90*3.14/180;
 ForceRatio=0.4;
 TrialCounter=0;
 readflage=0;
+muscleplot=0;
+experflag=0;
 
-SimMusclename=["bflh_r","semiten_r","gasmed_r","recfem_r","vaslat_r","vasmed_r","gaslat_r","gasmed_r","grac_r","sart_r","semimem_r","soleus_r","tfl_r","vasint_r","bfsh_r"];
+
+
+SimMusclename=["bflh_r","bfsh_r","gaslat_r","gasmed_r","grac_r","recfem_r","sart_r","semimem_r","semiten_r","soleus_r","tfl_r","vasint_r","vaslat_r","vasmed_r"];
 ExpMuscle=["RBICF","RSEMT","RMGAS","RRECF","RVASL","RVASM"];
         %%
 if readflage        
@@ -30,7 +34,7 @@ if readflage
                ExpRtime=FTable.data(:,1);
                ResultData.(filename).('ExForce').('full')=FTable.data(:,[1,10]);
                ResultData.(filename).('Motion').('full')=MTable.data(:,[1,6]);
-               ResultData.(filename).('Motion').('full')=EMGTable.data;
+               ResultData.(filename).('Motion').('full')=EMGtable.data;
                %% Finding time of iterative
                if strncmp(Terials2(T2),"IsoM",4)
                    [indx,c]=find(abs(FTable.data(:,10))>ForceRatio.*max(abs(FTable.data(:,10))));
@@ -95,11 +99,13 @@ if readflage
         end
          %% Finding maximum EMG
           ResultData.('MaxEMG').colheaders= ExpMuscle;
-          ResultData.('MaxEMG').data=max(MaxEMG);
+          ResultData.('MaxEMG').data=MaxEMG;
           save ([folder '\Data\FinalData_Seperated.mat'],'ResultData');
 end          
 load ([folder '\Data\FinalData_Seperated.mat']);
-            %%
+%%
+TrialCounter=0;
+if experflag
 for A=2:length(AnalyzeMethod)
     for m=1:length(Modelname)
         results_folder = append(folder,"Result\",Modelname(m),"\");
@@ -107,26 +113,18 @@ for A=2:length(AnalyzeMethod)
         %   NewExForcesetup=append(results_folder,'New_subject01_walk1_grf.xml');
         for T1=1:length(Terials1)
             for T2=1:length(Terials2)
+                TrialCounter=TrialCounter+1;
                 filename=append(Terials1(T1),"_",Terials2(T2));
                 for itr=1:length(fieldnames(ResultData.(filename).time))
                     results_folder2=append(results_folder,AnalyzeMethod(A),"\",filename,"\",Terials3(itr),"\");
                     ActuateForce=importdata(append(results_folder2,Modelname(m),'_',filename,'_',Terials3(itr),'_CMC','_Actuation_force.sto'));
                     MuscleActivation=importdata(append(results_folder2,Modelname(m),'_',filename,'_',Terials3(itr),'_CMC','_controls.sto'));
                     Simtime=ActuateForce.data(1:(end-1),1); %Simulation time
-%                     ExpRtime=FTable.data(:,1);      %Experimental time
                     ExpRtime=ResultData.(filename).('time').(Terials3(itr));
-                    %                 
-                    % %                 ResultData=cell(5,11,3);
-                    %                 %MuscleForce=
-                    %
-%                     y=interp1(data.data(ww+1:kk,ii-1),data.data(ww+1:kk,ii),[ts:DStime:te],'linear','extrap');
-%                     
-%                     Simindx=find(Simtime>=Stime(k)&Simtime<=Etime(k));
-%                     Expindx=find(ExpRtime>=Stime(k)&ExpRtime<=Etime(k));
-%                   figure  
-%                     plot(Simtime(Simindx),MuscleActivation.data(Simindx,2),ExpRtime(Expindx),normalize(EMGtable.data(Expindx,2),'range'))
-%                     
-%                     RefT=ExpRtime(Expindx);
+                    MaxActivation(TrialCounter,:)=mean(MuscleActivation.data);
+                    MaxActuateForce(TrialCounter,:)=mean(ActuateForce.data);
+                    
+                    
                      RefT=0:.1:100;
                      SimNormalT=((Simtime-Simtime(1))./(Simtime(end)-Simtime(1))).*100;
                      
@@ -147,6 +145,7 @@ for A=2:length(AnalyzeMethod)
                        y4=interp1(ExpNormalT,ResultData.(filename).Motion.(Terials3(itr)),RefT','linear','extrap');
                        ResultData.(filename).('NormalMotion')(:,itr)=y4;
                 end
+                if muscleplot
                 figure
                 x=RefT;
                 t = tiledlayout(4,2);
@@ -162,6 +161,7 @@ for A=2:length(AnalyzeMethod)
                 LA2=mean(ExpForce,2)+std(ExpForce,0,2);
                 LA3=mean(ExpForce,2);
                 x2 = [x, fliplr(x)];
+                
                     RABetween = [RA1', fliplr(RA2')];
                     colororder([0.4940 0.1840 0.5560;0.4660 0.6740 0.1880])
                     yyaxis left
@@ -215,8 +215,66 @@ for A=2:length(AnalyzeMethod)
 %                     legend('SD of Exp','SD of Sim','Mean of Exp','Mean of Sim');
                     hold off
                 end
-                %                 end
+                end
+%                 figure
+%                 x=RefT;
+
+                
             end
         end
     end
 end
+ResultData.('MaxActivation').colheaders= SimMusclename;
+ResultData.('MaxActivation').data=MaxActivation;
+ResultData.('MaxActuateForce').colheaders= SimMusclename;
+ResultData.('MaxActuateForce').data=MaxActuateForce;
+end
+
+ a=["Fl_IsoK","Fl_IsoM","Ex_IsoK","Ex_IsoM"'];
+ e = tiledlayout(2,2);
+ qq=0;
+for kk=1:4:16
+qq=qq+1;
+nexttile(e);
+Y=ResultData.MaxEMG.data([kk:kk+3],:);
+X=[10 30 60 90];
+plot(X,Y,'-*');
+legend(ExpMuscle)
+title(a(qq));
+end
+e = tiledlayout(1,2);
+%%
+ratio=ResultData.MaxEMG.data([1:8],:)./ResultData.MaxEMG.data([9:16],:);
+qq=0;
+for kk=1:4:8
+qq=qq+1;
+nexttile(e);
+% Y=ResultData.EMG.data([kk:kk+3],:);
+X=[10 30 60 90];
+plot(X,ratio,'-*');
+legend(ExpMuscle)
+title(["IsoK","IsoM"]);
+end
+%%
+for kk=1:4:16
+qq=qq+1;
+nexttile(e);
+Y=ResultData.MaxActivation.data([kk:kk+3],[2,10,5,6,14,15]);
+X=[10 30 60 90];
+plot(X,Y,'-*');
+legend(ExpMuscle)
+title(a(qq));
+end
+X=[10 30 60 90];
+ a=["Fl_IsoK","Fl_IsoM","Ex_IsoK","Ex_IsoM"'];
+e = tiledlayout(2,2);
+ qq=0;
+for kk=1:4:16
+qq=qq+1;
+nexttile(e);
+Y=ResultData.MaxActuateForce.data([kk:kk+3],[2,10,5,6,14,15]);
+bar(X,Y','stacked')
+legend(ExpMuscle)
+title(a(qq));
+end
+

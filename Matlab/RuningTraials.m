@@ -36,7 +36,7 @@ TimeT=zeros(4,2);
         CMCSetup=append('CMC\',Modelname(m),'\CMC_Setup_I0.xml');
         IDSetup=append('CMC\',Modelname(m),'\ID_Setup.xml');
         for T1=1:length(Terials1)
-            for T2=2:length(Terials2)
+            for T2=1:length(Terials2)
                 filename=append(Terials1(T1),"_",Terials2(T2));
                 ExLoad=ExternalLoads(append(results_folder,"P005_T001_ExForce_RLeg.xml"),true);
                 ExForcefile=append(folder,"Data\P005_T001_Rknee_",filename,"_Torque.mot");
@@ -45,14 +45,21 @@ TimeT=zeros(4,2);
                 NewExForcefile=append(results_folder,"ID\",filename,"_ExForce_Setup.xml");
                 ExLoad.print(NewExForcefile)
                 IkFile=append(folder,"Data\P005_T001_Rknee_",filename,"_Motion.mot");
+%                 ikTool=InverseKinematicsTool([folder IKSteup]); % to read xml file for IK
+%                 ikTool.setModel(model);
+%                 ikTool.setMarkerDataFileName(Markerfile);
+%                 ikTool.setStartTime(initial_time);
+%                 ikTool.setEndTime(final_time);
+%                 ikTool.setOutputMotionFileName(IK_file);
+%                 ikTool.print([results_folder name '_IK_Setup.xml']);
                 %% ID %%%%
-                idTool=	InverseDynamicsTool(append(results_folder,"P005_T001_ID_Setup_ref.xml"));
-                idTool.setStartTime(FTable.data(1,1));
-                idTool.setEndTime(FTable.data(end,1));
-                idTool.setCoordinatesFileName(IkFile);
-                idTool.setExternalLoadsFileName(NewExForcefile);
-                idTool.setResultsDir(append(results_folder,"ID\"))
-                idTool.setOutputGenForceFileName(append(filename,"_ID.sto"))
+%                 idTool=	InverseDynamicsTool(append(results_folder,"P005_T001_ID_Setup_ref.xml"));
+%                 idTool.setStartTime(FTable.data(1,1));
+%                 idTool.setEndTime(FTable.data(end,1));
+%                 idTool.setCoordinatesFileName(IkFile);
+%                 idTool.setExternalLoadsFileName(NewExForcefile);
+%                 idTool.setResultsDir(append(results_folder,"ID\"))
+%                 idTool.setOutputGenForceFileName(append(filename,"_ID.sto"))
 %                 idTool.print(append(results_folder,"ID\",filename,"_ID_Setup.xml"));
 %                 idTool.run();
                 for itr=1:length(fieldnames(ResultData.(filename).time))
@@ -72,7 +79,7 @@ TimeT=zeros(4,2);
                     analysis.setLoadModelAndInput(true);
                     analysis.setResultsDir(append(results_folder2(1)));
                     analysis.print(append(results_folder2(1),filename,"_",AnalyzeMethod(1),"_Setup.xml"))
-                    analysis.run();
+%                     analysis.run();
                     %% CMC %%%%%
                     cmc = CMCTool(append(results_folder,"P005_T001_CMC_Setup_ref.xml"));
                     cmc.setName(append(Modelname(m),'_',filename,'_',Terials3(itr),'_CMC'))
@@ -80,6 +87,9 @@ TimeT=zeros(4,2);
                     cmc.setExternalLoadsFileName(NewExForcefile);
                     cmc.setStartTime(Stime(1));
                     cmc.setFinalTime(Etime(1));
+                    if strncmp(Terials2(T2),"IsoK",4)
+                    cmc.setTimeWindow(0.005)
+                    end
                     cmc.setResultsDir(append(results_folder2(2)));
                     cmc.print(append(results_folder2(2),filename,"_",AnalyzeMethod(2),"_Setup.xml"));
                     cmc.run();
