@@ -25,7 +25,9 @@ Terials1=["Fl","Ex"];
 Terials2=["IsoM10","IsoM30","IsoM60","IsoM90","IsoK60","IsoK120","IsoK180","IsoK240"];
 Terials3=["iter1","iter2","iter3"];
 load ([folder '\Data\FinalData_Seperated.mat']);
-
+M_ThresholdMin=10*3.14/180;
+M_ThresholdMax=90*3.14/180;
+ForceRatio=0.4;
 
 TimeT=zeros(4,2);
 % for A=1:length(AnalyzeMethod)
@@ -45,6 +47,9 @@ TimeT=zeros(4,2);
                 NewExForcefile=append(results_folder,"ID\",filename,"_ExForce_Setup.xml");
                 ExLoad.print(NewExForcefile)
                 IkFile=append(folder,"Data\P005_T001_Rknee_",filename,"_Motion.mot");
+                Event=EventDetection(filename,FTable,ForceRatio,IkFile,[M_ThresholdMin M_ThresholdMax]);
+                Stime=Event(:,1);
+                Etime=Event(:,2);
 %                 ikTool=InverseKinematicsTool([folder IKSteup]); % to read xml file for IK
 %                 ikTool.setModel(model);
 %                 ikTool.setMarkerDataFileName(Markerfile);
