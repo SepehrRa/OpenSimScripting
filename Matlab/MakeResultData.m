@@ -36,22 +36,27 @@ ExpMuscle=["RBICF","RSEMT","RMGAS","RRECF","RVASL","RVASM"];
                     for itr=1:length(Stime)
                         results_folder2=append(results_folder,AnalyzeMethod(A),"\",filename,"\",Terials3(itr),"\");
                         Expindx=find(ExpRtime>=Stime(itr)&ExpRtime<=Etime(itr));
-                        ResultData.(filename).('time').(Terials3(itr))=MTable.data(Expindx,1);
-                        ResultData.(filename).('Motion').(Terials3(itr))=MTable.data(Expindx,6);
-                        ResultData.(filename).('ExForce').(Terials3(itr))=FTable.data(Expindx,10);
                         ActuateForce=importdata(append(results_folder2,Modelname(m),'_',filename,'_',Terials3(itr),'_CMC','_Actuation_force.sto'));
                         MuscleActivation=importdata(append(results_folder2,Modelname(m),'_',filename,'_',Terials3(itr),'_CMC','_controls.sto'));
-                        Simtime=ActuateForce.data(1:(end-1),1); %Simulation time
-                        Exptime=ResultData.(filename).('time').(Terials3(itr));
+                        ResultData.(filename).('time').ExpT.(Terials3(itr))=MTable.data(Expindx,1);
+                        ResultData.(filename).('time').SimT.(Terials3(itr))=ActuateForce.data(1:(end-1),1);
+                        ResultData.(filename).('Motion').(Terials3(itr))=MTable.data(Expindx,6);
+                        ResultData.(filename).('ExForce').(Terials3(itr))=FTable.data(Expindx,10);
+                        Simtime=ResultData.(filename).('time').SimT.(Terials3(itr)); %Simulation time
+                        Exptime=ResultData.(filename).('time').ExpT.(Terials3(itr));
                         RefT=0:.1:100;
                         SimNormalT=((Simtime-Simtime(1))./(Simtime(end)-Simtime(1))).*100;
                         ExpNormalT=((Exptime-Exptime(1))./(Exptime(end)-Exptime(1))).*100;
+                        ResultData.(filename).('time').SimNormalT.(Terials3(itr))=SimNormalT;
+                        ResultData.(filename).('time').ExpNormalT.(Terials3(itr))=ExpNormalT;
                         y=interp1(SimNormalT,MuscleActivation.data(1:(end-1),:),RefT','linear','extrap');
                         y1=interp1(SimNormalT,ActuateForce.data(1:(end-1),:),RefT','linear','extrap');
                         
                         for Flmus=1:length(SimMusclename)
-                            ResultData.(filename).('NormalSimEMG').(SimMusclename(Flmus))(:,itr)=y(:,strncmp(MuscleActivation.colheaders,SimMusclename(Flmus),5));
-                            ResultData.(filename).('NormalSimForce').(SimMusclename(Flmus))(:,itr)=y1(:,strncmp(ActuateForce.colheaders,SimMusclename(Flmus),5));
+                            ResultData.(filename).('SimActivation').(SimMusclename(Flmus)).(Terials3(itr))=MuscleActivation.data(:,strncmp(MuscleActivation.colheaders,SimMusclename(Flmus),5));
+                            ResultData.(filename).('NorSimEMG').(SimMusclename(Flmus))(:,itr)=y(:,strncmp(MuscleActivation.colheaders,SimMusclename(Flmus),5));
+                            ResultData.(filename).('SimMuscleForce').(SimMusclename(Flmus)).(Terials3(itr))=ActuateForce.data(:,strncmp(ActuateForce.colheaders,SimMusclename(Flmus),5));
+                            ResultData.(filename).('NorSimMuscleForce').(SimMusclename(Flmus))(:,itr)=y1(:,strncmp(ActuateForce.colheaders,SimMusclename(Flmus),5));
                         end
                         y2=interp1(ExpNormalT,ResultData.(filename).ExForce.(Terials3(itr)),RefT','linear','extrap');
                         ResultData.(filename).('NormalExForce')(:,itr)=y2;
@@ -59,7 +64,6 @@ ExpMuscle=["RBICF","RSEMT","RMGAS","RRECF","RVASL","RVASM"];
                         ResultData.(filename).('NormalMotion')(:,itr)=y3;
                         for Flexmus=1:length(ExpMuscle)
                             ResultData.(filename).('ExpEMG').(ExpMuscle(Flexmus)).(Terials3(itr))=EMGtable.data(Expindx,strncmp(EMGtable.colheaders,ExpMuscle(Flexmus),5));
-                            MeanEmg(itr,Flexmus)=mean(EMGtable.data(Expindx,strncmp(EMGtable.colheaders,ExpMuscle(Flexmus),5)));
                             y4=interp1(ExpNormalT,ResultData.(filename).ExpEMG.(ExpMuscle(Flexmus)).(Terials3(itr)),RefT','linear','extrap');
                             ResultData.(filename).('NormalExpEMG').(ExpMuscle(Flexmus))(:,itr)=y4;
                         end
