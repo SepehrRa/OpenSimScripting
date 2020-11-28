@@ -9,21 +9,25 @@ TimeT=zeros(4,2);
 delimiterIn = ',';
 M_ThresholdMin=10*3.14/180;
 M_ThresholdMax=90*3.14/180;
-ForceRatio=0.4;
+ForceRatio=0.8;
 TrialCounter=0;
 readflage=1;
-muscleplot=0;
+muscleplot=1;
 experflag=1;
-
-
+Lcolorcode=[0.4660 0.6740 0.1880];
+Rcolorcode=[0.4940 0.1840 0.5560];
 
 SimMusclename=["bflh_r","bfsh_r","gaslat_r","gasmed_r","grac_r","recfem_r","sart_r","semimem_r","semiten_r","soleus_r","tfl_r","vasint_r","vaslat_r","vasmed_r"];
 ExpMuscle=["RBICF","RSEMT","RMGAS","RRECF","RVASL","RVASM"];
-
+%%% Defining transfer variable in the order to convert name of muscles in simulation to EMG sensors name 
+%%% It must be in same dimention of ExpMuscle and each elemt of the Transfername is equal name to ExpMuscle
+%%% Forexample ExpMuscle(1) is "RBICF" and equal name of this muscle in Rajagopal model would be "bflh_r" 
+Transfername=["bflh_r","semimem_r","gasmed_r","recfem_r","vaslat_r","vasmed_r"];
+RefT=0:.1:100;
 
 %% Finding maximum EMG
    
-load ([folder '\Data\FinalData_Seperated.mat']);
+load ([folder '\Data\T01ResultData.mat']);
 %%
 TrialCounter=0;
 if experflag
@@ -36,78 +40,89 @@ for A=1:length(AnalyzeMethod)
             for T2=1:length(Terials2)
                 TrialCounter=TrialCounter+1;
                 filename=append(Terials1(T1),"_",Terials2(T2));
-
-                if muscleplot
-                figure
-                x=RefT;
-                t = tiledlayout(4,2);
-                nexttile;
-                title(t,[filename])
-                ExpMotion=ResultData.(filename).NormalMotion; %scaling
-                ExpForce=ResultData.(filename).NormalExForce;
+                % Reading Data
+                ExpMotion=(ResultData.(filename).NormalMotion)./pi()*180; %scaling
+                Time=ResultData.(filename).time.ExpNormalT;
+                ExpForce=ResultData.(filename).NormalExpForce;
+                % Calculating Velocity 
+                Vel=[0 0 0;diff(ExpMotion)./diff(Time)];
+                % Making avarage and +- sd of Motion 
                 RA1=mean(ExpMotion,2)-std(ExpMotion,0,2);
                 RA2=mean(ExpMotion,2)+std(ExpMotion,0,2);
                 RA3=mean(ExpMotion,2);
-                                
+                % Making avarage and +- sd of Force              
                 LA1=mean(ExpForce,2)-std(ExpForce,0,2);
                 LA2=mean(ExpForce,2)+std(ExpForce,0,2);
                 LA3=mean(ExpForce,2);
+                %%% ploting motion 
+                figure
+                t = tiledlayout(4,2);
+                nexttile;
+                title(t,[filename]);
+                x=RefT;
                 x2 = [x, fliplr(x)];
-                
-                    RABetween = [RA1', fliplr(RA2')];
-                    colororder([0.4940 0.1840 0.5560;0.4660 0.6740 0.1880])
-                    yyaxis left
-                    fill(x2, RABetween,[0.6 1 0.6]*.8,'EdgeAlpha',0,'FaceAlpha',0.2)
-                    hold on
-                    plot(x,RA3,'color',[[0.4660 0.6740 0.1880]],'LineStyle','-');
-                    ylabel('Force(N)');
-%                     hold off
-                    
-                    %                 hold on
-                    yyaxis right
-                    LABetween = [LA1', fliplr(LA2')];
-                    fill(x2, LABetween,[1 0.5 1]*.8,'EdgeAlpha',0,'FaceAlpha',0.2)
-                    plot(x,LA3,'color',[0.4940 0.1840 0.5560],'LineStyle','-');
-                    xlabel('Normalized Time (%)');
-                    ylabel('Angle(degree)');
-                    hold off
-                    
+                RABetween = [RA1', fliplr(RA2')];
+                colororder([Lcolorcode;Rcolorcode])
+                yyaxis left
+                %%% ploting std of motion 
+                fill(x2, RABetween,[Lcolorcode]*.8,'EdgeAlpha',0,'FaceAlpha',0.2)
+                hold on
+                %%% ploting avarage of motion
+                plot(x,RA3,'color',[Lcolorcode],'LineStyle','-');
+                ylabel('Angle(degree)');
+                %%% changing y axis
+                yyaxis right
+                LABetween = [LA1', fliplr(LA2')];
+                %%% ploting std of force 
+                fill(x2, LABetween,[Rcolorcode]*.8,'EdgeAlpha',0,'FaceAlpha',0.2)
+                %%% ploting avarage of force
+                plot(x,LA3,'color',[Rcolorcode],'LineStyle','-');
+                xlabel('Normalized Time (%)');
+                ylabel('Force(N)');
+                hold off
+                %%% ploting Velocity
+                nexttile;
+                VA1=mean(Vel,2)-std(Vel,0,2);
+                VA2=mean(Vel,2)+std(Vel,0,2);
+                VA3=mean(Vel,2);
+                VABetween = [VA1', fliplr(VA2')];
+                fill(x2, VABetween,[Lcolorcode]*.8,'EdgeAlpha',0,'FaceAlpha',0.2)
+                hold on
+                plot(x,VA3,'color',[Lcolorcode],'LineStyle','-');
+                ylabel('Veocity(degree/s)');
+                %%% Ploting EMG and activation of each muscle
                 for Flexmus=1:length(ExpMuscle)
-                    
+                    % Making new plot
                     nexttile
-                    
+                    % preapring data
                     ExpMucs=ResultData.(filename).NormalExpEMG.(ExpMuscle(Flexmus)); %scaling
-                    SimMusc=ResultData.(filename).NormalSimEMG.(SimMusclename(Flexmus));
-                    %                 if strncmp(Terials1(T1),"Fl",2)
+                    SimMusc=ResultData.(filename).NormalSimEMG.(Transfername(Flexmus));
                     RA1=mean(ExpMucs,2)-std(ExpMucs,0,2);
                     RA2=mean(ExpMucs,2)+std(ExpMucs,0,2);
                     RA3=mean(ExpMucs,2);
-                    
-                    
                     LA1=mean(SimMusc,2)-std(SimMusc,0,2);
                     LA2=mean(SimMusc,2)+std(SimMusc,0,2);
                     LA3=mean(SimMusc,2);
-                    
                     x2 = [x, fliplr(x)];
                     RABetween = [RA1', fliplr(RA2')];
                     yyaxis right
                     fill(x2, RABetween,[0.6 1 0.6]*.8,'EdgeAlpha',0,'FaceAlpha',0.2)
                     hold on
-                    plot(x,RA3,'color',[0.4660 0.6740 0.1880],'LineStyle','-');
+                    plot(x,RA3,'color',[Lcolorcode],'LineStyle','-');
+                    ylabel('EMG');
 %                     ylabel('Experiment activation');
-                    
                     hold on
                     yyaxis left
                     LABetween = [LA1', fliplr(LA2')];
                     fill(x2, LABetween,[1 0.5 1]*.8,'EdgeAlpha',0,'FaceAlpha',0.2)
-                    plot(x,LA3,'color',[0.4940 0.1840 0.5560],'LineStyle','-');
-                    title([SimMusclename(Flexmus)])
+                    plot(x,LA3,'color',[Rcolorcode],'LineStyle','-');
+                    title([ExpMuscle(Flexmus)])
                     xlabel('Normalized Time (%)');
                     ylabel('activation ');
 %                     legend('SD of Exp','SD of Sim','Mean of Exp','Mean of Sim');
                     hold off
                 end
-                end
+                
 %                 figure
 %                 x=RefT;
 
@@ -117,6 +132,8 @@ for A=1:length(AnalyzeMethod)
     end
 end
 end
+
+%plotting avarage EMG 
 for T1=1:length(Terials1)
     for T2=1:length(Terials2)
         TrialCounter=TrialCounter+1;
@@ -127,6 +144,8 @@ for T1=1:length(Terials1)
         end
     end
 end
+
+
  a=["Fl_IsoK","Fl_IsoM","Ex_IsoK","Ex_IsoM"'];
  e = tiledlayout(2,2);
  qq=0;

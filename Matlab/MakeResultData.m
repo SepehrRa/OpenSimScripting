@@ -19,53 +19,77 @@ ExpMuscle=["RBICF","RSEMT","RMGAS","RRECF","RVASL","RVASM"];
                     EMGFile=append(folder,"Data\P005_T001_Rknee_",filename,"_EMG.csv");
                     ExForcefile=append(folder,"Data\P005_T001_Rknee_",filename,"_Torque.mot");
                     IkFile=append(folder,"Data\P005_T001_Rknee_",filename,"_Motion.mot");
+                    % Importing files
                     FTable=importdata(ExForcefile);
                     MTable=importdata(IkFile);
                     EMGtable=importdata(EMGFile);
                     ExpRtime=FTable.data(:,1);
-                    ResultData.(filename).('ExForce').('full')=FTable.data(:,[1,10]);
+                    ResultData.(filename).('ExpForce').('full')=FTable.data(:,[1,10]);
                     ResultData.(filename).('Motion').('full')=MTable.data(:,[1,6]);
-                    ResultData.(filename).('ExEMG').('full')=EMGtable.data;
-                    %% Finding time of iterative
+                    ResultData.(filename).('ExpEMG').('full')=EMGtable.data;
+                    %% Finding events
                     Event=EventDetection(filename,FTable,ForceRatio,MTable,[M_ThresholdMin M_ThresholdMax]);
                     Stime=Event(:,1);
                     Etime=Event(:,2);
+                    %% Trail check
                     if length(Stime)~=3||length(Etime)~=3
                         fprintf('\nERROR: %s Wrong trail ...\n\n', filename);
                     end
+                    %% Strat reading Simulation files 
                     for itr=1:length(Stime)
+                        %%% Making Directory
                         results_folder2=append(results_folder,AnalyzeMethod(A),"\",filename,"\",Terials3(itr),"\");
                         Expindx=find(ExpRtime>=Stime(itr)&ExpRtime<=Etime(itr));
+                        %%% Reading Muscle Force, Muscle activation
                         ActuateForce=importdata(append(results_folder2,Modelname(m),'_',filename,'_',Terials3(itr),'_CMC','_Actuation_force.sto'));
                         MuscleActivation=importdata(append(results_folder2,Modelname(m),'_',filename,'_',Terials3(itr),'_CMC','_controls.sto'));
-                        ResultData.(filename).('time').ExpT.(Terials3(itr))=MTable.data(Expindx,1);
-                        ResultData.(filename).('time').SimT.(Terials3(itr))=ActuateForce.data(1:(end-1),1);
+                        %%% Saving Experiment time when events happened
+                        ResultData.(filename).('time').Exp.(Terials3(itr))=MTable.data(Expindx,1);
+                        %%% Saving Simulation time when events happened 
+                        ResultData.(filename).('time').Sim.(Terials3(itr))=ActuateForce.data(1:(end-1),1);
+                        %%% Saving Motion and Torque data when events happened 
                         ResultData.(filename).('Motion').(Terials3(itr))=MTable.data(Expindx,6);
-                        ResultData.(filename).('ExForce').(Terials3(itr))=FTable.data(Expindx,10);
-                        Simtime=ResultData.(filename).('time').SimT.(Terials3(itr)); %Simulation time
-                        Exptime=ResultData.(filename).('time').ExpT.(Terials3(itr));
+                        ResultData.(filename).('ExpForce').(Terials3(itr))=FTable.data(Expindx,10);
+                        %%% Saving Motion and Torque data when events happened 
+                        Simtime=ResultData.(filename).('time').Sim.(Terials3(itr)); %Simulation time
+                        Exptime=ResultData.(filename).('time').Exp.(Terials3(itr));
+                        %%% Defining reference time
                         RefT=0:.1:100;
+                        %%% making time of each event in same scale of
+                        %%% 0-100
                         SimNormalT=((Simtime-Simtime(1))./(Simtime(end)-Simtime(1))).*100;
                         ExpNormalT=((Exptime-Exptime(1))./(Exptime(end)-Exptime(1))).*100;
-                        ResultData.(filename).('time').SimNormalT.(Terials3(itr))=SimNormalT;
-                        ResultData.(filename).('time').ExpNormalT.(Terials3(itr))=ExpNormalT;
+                        %%% Interpolation to make time normalized data
                         y=interp1(SimNormalT,MuscleActivation.data(1:(end-1),:),RefT','linear','extrap');
                         y1=interp1(SimNormalT,ActuateForce.data(1:(end-1),:),RefT','linear','extrap');
-                        
+                        %%% Saving time normalized of event's time from
+                        %%% simualtion
+                        ResultData.(filename).('time').('SimNormalT')(:,itr)=y(:,1);
+                        %%% Saving time normalized activation and force of
+                        %%% simulation to each muscle
                         for Flmus=1:length(SimMusclename)
                             ResultData.(filename).('SimActivation').(SimMusclename(Flmus)).(Terials3(itr))=MuscleActivation.data(:,strncmp(MuscleActivation.colheaders,SimMusclename(Flmus),5));
-                            ResultData.(filename).('NorSimEMG').(SimMusclename(Flmus))(:,itr)=y(:,strncmp(MuscleActivation.colheaders,SimMusclename(Flmus),5));
+                            ResultData.(filename).('NormalSimEMG').(SimMusclename(Flmus))(:,itr)=y(:,strncmp(MuscleActivation.colheaders,SimMusclename(Flmus),5));
+                            
                             ResultData.(filename).('SimMuscleForce').(SimMusclename(Flmus)).(Terials3(itr))=ActuateForce.data(:,strncmp(ActuateForce.colheaders,SimMusclename(Flmus),5));
-                            ResultData.(filename).('NorSimMuscleForce').(SimMusclename(Flmus))(:,itr)=y1(:,strncmp(ActuateForce.colheaders,SimMusclename(Flmus),5));
+                            ResultData.(filename).('NormalSimMuscleForce').(SimMusclename(Flmus))(:,itr)=y1(:,strncmp(ActuateForce.colheaders,SimMusclename(Flmus),5));
                         end
-                        y2=interp1(ExpNormalT,ResultData.(filename).ExForce.(Terials3(itr)),RefT','linear','extrap');
-                        ResultData.(filename).('NormalExForce')(:,itr)=y2;
+                        %%% Making time normalized external force 
+                        y2=interp1(ExpNormalT,ResultData.(filename).ExpForce.(Terials3(itr)),RefT','linear','extrap');
+                        ResultData.(filename).('NormalExpForce')(:,itr)=y2;
+                        %%% Making time normalized external motion 
                         y3=interp1(ExpNormalT,ResultData.(filename).Motion.(Terials3(itr)),RefT','linear','extrap');
                         ResultData.(filename).('NormalMotion')(:,itr)=y3;
+                        %%% Making time normalized experimental event time
+                        ENt=interp1(ExpNormalT,Exptime,RefT','linear','extrap');
+                        ResultData.(filename).('time').('ExpNormalT')(:,itr)=ENt;
+                        %%% Making time normalized EMG data 
+                        y4=interp1(ExpNormalT,ResultData.(filename).ExpEMG.full(Expindx,:),RefT','linear','extrap');
                         for Flexmus=1:length(ExpMuscle)
-                            ResultData.(filename).('ExpEMG').(ExpMuscle(Flexmus)).(Terials3(itr))=EMGtable.data(Expindx,strncmp(EMGtable.colheaders,ExpMuscle(Flexmus),5));
-                            y4=interp1(ExpNormalT,ResultData.(filename).ExpEMG.(ExpMuscle(Flexmus)).(Terials3(itr)),RefT','linear','extrap');
-                            ResultData.(filename).('NormalExpEMG').(ExpMuscle(Flexmus))(:,itr)=y4;
+                            %%% Saving EMG data when events happened 
+                            ResultData.(filename).('ExpEMG').(ExpMuscle(Flexmus)).(Terials3(itr))=EMGtable.data(Expindx,strncmp(EMGtable.colheaders,ExpMuscle(Flexmus),5));    
+                            %%% Saving time normalized EMG of each muscle
+                            ResultData.(filename).('NormalExpEMG').(ExpMuscle(Flexmus))(:,itr)=y4(:,strncmp(EMGtable.colheaders,ExpMuscle(Flexmus),5));
                         end
 
                         
