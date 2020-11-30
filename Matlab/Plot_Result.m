@@ -1,9 +1,10 @@
 clear all
+close all
 folder = 'C:\MyCloud\OneDriveUcf\Real\Simulation\Source\T001\';
 AnalyzeMethod=["SOP","CMC"];
 Modelname={'Rajagopal'};
-Terials1=["Fl","Ex"];
-Terials2=["IsoK60","IsoK120","IsoK180","IsoK240","IsoM10","IsoM30","IsoM60","IsoM90"];
+Terials1=["Ex","Fl"];
+Terials2=["IsoM10","IsoM30","IsoM60","IsoM90","IsoK60","IsoK120","IsoK180","IsoK240"];
 Terials3=["iter1","iter2","iter3"];
 TimeT=zeros(4,2);
 delimiterIn = ',';
@@ -19,17 +20,21 @@ Rcolorcode=[0.4940 0.1840 0.5560];
 
 SimMusclename=["bflh_r","bfsh_r","gaslat_r","gasmed_r","grac_r","recfem_r","sart_r","semimem_r","semiten_r","soleus_r","tfl_r","vasint_r","vaslat_r","vasmed_r"];
 ExpMuscle=["RBICF","RSEMT","RMGAS","RRECF","RVASL","RVASM"];
+SelectedMuscle=["RSEMT","RMGAS","RVASL","RVASM"];
 %%% Defining transfer variable in the order to convert name of muscles in simulation to EMG sensors name 
 %%% It must be in same dimention of ExpMuscle and each elemt of the Transfername is equal name to ExpMuscle
 %%% Forexample ExpMuscle(1) is "RBICF" and equal name of this muscle in Rajagopal model would be "bflh_r" 
-Transfername=["bflh_r","semimem_r","gasmed_r","recfem_r","vaslat_r","vasmed_r"];
+Transfername=["bflh_r","semiten_r","gasmed_r","recfem_r","vaslat_r","vasmed_r"];
 RefT=0:.1:100;
 
 %% Finding maximum EMG
    
 load ([folder '\Data\T01ResultData.mat']);
 %%
-TrialCounter=0;
+
+% xlabel(kk,'Normalized Time (%)');
+
+
 if experflag
 for A=1:length(AnalyzeMethod)
     for m=1:length(Modelname)
@@ -37,12 +42,23 @@ for A=1:length(AnalyzeMethod)
         %   IK_file=append(results_folder,name,'_ik.mot');
         %   NewExForcesetup=append(results_folder,'New_subject01_walk1_grf.xml');
         for T1=1:length(Terials1)
-            for T2=1:length(Terials2)
+            figure;
+            movegui('center');
+            kk = tiledlayout(4,4);
+            title(kk,Terials1(T1));
+            figure;
+            movegui('center');
+            t = tiledlayout(4,2);
+            title(t,[Terials1(T1) 'Vecocity-Force-Motion']);
+            TrialCounter=0;
+            count=0;
+            for T2=5:length(Terials2)
+                
                 TrialCounter=TrialCounter+1;
                 filename=append(Terials1(T1),"_",Terials2(T2));
                 % Reading Data
                 ExpMotion=(ResultData.(filename).NormalMotion)./pi()*180; %scaling
-                Time=ResultData.(filename).time.ExpNormalT;
+                Time=ResultData.(filename).time.NormalT;
                 ExpForce=ResultData.(filename).NormalExpForce;
                 % Calculating Velocity 
                 Vel=[0 0 0;diff(ExpMotion)./diff(Time)];
@@ -55,10 +71,7 @@ for A=1:length(AnalyzeMethod)
                 LA2=mean(ExpForce,2)+std(ExpForce,0,2);
                 LA3=mean(ExpForce,2);
                 %%% ploting motion 
-                figure
-                t = tiledlayout(4,2);
-                nexttile;
-                title(t,[filename]);
+                nexttile(t);
                 x=RefT;
                 x2 = [x, fliplr(x)];
                 RABetween = [RA1', fliplr(RA2')];
@@ -90,13 +103,18 @@ for A=1:length(AnalyzeMethod)
                 hold on
                 plot(x,VA3,'color',[Lcolorcode],'LineStyle','-');
                 ylabel('Veocity(degree/s)');
-                %%% Ploting EMG and activation of each muscle
-                for Flexmus=1:length(ExpMuscle)
+                %%% Ploting EMG and activation of each muscle              
+                for Flexmus=1:length(SelectedMuscle)
+                    count=count+1;
                     % Making new plot
-                    nexttile
+                    nexttile(kk)
+                    colororder([Lcolorcode;Rcolorcode])
                     % preapring data
-                    ExpMucs=ResultData.(filename).NormalExpEMG.(ExpMuscle(Flexmus)); %scaling
-                    SimMusc=ResultData.(filename).NormalSimEMG.(Transfername(Flexmus));
+                    ExpMucs=ResultData.(filename).NormalExpEMG.(SelectedMuscle(Flexmus)); %scaling
+%                     for i=1:3
+%                     y2=interp1(ExpMotion(:,i),ExpMucs(:,i),x','linear','extrap');
+%                     end
+                    SimMusc=ResultData.(filename).NormalSimActivation.(Transfername((SelectedMuscle(Flexmus)==ExpMuscle)));
                     RA1=mean(ExpMucs,2)-std(ExpMucs,0,2);
                     RA2=mean(ExpMucs,2)+std(ExpMucs,0,2);
                     RA3=mean(ExpMucs,2);
@@ -106,27 +124,26 @@ for A=1:length(AnalyzeMethod)
                     x2 = [x, fliplr(x)];
                     RABetween = [RA1', fliplr(RA2')];
                     yyaxis right
-                    fill(x2, RABetween,[0.6 1 0.6]*.8,'EdgeAlpha',0,'FaceAlpha',0.2)
+                    fill(x2, RABetween,[Rcolorcode]*.8,'EdgeAlpha',0,'FaceAlpha',0.2)
                     hold on
-                    plot(x,RA3,'color',[Lcolorcode],'LineStyle','-');
+                    plot(x,RA3,'color',[Rcolorcode],'LineStyle','-');
                     ylabel('EMG');
-%                     ylabel('Experiment activation');
+                    % ylabel('Experiment activation');
                     hold on
                     yyaxis left
                     LABetween = [LA1', fliplr(LA2')];
-                    fill(x2, LABetween,[1 0.5 1]*.8,'EdgeAlpha',0,'FaceAlpha',0.2)
-                    plot(x,LA3,'color',[Rcolorcode],'LineStyle','-');
-                    title([ExpMuscle(Flexmus)])
-                    xlabel('Normalized Time (%)');
+                    fill(x2, LABetween,[Lcolorcode]*.8,'EdgeAlpha',0,'FaceAlpha',0.2)
+                    plot(x,LA3,'color',[Lcolorcode],'LineStyle','-');
+                    if count<5
+                        title([SelectedMuscle(Flexmus)]);
+                    elseif count>12
+                         xlabel('Normalized Time (%)');
+                    elseif count
+                    end
                     ylabel('activation ');
 %                     legend('SD of Exp','SD of Sim','Mean of Exp','Mean of Sim');
                     hold off
                 end
-                
-%                 figure
-%                 x=RefT;
-
-                
             end
         end
     end
