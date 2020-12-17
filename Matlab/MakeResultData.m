@@ -1,12 +1,12 @@
 clear all
-folder = 'C:\MyCloud\OneDriveUcf\Real\Simulation\Source\T001\';
+folder = 'C:\MyCloud\OneDriveUcf\Real\Simulation\Source\T002\';
 AnalyzeMethod=["SOP","CMC"];
 Modelname={'Rajagopal'};
 Terials1=["Fl","Ex"];
-Terials2=["IsoK60","IsoK120","IsoK180","IsoK240","IsoM10","IsoM30","IsoM60","IsoM90"];
+Terials2=["IsoK60","IsoK120","IsoK180","IsoK240","IsoM10","IsoM30","IsoM45","IsoM60","IsoM90"];
 Terials3=["iter1","iter2","iter3"];
-ResultData.info.M_ThresholdMin=10*3.14/180;
-ResultData.info.M_ThresholdMax=90*3.14/180;
+ResultData.info.M_ThresholdMin=20*3.14/180;
+ResultData.info.M_ThresholdMax=80*3.14/180;
 ResultData.info.ForceRatio=0.4;
 SimMusclename=["bflh_r","bfsh_r","gaslat_r","gasmed_r","grac_r","recfem_r","sart_r","semimem_r","semiten_r","soleus_r","tfl_r","vasint_r","vaslat_r","vasmed_r"];
 ExpMuscle=["RBICF","RSEMT","RMGAS","RRECF","RVASL","RVASM"];
