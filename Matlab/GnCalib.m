@@ -1,8 +1,6 @@
-function [Ph,Pk,Pa]= GnCalib (folder)
-close all
-clear all
-% folder = 'C:\MyCloud\OneDriveUcf\Real\Simulation\Source\T002\Data\';
-Fname="P005_T002_GnCalib_";
+function [Ph,Pk,Pa]= GnCalib (dfolder,subjectname,plotflage)
+
+Fname =append(subjectname,"_GnCalib_");
 Names=["AnkleDors20","AnkleDors10","Ankle0","AnklePlant10","AnklePlant30","AnklePlant50"...
     ,"Hip0","Hip30","Hip60","Hip90"...
     ,"Knee0","Knee30","Knee45","Knee60","Knee90"];
@@ -11,9 +9,9 @@ HipGnCalibdata=[];
 KneeGnCalibdata=[];
 
 for i=1:length(Names)
-    GnCaldatadir=importdata(append(folder,Fname,Names(i),".csv"));
+    GnCaldatadir=importdata(append(dfolder,"\",Fname,Names(i),".csv"));
     [Gr,Gc]=find(strncmp(GnCaldatadir.textdata,'Gn',2));
-%     [Tr,Tc]=find(strncmp(GnCaldatadir.textdata,'X',1));
+    %     [Tr,Tc]=find(strncmp(GnCaldatadir.textdata,'X',1));
     Tc=[1,3];
     if length (GnCaldatadir.textdata)<4
         Tc=[1 1];
@@ -32,22 +30,41 @@ for i=1:length(Names)
     end
     
 end
-x=[-20,-10,0,10,30,50];
-Pa = polyfit(x,AnkelGnCalibdata(:,2)',2);
-y1 = polyval(Pa,x);
-plot(x,AnkelGnCalibdata(:,1),'*',x,y1,x,AnkelGnCalibdata(:,2),'*');
-title('Ankle')
-figure
-x=[0,30,60,90];
-Ph = polyfit(x,HipGnCalibdata(:,2)',2);
-y1 = polyval(Ph,x);
-plot(x,HipGnCalibdata(:,1),'*',x,y1,x,HipGnCalibdata(:,2),'*');
-title('Hip')
-figure
-x=[0,30,45,60,90];
-% x1 = linspace(0,4*pi)
-Pk = polyfit(x,KneeGnCalibdata(:,2)',2);
-y1 = polyval(Pk,x);
-plot(x,KneeGnCalibdata(:,1),'*',x,y1,x,KneeGnCalibdata(:,2),'*',x,-sqrt(KneeGnCalibdata(:,2).^2+KneeGnCalibdata(:,1).^2),'*');
-title('Knee')
+y=[20,10,0,-10,-30,-50];
+y=y./180*pi();
+x=AnkelGnCalibdata;
+Pa = polyfit(x(:,2)',y,2);
+y1 = polyval(Pa,x(:,2));
+if plotflage
+    plot(x(:,1),y,'*',x(:,2),y,'*',x(:,2),y1);
+    legend('A','B')
+    title('Ankle')
+end
+
+
+y=[0,30,60,90];
+y=y./180*pi();
+x=HipGnCalibdata;
+Ph = polyfit(x(:,2)',y,2);
+y1 = polyval(Ph,x(:,2));
+if plotflage
+    figure
+    plot(x(:,1),y,'*',x(:,2),y,'*',x(:,2),y1);
+    legend('A','B')
+    title('Hip')
+end
+
+
+y=[0,30,45,60,90];
+y=y./180*pi();
+x=KneeGnCalibdata;
+Pk = polyfit(x(:,2)',y,2);
+y1 = polyval(Pk,x(:,2));
+if plotflage
+    figure
+    plot(x(:,1),y,'*',x(:,2),y,'*',x(:,2),y1);
+    legend('A','B')
+    title('Knee')
+end
+
 end
