@@ -1,24 +1,25 @@
 clear all
-folder = 'C:\MyCloud\OneDriveUcf\Real\Simulation\Source\T002\';
+folder='C:\MyCloud\OneDriveUcf\Real\Simulation\Source\T002';
+psname='P005_T002';
+legname='RKnee';
+Subjectname =append(psname,"_",legname,"_");
 AnalyzeMethod=["SOP","CMC"];
 Modelname={'Rajagopal'};
 Terials1=["Fl","Ex"];
 Terials2=["IsoK60","IsoK120","IsoK180","IsoK240","IsoM10","IsoM30","IsoM45","IsoM60","IsoM90"];
 Terials3=["iter1","iter2","iter3"];
-ResultData.info.M_ThresholdMin=20*3.14/180;
-ResultData.info.M_ThresholdMax=80*3.14/180;
-ResultData.info.ForceRatio=0.4;
+load (append(folder,"\Data\",psname,"_ResultData.mat"));
 SimMusclename=["bflh_r","bfsh_r","gaslat_r","gasmed_r","grac_r","recfem_r","sart_r","semimem_r","semiten_r","soleus_r","tfl_r","vasint_r","vaslat_r","vasmed_r"];
 ExpMuscle=["RBICF","RSEMT","RMGAS","RRECF","RVASL","RVASM"];
     for A=2:length(AnalyzeMethod)
         for m=1:length(Modelname)
-            results_folder = append(folder,"Result\",Modelname(m),"\");
+            results_folder = append(folder,"\Result\",Modelname(m),"\");
             for T1=1:length(Terials1)
                 for T2=1:length(Terials2)
                     filename=append(Terials1(T1),"_",Terials2(T2));
-                    EMGFile=append(folder,"Data\P005_T001_Rknee_",filename,"_EMG.csv");
-                    ExForcefile=append(folder,"Data\P005_T001_Rknee_",filename,"_Torque.mot");
-                    IkFile=append(folder,"Data\P005_T001_Rknee_",filename,"_Motion.mot");
+                    EMGFile=append(folder,"\Data\",Subjectname,filename,"_EMG.csv");
+                    ExForcefile=append(folder,"\Data\",Subjectname,filename,"_Torque.mot");
+                    IkFile=append(folder,"\Data\",Subjectname,filename,"_Motion.mot");
                     % Importing files
                     FTable=importdata(ExForcefile);
                     MTable=importdata(IkFile);
@@ -28,7 +29,7 @@ ExpMuscle=["RBICF","RSEMT","RMGAS","RRECF","RVASL","RVASM"];
                     ResultData.(filename).('Motion').('full')=MTable.data(:,[1,6]);
                     ResultData.(filename).('ExpEMG').('full')=EMGtable.data;
                     %% Finding events
-                    Event=EventDetection(filename,FTable,ResultData.info.ForceRatio,MTable,[ResultData.info.M_ThresholdMin ResultData.info.M_ThresholdMax]);
+                    Event=EventDetection(filename,FTable.data,ResultData.info.ForceRatio,MTable.data,[ResultData.info.M_ThresholdMin ResultData.info.M_ThresholdMax]);
                     Stime=Event(:,1);
                     Etime=Event(:,2);
                     %% Trail check

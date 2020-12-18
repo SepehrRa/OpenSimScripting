@@ -4,10 +4,10 @@ path='C:\Program Files\OpenSim 4.1\Geometry';
 ModelVisualizer.addDirToGeometrySearchPaths(path);
 % C:\MyCloud\OneDriveUcf\Real\JD\GasContribution\OpenSimModel\SimulationDataAndSetupFiles-4.0\Subject1UnAffectedleg.osim
 %% File address %%
-folder = 'C:\MyCloud\OneDriveUcf\Real\Simulation\Source\T001\';
+folder = 'C:\MyCloud\OneDriveUcf\Real\Simulation\Source\T002\';
 % Scalemodel={'C:\MyCloud\OneDriveUcf\Real\JD\GasContribution\OpenSimModel\SimulationDataAndSetupFiles-4.0\Subject1UnAffectedleg.osim',...
 %     'C:\MyCloud\OneDriveUcf\Real\JD\GasContribution\OpenSimModel\PatellaModel\Scaled_UnAffected.osim'};
-
+psname='P005_T002';
 IKSteup='subject01_Setup_IK.xml';
 DynamicMarkerFile='New_subject01_walk1.trc';
 Resultdir='\Result\CMC\Rajagopal\';
@@ -24,15 +24,13 @@ Modelname={'Rajagopal'};
 Terials1=["Fl","Ex"];
 Terials2=["IsoM10","IsoM30","IsoM60","IsoM90","IsoK60","IsoK120","IsoK180","IsoK240"];
 Terials3=["iter1","iter2","iter3"];
-load ([folder '\Data\FinalData_Seperated.mat']);
-M_ThresholdMin=10*3.14/180;
-M_ThresholdMax=90*3.14/180;
-ForceRatio=0.4;
+load (append(folder,"\Data\",psname,"_ResultData.mat"));
 
 TimeT=zeros(4,2);
 % for A=1:length(AnalyzeMethod)
     for m=1:length(Modelname)
         results_folder = append(folder,"Result\",Modelname(m),"\");
+        status = mkdir(append(results_folder,"ID\"));
         %   IK_file=append(results_folder,name,'_ik.mot');
         %   NewExForcesetup=append(results_folder,'New_subject01_walk1_grf.xml');
         CMCSetup=append('CMC\',Modelname(m),'\CMC_Setup_I0.xml');
@@ -40,16 +38,16 @@ TimeT=zeros(4,2);
         for T1=1:length(Terials1)
             for T2=1:length(Terials2)
                 filename=append(Terials1(T1),"_",Terials2(T2));
-                ExLoad=ExternalLoads(append(results_folder,"P005_T001_ExForce_RLeg.xml"),true);
-                ExForcefile=append(folder,"Data\P005_T001_Rknee_",filename,"_Torque.mot");
+                ExLoad=ExternalLoads(append(results_folder,psname,"_ExForce_RLeg.xml"),true);
+                ExForcefile=append(folder,"Data\",psname,"_Rknee_",filename,"_Torque.mot");
                 FTable=importdata(ExForcefile);
                 ExLoad.setDataFileName(ExForcefile);
                 NewExForcefile=append(results_folder,"ID\",filename,"_ExForce_Setup.xml");
                 ExLoad.print(NewExForcefile)
-                IkFile=append(folder,"Data\P005_T001_Rknee_",filename,"_Motion.mot");
-                Event=EventDetection(filename,FTable,ForceRatio,IkFile,[M_ThresholdMin M_ThresholdMax]);
-                Stime=Event(:,1);
-                Etime=Event(:,2);
+                IkFile=append(folder,"Data\",psname,"_Rknee_",filename,"_Motion.mot");
+%                 Event=EventDetection(filename,FTable,ForceRatio,IkFile,[M_ThresholdMin M_ThresholdMax]);
+%                 Stime=Event(:,1);
+%                 Etime=Event(:,2);
 %                 ikTool=InverseKinematicsTool([folder IKSteup]); % to read xml file for IK
 %                 ikTool.setModel(model);
 %                 ikTool.setMarkerDataFileName(Markerfile);
@@ -71,10 +69,10 @@ TimeT=zeros(4,2);
                     results_folder2=append(results_folder,AnalyzeMethod,"\",filename,"\",Terials3(itr),"\");
                     status = mkdir(results_folder2(1));
                     status = mkdir(results_folder2(2));
-                    Stime=ResultData.(filename).time.(Terials3(itr))(1);
-                    Etime=ResultData.(filename).time.(Terials3(itr))(end);
+                    Stime=ResultData.(filename).time.Exp.(Terials3(itr))(1);
+                    Etime=ResultData.(filename).time.Exp.(Terials3(itr))(end);
                     %% SOP %%%%%
-                    analysis = AnalyzeTool(append(results_folder,"P005_T001_SOP_Setup_ref.xml"));
+                    analysis = AnalyzeTool(append(results_folder,psname,"_SOP_Setup_ref.xml"));
                     analysis.setName(append(Modelname(m),'_',filename,'_',Terials3(itr)))
                     analysis.setInitialTime(Stime(1));
                     analysis.setFinalTime(Etime(1));
@@ -84,9 +82,9 @@ TimeT=zeros(4,2);
                     analysis.setLoadModelAndInput(true);
                     analysis.setResultsDir(append(results_folder2(1)));
                     analysis.print(append(results_folder2(1),filename,"_",AnalyzeMethod(1),"_Setup.xml"))
-%                     analysis.run();
+                    analysis.run();
                     %% CMC %%%%%
-                    cmc = CMCTool(append(results_folder,"P005_T001_CMC_Setup_ref.xml"));
+                    cmc = CMCTool(append(results_folder,psname,"_CMC_Setup_ref.xml"));
                     cmc.setName(append(Modelname(m),'_',filename,'_',Terials3(itr),'_CMC'))
                     cmc.setDesiredKinematicsFileName(IkFile);
                     cmc.setExternalLoadsFileName(NewExForcefile);
