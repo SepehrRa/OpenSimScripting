@@ -1,27 +1,35 @@
 clear all;
-% close all;
+close all;
 clc;
 % Some times there is no need to import raw data because all data will
 % save in FinalDatafor first time. readflage=1 means import files again.
 readflage= 0;
 % folder=uigetdir(); % get Data directory
 folder='C:\MyCloud\OneDriveUcf\Real\Simulation\Source\T002\Data';
-fname = 'P005_T002_RKnee_';
+Pardata=importdata(append(folder,"\","Parameters.csv"));
+ResultData.info.ForceRatio=Pardata.data(1);
+ResultData.info.M_ThresholdMin=Pardata.data(2);
+ResultData.info.M_ThresholdMax=Pardata.data(3);
+psname='P005_T002';
+legname='RKnee';
+Subjectname =append(psname,"_",legname,"_");
 Terials1=["Ex","Fl"];
 Terials2=["IsoK60","IsoK120","IsoK180","IsoK240","IsoM10","IsoM30","IsoM45","IsoM60","IsoM90"];
+Terials3=["iter1","iter2","iter3"];
 % Terials1=["Fl"];
 % Terials2=["IsoK60"];
 Fdata=[];
 Gdata=[0];
 k=0;
-DStime=0.0005192; % desired sampling time
+% DStime=0.0005192; % desired sampling time
+DStime=0.01;
 %
 if readflage
     for T1=1:length(Terials1)
         for T2=1:length(Terials2)
             
             Namedr=append(Terials1(T1),'_',Terials2(T2));
-            Datadr=append(folder,"\",fname,Terials1(T1),"_",Terials2(T2),".csv");
+            Datadr=append(folder,"\",Subjectname,Terials1(T1),"_",Terials2(T2),".csv");
             data=importdata(Datadr);
             for ii=2:2:length(data.textdata)
                 kk=1;
@@ -67,6 +75,8 @@ load ([folder '\FinalData.mat']);
 Dataheadermotion=['time\tpelvis_tilt\tpelvis_tx\tpelvis_ty\thip_flexion_r\tknee_angle_r\tankle_angle_r'];
 Dataheaderforce=['time\treaction_force_vx\treaction_force_vy\treaction_force_vz\treaction_force_px\treaction_force_py\treaction_force_pz\treaction_torque_x\treaction_torque_y\treaction_torque_z'];
 DataheaderEMG=['time\t'];
+%getting goniometer calibration coefficient
+[Ph,Pk,Pa]= GnCalib(folder,psname,0);
 for T1=1:length(Terials1)
     for T2=1:length(Terials2)
         Namedr=append(Terials1(T1),"_",Terials2(T2));
@@ -83,38 +93,42 @@ for T1=1:length(Terials1)
         [re,ce]=find(contains(HData,'EMG')&~contains(HData,'RMS'));
         [r,c]=size(Data);
         %% Process on Motion Data
-        [Ph,Pk,Pa]= GnCalib(folder);
-        Gon=Data(:,ca);
         
-        
-        CalGon=-0.0058.*Gon.^2-1.62.*Gon+1.14;  % Goniometer calibration, This equation would change base on ne calibration curve
-        CalGon(CalGon<0)=0;
-        Data(:,ca)=CalGon.*pi()./180;
-        
+        %knee calibration
+        GonK=Data(:,ck(2));
+        GonCalibratedK = polyval(Pk,GonK);
+        GonCalibratedK(GonCalibratedK<0)=0;
+        %Hip calibration
+        GonH=Data(:,ch(2));
+        GonCalibratedH = polyval(Ph,GonH);
+        %Ankle calibration
+        GonA=Data(:,ca(2));
+        GonCalibratedA = polyval(Pa,GonA);
+
         %% Save Motion
         delimiterIn='\t';
-        F_fnames=[fname,char(Namedr),'_Motion.mot'];
+        F_fnames=append(Subjectname,char(Namedr),'_Motion.mot');
         Title='\nversion=1\nnRows=%d\nnColumns=%d\nInDegrees=no\nendheader\n';
-        Datadata=[1,0,0.055,1.059,1,1,0].*ones(r,7);
-        Datadata(:,[1,5,6])=[Data(:,1),Data(:,ch(2)),Data(:,ck(2))];
-        Titledata=[r,length(Datadata(1,:))];
-        makefile(folder,F_fnames,Title,Titledata,Dataheadermotion,Datadata,5,delimiterIn);
+        MDatadata=[1,0,0.055,1.059,1,1,0].*ones(r,7);
+        MDatadata(:,[1,5,6,7])=[Data(:,1),GonCalibratedH,GonCalibratedK,GonCalibratedA];
+        Titledata=[r,length(MDatadata(1,:))];
+        makefile(folder,F_fnames,Title,Titledata,Dataheadermotion,MDatadata,5,delimiterIn);
         %% Process Force
         A=[];
         x=1*Data(:,cb(1)); %data of a trial
         Mb=-1.*(141.81.*x-25.047);
         %% Save Force
-        F_fnames=[fname,char(Namedr),'_Torque.mot'];
-        Datadata=[Data(:,1),zeros(r,8),Mb];
-        Titledata=[r,length(Datadata(1,:))];
-        makefile(folder,F_fnames,Title,Titledata,Dataheaderforce,Datadata,5,delimiterIn);
+        F_fnames=append(Subjectname,char(Namedr),'_Torque.mot');
+        FDatadata=[Data(:,1),zeros(r,8),Mb];
+        Titledata=[r,length(FDatadata(1,:))];
+%         makefile(folder,F_fnames,Title,Titledata,Dataheaderforce,FDatadata,5,delimiterIn);
         
         %% Process on EMG
         %         EMGChecker(Data(:,ce(1)),HData(ce(1)));
         EMGfilt = EMGFilter(Data(:,ce),0.5,5,4,1/DStime);
         %% Save EMG
         delimiterIn=',';
-        F_fnames=[fname,char(Namedr),'_EMG.csv'];
+        F_fnames=append(Subjectname,char(Namedr),'_EMG.csv');
         DataheaderEMG=['time' delimiterIn];
         for hh=1:length(ce)
             HD=char(HData(ce(hh)));
@@ -136,7 +150,22 @@ for T1=1:length(Terials1)
         end
         Datadata=[Data(:,1),EMGfilt];
         Titledata=[r,length(Datadata(1,:))];
-        makefile (folder,F_fnames,Title,Titledata,DataheaderEMG,Datadata,8,delimiterIn);
+%         makefile (folder,F_fnames,Title,Titledata,DataheaderEMG,Datadata,8,delimiterIn);
+        
+        %% Finding events
+        Event=EventDetection(Namedr,FDatadata,ResultData.info.ForceRatio,MDatadata,[ResultData.info.M_ThresholdMin ResultData.info.M_ThresholdMax]);
+        Stime=Event(:,1);
+        Etime=Event(:,2);
+        %% Trail check
+        if length(Stime)~=3||length(Etime)~=3
+            fprintf('\nERROR: %s Wrong trail ...\n\n', Namedr);
+        end
+        %% Strat reading Simulation files
+        for itr=1:length(Stime)
+            Expindx=find(Data(:,1)>=Stime(itr)&Data(:,1)<=Etime(itr));
+            ResultData.(Namedr).('time').Exp.(Terials3(itr))=Data(Expindx,1);
+        end
     end
 end
+save (append(folder,"\",psname,"_ResultData.mat"),'ResultData');
 
