@@ -18,6 +18,8 @@ Terials2=["IsoK60","IsoK120","IsoK180","IsoK240","IsoM10","IsoM30","IsoM45","Iso
 Terials3=["iter1","iter2","iter3"];
 % Terials1=["Fl"];
 % Terials2=["IsoK60"];
+ArmWeight=2.72;
+ArmCOM=0.218;
 Fdata=[];
 Gdata=[0];
 k=0;
@@ -72,7 +74,7 @@ if readflage
 end
 %%
 load ([folder '\FinalData.mat']);
-Dataheadermotion=['time\tpelvis_tilt\tpelvis_tx\tpelvis_ty\thip_flexion_r\tknee_angle_r\tankle_angle_r'];
+Dataheadermotion=['time\tpelvis_tilt\tpelvis_tx\tpelvis_ty\thip_flexion_r\thip_adduction_r\thip_rotation_r\tknee_angle_r\tsubtalar_angle_r\tankle_angle_r'];
 Dataheaderforce=['time\treaction_force_vx\treaction_force_vy\treaction_force_vz\treaction_force_px\treaction_force_py\treaction_force_pz\treaction_torque_x\treaction_torque_y\treaction_torque_z'];
 DataheaderEMG=['time\t'];
 %getting goniometer calibration coefficient
@@ -109,14 +111,19 @@ for T1=1:length(Terials1)
         delimiterIn='\t';
         F_fnames=append(Subjectname,char(Namedr),'_Motion.mot');
         Title='\nversion=1\nnRows=%d\nnColumns=%d\nInDegrees=no\nendheader\n';
-        MDatadata=[1,0,0.055,1.059,1,1,0].*ones(r,7);
-        MDatadata(:,[1,5,6,7])=[Data(:,1),GonCalibratedH,GonCalibratedK,GonCalibratedA];
+        MDatadata=[1,0,0.055,1.059,1,0,0,1,0,0].*ones(r,10);
+        MDatadata(:,[1,5,8,10])=[Data(:,1),GonCalibratedH,GonCalibratedK,GonCalibratedA];
         Titledata=[r,length(MDatadata(1,:))];
         makefile(folder,F_fnames,Title,Titledata,Dataheadermotion,MDatadata,5,delimiterIn);
         %% Process Force
-        A=[];
+        %%% Caculating Torque from Arm
+        BiodexAngle=-35.55*Data(:,cb(2))+105;
+        ArmTorque=cos(BiodexAngle*pi()/180)*ArmWeight*9.8*ArmCOM;
+        %%% Calcuating Torque from biodex
         x=1*Data(:,cb(1)); %data of a trial
-        Mb=-1.*(141.81.*x-25.047);
+        TotalTorque=-1.*(141.81.*x-25.047);
+        %%% Arm weight compensation 
+        Mb=TotalTorque-ArmTorque;
         %% Save Force
         F_fnames=append(Subjectname,char(Namedr),'_Torque.mot');
         FDatadata=[Data(:,1),zeros(r,8),Mb];
@@ -153,7 +160,7 @@ for T1=1:length(Terials1)
 %         makefile (folder,F_fnames,Title,Titledata,DataheaderEMG,Datadata,8,delimiterIn);
         
         %% Finding events
-        Event=EventDetection(Namedr,FDatadata,ResultData.info.ForceRatio,MDatadata,[ResultData.info.M_ThresholdMin ResultData.info.M_ThresholdMax]);
+        Event=EventDetection(Namedr,FDatadata(:,1),FDatadata(:,10),ResultData.info.ForceRatio,MDatadata(:,8),[ResultData.info.M_ThresholdMin ResultData.info.M_ThresholdMax]);
         Stime=Event(:,1);
         Etime=Event(:,2);
         %% Trail check
