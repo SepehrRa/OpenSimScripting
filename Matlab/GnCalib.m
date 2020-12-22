@@ -33,7 +33,7 @@ end
 y=[20,10,0,-10,-30,-50];
 y=y./180*pi();
 x=AnkelGnCalibdata;
-Pa = polyfit(x(:,2)',y,2);
+Pa = polyfit(x(:,2)',y,1);
 y1 = polyval(Pa,x(:,2));
 if plotflage
     plot(x(:,1),y,'*',x(:,2),y,'*',x(:,2),y1);
@@ -58,7 +58,7 @@ end
 y=[0,30,45,60,90];
 y=y./180*pi();
 x=KneeGnCalibdata;
-Pk = polyfit(x(:,2)',y,2);
+Pk = polyfit(x(:,2)',y,1);
 y1 = polyval(Pk,x(:,2));
 if plotflage
     figure
