@@ -22,7 +22,7 @@ genericSetupForScale='subject01_Setup_Scale.xml';
 AnalyzeMethod=["SOP","CMC"];
 Modelname={'Rajagopal'};
 Terials1=["Fl","Ex"];
-Terials2=["IsoM10","IsoM30","IsoM60","IsoM90","IsoK60","IsoK120","IsoK180","IsoK240"];
+Terials2=["IsoM10","IsoM30","IsoM45","IsoM60","IsoM90","IsoK60","IsoK120","IsoK180","IsoK240"];
 Terials3=["iter1","iter2","iter3"];
 load (append(folder,"\Data\",psname,"_ResultData.mat"));
 
@@ -65,7 +65,7 @@ TimeT=zeros(4,2);
 %                 idTool.setOutputGenForceFileName(append(filename,"_ID.sto"))
 %                 idTool.print(append(results_folder,"ID\",filename,"_ID_Setup.xml"));
 %                 idTool.run();
-                for itr=1:length(fieldnames(ResultData.(filename).time))
+                for itr=1:length(fieldnames(ResultData.(filename).time.Exp))
                     results_folder2=append(results_folder,AnalyzeMethod,"\",filename,"\",Terials3(itr),"\");
                     status = mkdir(results_folder2(1));
                     status = mkdir(results_folder2(2));
