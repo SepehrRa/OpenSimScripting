@@ -25,7 +25,7 @@ AnalyzeMethod=["SOP","CMC"];
 Terials1=["Fl","Ex"];
 Terials2=["IsoM10","IsoM30","IsoM45","IsoM60","IsoM90","IsoK60","IsoK120","IsoK180","IsoK240"];
 Terials3=["iter1","iter2","iter3"];
-load (append(folder,"\Data\",psname,"_ResultData.mat"));
+load (append(folder,"Result\",psname,"_ResultData.mat"));
 
 TimeT=zeros(4,2);
 % for A=1:length(AnalyzeMethod)
