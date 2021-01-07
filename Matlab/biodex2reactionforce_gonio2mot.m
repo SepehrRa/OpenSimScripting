@@ -3,7 +3,7 @@ close all;
 clc;
 % Some times there is no need to import raw data because all data will
 % save in FinalDatafor first time. readflage=1 means import files again.
-readflage= 0;
+readflage= 1;
 % folder=uigetdir(); % get Data directory
 SubjectNumber='T002';
 Project='P005';
@@ -79,7 +79,7 @@ if readflage
     
 end
 %%
-load ([Datafolder '\FinalData.mat']);
+load ([Datafolder '\RawData.mat']);
 Dataheadermotion=['time\tpelvis_tilt\tpelvis_tx\tpelvis_ty\thip_flexion_r\thip_adduction_r\thip_rotation_r\tknee_angle_r\tsubtalar_angle_r\tankle_angle_r'];
 Dataheaderforce=['time\treaction_force_vx\treaction_force_vy\treaction_force_vz\treaction_force_px\treaction_force_py\treaction_force_pz\treaction_torque_x\treaction_torque_y\treaction_torque_z'];
 DataheaderEMG=['time\t'];
