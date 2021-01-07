@@ -20,7 +20,8 @@ name='P001_T001';
 genericSetupForScale='subject01_Setup_Scale.xml';
 
 AnalyzeMethod=["SOP","CMC"];
-Modelname={'Rajagopal'};
+% Modelname=["Arnold","Rajagopal"];
+ Modelname=["Rajagopal"];
 Terials1=["Fl","Ex"];
 Terials2=["IsoM10","IsoM30","IsoM45","IsoM60","IsoM90","IsoK60","IsoK120","IsoK180","IsoK240"];
 Terials3=["iter1","iter2","iter3"];
