@@ -1,10 +1,10 @@
 clear all
 close all
-folder = 'C:\MyCloud\OneDriveUcf\Real\Simulation\Source\T001\';
-AnalyzeMethod=["SOP","CMC"];
-Modelname={'Rajagopal'};
+% folder = 'C:\MyCloud\OneDriveUcf\Real\Simulation\Source\T002\';
+AnalyzeMethod=["CMC"];
+Modelname=["Rajagopal"];
 Terials1=["Ex","Fl"];
-Terials2=["IsoM10","IsoM30","IsoM60","IsoM90","IsoK60","IsoK120","IsoK180","IsoK240"];
+Terials2=["IsoM10","IsoM30","IsoM45","IsoM60","IsoM90","IsoK60","IsoK120","IsoK180","IsoK240"];
 Terials3=["iter1","iter2","iter3"];
 TimeT=zeros(4,2);
 delimiterIn = ',';
@@ -28,8 +28,12 @@ Transfername=["bflh_r","semiten_r","gasmed_r","recfem_r","vaslat_r","vasmed_r"];
 RefT=0:.1:100;
 
 %% Finding maximum EMG
-   
-load ([folder '\Data\T01ResultData.mat']);
+SubjectNumber='T002';
+Project='P005';
+folder=append('C:\MyCloud\OneDriveUcf\Real\Simulation\Source\',SubjectNumber);
+psname=append(Project,'_',SubjectNumber);
+results_folder = append(folder,"\Result");   
+load (append(results_folder,"\",psname,"_SimExpResultData.mat"));
 %%
 
 % xlabel(kk,'Normalized Time (%)');
@@ -52,14 +56,14 @@ for A=1:length(AnalyzeMethod)
             title(t,[Terials1(T1) 'Vecocity-Force-Motion']);
             TrialCounter=0;
             count=0;
-            for T2=5:length(Terials2)
+            for T2=6:length(Terials2)
                 
                 TrialCounter=TrialCounter+1;
                 filename=append(Terials1(T1),"_",Terials2(T2));
                 % Reading Data
-                ExpMotion=(ResultData.(filename).NormalMotion)./pi()*180; %scaling
-                Time=ResultData.(filename).time.NormalT;
-                ExpForce=ResultData.(filename).NormalExpForce;
+                ExpMotion=(ResultData.(filename).(Modelname(m)).(AnalyzeMethod(A)).NormalMotion)./pi()*180; %scaling
+                Time=ResultData.(filename).(Modelname(m)).(AnalyzeMethod(A)).time.NormalT;
+                ExpForce=ResultData.(filename).(Modelname(m)).(AnalyzeMethod(A)).NormalExpForce;
                 % Calculating Velocity 
                 Vel=[0 0 0;diff(ExpMotion)./diff(Time)];
                 % Making avarage and +- sd of Motion 
@@ -110,11 +114,11 @@ for A=1:length(AnalyzeMethod)
                     nexttile(kk)
                     colororder([Lcolorcode;Rcolorcode])
                     % preapring data
-                    ExpMucs=ResultData.(filename).NormalExpEMG.(SelectedMuscle(Flexmus)); %scaling
+                    ExpMucs=ResultData.(filename).(Modelname(m)).(AnalyzeMethod(A)).NormalExpEMG.(SelectedMuscle(Flexmus)); %scaling
 %                     for i=1:3
 %                     y2=interp1(ExpMotion(:,i),ExpMucs(:,i),x','linear','extrap');
 %                     end
-                    SimMusc=ResultData.(filename).NormalSimActivation.(Transfername((SelectedMuscle(Flexmus)==ExpMuscle)));
+                    SimMusc=ResultData.(filename).(Modelname(m)).(AnalyzeMethod(A)).NormalSimActivation.(Transfername((SelectedMuscle(Flexmus)==ExpMuscle)));
                     RA1=mean(ExpMucs,2)-std(ExpMucs,0,2);
                     RA2=mean(ExpMucs,2)+std(ExpMucs,0,2);
                     RA3=mean(ExpMucs,2);
@@ -149,45 +153,100 @@ for A=1:length(AnalyzeMethod)
     end
 end
 end
-
+% Trials=cell(length(Terials1).*length(Terials2),1);
 %plotting avarage EMG 
+ Trials={};
 for T1=1:length(Terials1)
     for T2=1:length(Terials2)
         TrialCounter=TrialCounter+1;
         filename=append(Terials1(T1),"_",Terials2(T2));
         for Flmus=1:length(ExpMuscle)
-            ResultData.(filename).('ExpEMG').(ExpMuscle(Flmus));
-            MeanEmg(k,Flmus)=mean(EMGtable.data(Expindx,strncmp(EMGtable.colheaders,ExpMuscle(Flmus),5)));
+             for itr=1:length(fieldnames(ResultData.(filename).time.Exp))
+            
+            MeanEmg(itr)=mean(ResultData.(filename).ExpEMG.(ExpMuscle(Flmus)).(Terials3(itr)));
+            MeanActivation(itr)=mean(ResultData.(filename).(Modelname(1)).(AnalyzeMethod(1)).SimActivation.(Transfername(Flmus)).(Terials3(itr)));
+             end
+             MeanEmg2(TrialCounter,Flmus)=mean(MeanEmg,2);
+             MeanActivation2(TrialCounter,Flmus)=mean(MeanActivation,2);
         end
+        Trials=[Trials;filename];
     end
 end
+T = array2table(MeanEmg2,'VariableNames',ExpMuscle);
+T.Trails=Trials;
+% writetable(T,append(results_folder,'\EMG.csv'))
+T = T(:,ExpMuscle);
+MaxEMG=max(MeanEmg2);
 
-
- a=["Fl_IsoK","Fl_IsoM","Ex_IsoK","Ex_IsoM"'];
- e = tiledlayout(2,2);
- qq=0;
-for kk=1:4:16
-qq=qq+1;
+%%%%% EMG plot
+ a=["Ex_IsoM","Fl_IsoM","Ex_IsoK","Fl_IsoK",];
+ figure
+ tid = tiledlayout(2,2);
+for e=1:1:2
 nexttile(e);
-Y=ResultData.MaxEMG.data([kk:kk+3],:);
-X=[10 30 60 90];
+Y=MeanEmg2([1:5]+((e-1)*9),:)./MaxEMG;
+X=[10 30 45 60 90];
 plot(X,Y,'-*');
-legend(ExpMuscle)
-title(a(qq));
+title(a(e));
+ylabel('EMG');
+ylim([0 1])
+legend(ExpMuscle,'Location','northwest')
 end
-e = tiledlayout(1,2);
+for e=1:1:2
+nexttile(e+2);
+Y=MeanEmg2([6:9]+((e-1)*9),:)./MaxEMG;
+X=[60 120 180 240];
+plot(X,Y,'-*');
+title(a(e+2));
+ylabel('EMG');
+legend(ExpMuscle,'Location','northwest')
+ylim([0 1])
+end
+title(tid,'Experiment')
+
+%%%%%% Activation plot
+a=["Ex_IsoM","Fl_IsoM","Ex_IsoK","Fl_IsoK",];
+ figure
+ tid = tiledlayout(2,2);
+for e=1:1:2
+nexttile(e);
+Y=MeanActivation2([1:5]+((e-1)*9),:);
+X=[10 30 45 60 90];
+plot(X,Y,'-*');
+title(a(e));
+ylabel('Activation');
+ylim([0 1])
+legend(ExpMuscle,'Location','northwest')
+end
+for e=1:1:2
+nexttile(e+2);
+Y=MeanActivation2([6:9]+((e-1)*9),:);
+X=[60 120 180 240];
+plot(X,Y,'-*');
+title(a(e+2));
+ylabel('Activation');
+ylim([0 1])
+legend(ExpMuscle,'Location','northwest')
+end
+title(tid,'Simulation')
+
+%%%%%%%%%
+figure
+tid = tiledlayout(1,2);
 %%
-ratio=ResultData.MaxEMG.data([1:8],:)./ResultData.MaxEMG.data([9:16],:);
+a=["IsoM","IsoK"];
+ratio=MeanEmg2([1:8],:)./MeanEmg2([9:16],:);
 qq=0;
 for kk=1:4:8
 qq=qq+1;
-nexttile(e);
+nexttile(qq);
 % Y=ResultData.EMG.data([kk:kk+3],:);
-X=[10 30 60 90];
-plot(X,ratio,'-*');
+X=[10 30 45 60 90];
+plot(X,ratio([kk:kk+3],:),'-*');
 legend(ExpMuscle)
-title(["IsoK","IsoM"]);
+title(a(qq));
 end
+legend(ExpMuscle)
 %%
 for kk=1:4:16
 qq=qq+1;
@@ -198,6 +257,7 @@ plot(X,Y,'-*');
 legend(ExpMuscle)
 title(a(qq));
 end
+
 X=[10 30 60 90];
  a=["Fl_IsoK","Fl_IsoM","Ex_IsoK","Ex_IsoM"'];
 e = tiledlayout(2,2);
