@@ -2,9 +2,9 @@ clear all
 close all
 % folder = 'C:\MyCloud\OneDriveUcf\Real\Simulation\Source\T002\';
 AnalyzeMethod=["CMC"];
-Modelname=["Rajagopal"];
+Modelname=["Rajagopal","Arnold"];
 Terials1=["Ex","Fl"];
-Terials2=["IsoM10","IsoM30","IsoM45","IsoM60","IsoM90","IsoK60","IsoK120","IsoK180","IsoK240"];
+Terials2=["IsoM10","IsoM30","IsoM60","IsoM90","IsoK60","IsoK120","IsoK180","IsoK240"];
 Terials3=["iter1","iter2","iter3"];
 TimeT=zeros(4,2);
 delimiterIn = ',';
@@ -20,11 +20,13 @@ Rcolorcode=[0.4940 0.1840 0.5560];
 
 SimMusclename=["bflh_r","bfsh_r","gaslat_r","gasmed_r","grac_r","recfem_r","sart_r","semimem_r","semiten_r","soleus_r","tfl_r","vasint_r","vaslat_r","vasmed_r"];
 ExpMuscle=["RBICF","RSEMT","RMGAS","RRECF","RVASL","RVASM"];
-SelectedMuscle=["RSEMT","RMGAS","RVASL","RRECF"];
 %%% Defining transfer variable in the order to convert name of muscles in simulation to EMG sensors name 
 %%% It must be in same dimention of ExpMuscle and each elemt of the Transfername is equal name to ExpMuscle
 %%% Forexample ExpMuscle(1) is "RBICF" and equal name of this muscle in Rajagopal model would be "bflh_r" 
 Transfername=["bflh_r","semiten_r","gasmed_r","recfem_r","vaslat_r","vasmed_r"];
+SelectedMuscle=["RSEMT","RMGAS","RVASL","RRECF"];
+
+
 RefT=0:.1:100;
 
 %% Finding maximum EMG
