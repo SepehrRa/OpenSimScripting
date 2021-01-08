@@ -20,7 +20,7 @@ Rcolorcode=[0.4940 0.1840 0.5560];
 
 SimMusclename=["bflh_r","bfsh_r","gaslat_r","gasmed_r","grac_r","recfem_r","sart_r","semimem_r","semiten_r","soleus_r","tfl_r","vasint_r","vaslat_r","vasmed_r"];
 ExpMuscle=["RBICF","RSEMT","RMGAS","RRECF","RVASL","RVASM"];
-SelectedMuscle=["RSEMT","RMGAS","RVASL","RVASM"];
+SelectedMuscle=["RSEMT","RMGAS","RVASL","RRECF"];
 %%% Defining transfer variable in the order to convert name of muscles in simulation to EMG sensors name 
 %%% It must be in same dimention of ExpMuscle and each elemt of the Transfername is equal name to ExpMuscle
 %%% Forexample ExpMuscle(1) is "RBICF" and equal name of this muscle in Rajagopal model would be "bflh_r" 
@@ -172,10 +172,10 @@ for T1=1:length(Terials1)
         Trials=[Trials;filename];
     end
 end
-T = array2table(MeanEmg2,'VariableNames',ExpMuscle);
-T.Trails=Trials;
+% T = array2table(MeanEmg2,'VariableNames',ExpMuscle);
+% T.Trails=Trials;
 % writetable(T,append(results_folder,'\EMG.csv'))
-T = T(:,ExpMuscle);
+% T = T(:,ExpMuscle);
 MaxEMG=max(MeanEmg2);
 
 %%%%% EMG plot
