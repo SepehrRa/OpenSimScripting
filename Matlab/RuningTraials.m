@@ -2,18 +2,13 @@ clear all
 import org.opensim.modeling.*
 path='C:\Program Files\OpenSim 4.1\Geometry';
 ModelVisualizer.addDirToGeometrySearchPaths(path);
-% C:\MyCloud\OneDriveUcf\Real\JD\GasContribution\OpenSimModel\SimulationDataAndSetupFiles-4.0\Subject1UnAffectedleg.osim
 %% File address %%
 folder = 'C:\MyCloud\OneDriveUcf\Real\Simulation\Source\T002\';
-% Scalemodel={'C:\MyCloud\OneDriveUcf\Real\JD\GasContribution\OpenSimModel\SimulationDataAndSetupFiles-4.0\Subject1UnAffectedleg.osim',...
-%     'C:\MyCloud\OneDriveUcf\Real\JD\GasContribution\OpenSimModel\PatellaModel\Scaled_UnAffected.osim'};
 psname='P005_T002';
 IKSteup='subject01_Setup_IK.xml';
 DynamicMarkerFile='New_subject01_walk1.trc';
 Resultdir='\Result\CMC\Rajagopal\';
 ExForceSetup='P005_T001_ExForce.xml';
-% Markerfile=[folder 'CMC\Rajagopal'];
-% Modelname={'Thelen';'Rajagopal'};
 
 name='P001_T001';
 
@@ -25,9 +20,8 @@ Terials1=["Fl","Ex"];
 Terials2=["IsoM10","IsoM30","IsoM45","IsoM60","IsoM90","IsoK60","IsoK120","IsoK180","IsoK240"];
 Terials3=["iter1","iter2","iter3"];
 load (append(folder,"Result\",psname,"_ResultData.mat"));
-
+%% Runing simulation
 TimeT=zeros(4,2);
-% for A=1:length(AnalyzeMethod)
     for m=1:length(Modelname)
         results_folder = append(folder,"Result\",Modelname(m),"\");
         status = mkdir(append(results_folder,"ID\"));
@@ -45,16 +39,6 @@ TimeT=zeros(4,2);
                 NewExForcefile=append(results_folder,"ID\",filename,"_ExForce_Setup.xml");
                 ExLoad.print(NewExForcefile)
                 IkFile=append(folder,"Data\",psname,"_Rknee_",filename,"_Motion.mot");
-%                 Event=EventDetection(filename,FTable,ForceRatio,IkFile,[M_ThresholdMin M_ThresholdMax]);
-%                 Stime=Event(:,1);
-%                 Etime=Event(:,2);
-%                 ikTool=InverseKinematicsTool([folder IKSteup]); % to read xml file for IK
-%                 ikTool.setModel(model);
-%                 ikTool.setMarkerDataFileName(Markerfile);
-%                 ikTool.setStartTime(initial_time);
-%                 ikTool.setEndTime(final_time);
-%                 ikTool.setOutputMotionFileName(IK_file);
-%                 ikTool.print([results_folder name '_IK_Setup.xml']);
                 %% ID %%%%
 %                 idTool=	InverseDynamicsTool(append(results_folder,"P005_T001_ID_Setup_ref.xml"));
 %                 idTool.setStartTime(FTable.data(1,1));
@@ -101,7 +85,7 @@ TimeT=zeros(4,2);
             end
         end
     end
-% end
+
 
 % look at AbstractTool () to find more subclass for time range 
 
