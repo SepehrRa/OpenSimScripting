@@ -6,20 +6,25 @@ psname=append(Project,'_',SubjectNumber);
 legname='RKnee';
 Subjectname =append(psname,"_",legname,"_");
 AnalyzeMethod=["CMC"];
-Modelname=["Rajagopal"];
-Terials1=["Fl","Ex"];
-Terials2=["IsoK60","IsoK120","IsoK180","IsoK240","IsoM10","IsoM30","IsoM45","IsoM60","IsoM90"];
+Modelname=["Rajagopal","Arnold"];
+% Modelname=["Arnold"];
+Terials1=["Fl"];
+% Terials2=["IsoM10","IsoM30","IsoM45","IsoM60","IsoM90","IsoK60","IsoK120","IsoK180","IsoK240"];
+Terials2=["IsoM10","IsoM30","IsoM45","IsoM60","IsoM90","IsoK60","IsoK120"];
 Terials3=["iter1","iter2","iter3"];
- results_folder = append(folder,"\Result");
+results_folder = append(folder,"\Result");
 load (append(results_folder,"\",psname,"_ResultData.mat"));
-SimMusclename=["bflh_r","bfsh_r","gaslat_r","gasmed_r","grac_r","recfem_r","sart_r","semimem_r","semiten_r","soleus_r","tfl_r","vasint_r","vaslat_r","vasmed_r"];
+Coordinatesname=["knee_angle","ankle_angle","subtalar_angle"];
+SimMusclename=["bflh_r","bfsh_r","gaslat_r","gasmed_r","recfem_r","sart_r","semimem_r","semiten_r","soleus_r","tfl_r","vasint_r","vaslat_r","vasmed_r"];
 ExpMuscle=["RBICF","RSEMT","RMGAS","RRECF","RVASL","RVASM"];
+CMCErr_Thereshold=2;
+counter=0;
 for m=1:length(Modelname)
-    for A=1:length(AnalyzeMethod)
-      
+    for A=1:length(AnalyzeMethod)   
         for T1=1:length(Terials1)
             for T2=1:length(Terials2)
                 filename=append(Terials1(T1),"_",Terials2(T2));
+                counter=counter+1;
                 %                     EMGFile=append(folder,"\Data\",Subjectname,filename,"_EMG.csv");
                 %                     ExForcefile=append(folder,"\Data\",Subjectname,filename,"_Torque.mot");
                 %                     IkFile=append(folder,"\Data\",Subjectname,filename,"_Motion.mot");
@@ -42,6 +47,7 @@ for m=1:length(Modelname)
                 %% Strat reading Simulation files
                 
                 for itr=1:length(fieldnames(ResultData.(filename).time.Exp))
+                    counter=counter+1;
                     Stime= ResultData.(filename).time.Exp.(Terials3(itr))(1);
                     Etime= ResultData.(filename).time.Exp.(Terials3(itr))(end);
                     %%% Making Directory
@@ -81,6 +87,16 @@ for m=1:length(Modelname)
                         ResultData.(filename).(Modelname(m)).(AnalyzeMethod(A)).('SimMuscleForce').(SimMusclename(Flmus)).(Terials3(itr))=ActuateForce.data(:,strncmp(ActuateForce.colheaders,SimMusclename(Flmus),5));
                         ResultData.(filename).(Modelname(m)).(AnalyzeMethod(A)).('NormalSimMuscleForce').(SimMusclename(Flmus))(:,itr)=y1(:,strncmp(ActuateForce.colheaders,SimMusclename(Flmus),5));
                     end
+                    for Coor=1:length(Coordinatesname)
+                        CMCErr=ActuateForce.data(:,strcmpi(ActuateForce.colheaders,append(Coordinatesname(Coor),"_r_reserve")));
+                        if mean(abs(CMCErr))> CMCErr_Thereshold
+                             fprintf('\nWarning: %s has high residual number ...\n\n', append(filename,"_",Terials3(itr),"_",Coordinatesname(Coor)));
+                        end
+                        ResultData.(filename).(Modelname(m)).(AnalyzeMethod(A)).('Residual')((itr),Coor)=mean(CMCErr);
+                        CMCErrTotal(counter,Coor)=mean(CMCErr);
+                    end
+                    %%% Error checking
+                    
                     %%% Making time normalized external force
                     y2=interp1(Exptime,ResultData.(filename).ExpForce.(Terials3(itr)),ResultData.(filename).(Modelname(m)).(AnalyzeMethod(A)).time.NormalT(:,itr),'linear','extrap');
                     ResultData.(filename).(Modelname(m)).(AnalyzeMethod(A)).('NormalExpForce')(:,itr)=y2;
