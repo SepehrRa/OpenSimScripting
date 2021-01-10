@@ -50,7 +50,16 @@ ikTool.setOutputMotionFileName(IK_file);
 ikTool.print([results_folder name '_IK_Setup.xml']);
 % % ikTool.getIKTaskSet() % to change the scale files
 % ikTool.run();
-
+%% ID
+idTool=	InverseDynamicsTool([folder IDSteup]);
+idTool.setStartTime(FTable.data(1,1));
+idTool.setEndTime(FTable.data(end,1));
+idTool.setCoordinatesFileName(IkFile);
+idTool.setExternalLoadsFileName(NewExForcefile);
+idTool.setResultsDir(append(results_folder,"ID\"))
+idTool.setOutputGenForceFileName(append(filename,"_ID.sto"))
+idTool.print(append(results_folder,"ID\",filename,"_ID_Setup.xml"));
+idTool.run();
 %%  SOP %%
 %%% Construct SOP %%%%
 motion = Storage(IK_file);
