@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <OpenSimDocument Version="40000">
-	<Model name="DynamicWalkerModel-scaled">
+	<Model name="ADDS_Model">
 		<!--The model's ground reference frame.-->
 		<Ground name="ground">
 			<!--The geometry used to display the axes of this Frame.-->
@@ -10,13 +10,28 @@
 				<!--Scale factors in X, Y, Z directions respectively.-->
 				<scale_factors>0.20000000000000001 0.20000000000000001 0.20000000000000001</scale_factors>
 			</FrameGeometry>
+			<!--List of geometry attached to this Frame. Note, the geometry are treated as fixed to the frame and they share the transform of the frame when visualized-->
+			<attached_geometry />
+			<!--Set of wrap objects fixed to this body that GeometryPaths can wrap over.This property used to be a member of Body but was moved up with the introduction of Frames.-->
+			<WrapObjectSet name="wrapobjectset">
+				<objects />
+				<groups />
+			</WrapObjectSet>
 		</Ground>
 		<!--Acceleration due to gravity, expressed in ground.-->
 		<gravity>0 -9.8066499999999994 0</gravity>
+		<!--Credits (e.g., model author names) associated with the model.-->
+		<credits>Developed by Sepehr Ramezani, Brian Brady, Valorie Smith, Hwan Choi @ REAL LAb University of Central Florida.</credits>
+		<!--Publications and references associated with the model.-->
+		<publications></publications>
+		<!--Units for all lengths.-->
+		<length_units>meters</length_units>
+		<!--Units for all forces.-->
+		<force_units>N</force_units>
 		<!--List of bodies that make up this model.-->
 		<BodySet name="bodyset">
 			<objects>
-				
+	
 				<Body name="RightShank">
 					<!--List of components that this component owns and serializes.-->
 					<components>
@@ -129,7 +144,7 @@
 		<!--List of joints that connect the bodies.-->
 		<JointSet name="jointset">
 			<objects>
-			<FreeJoint name="ShankToground">
+				<FreeJoint name="ShankToground">
 					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The parent frame for the joint.).-->
 					<socket_parent_frame>ground_offset</socket_parent_frame>
 					<!--Path to a Component that satisfies the Socket 'child_frame' of type PhysicalFrame (description: The child frame for the joint.).-->
@@ -170,7 +185,7 @@
 						</Coordinate>
 						<Coordinate name="Shank_ty">
 							<!--The value of this coordinate before any value has been set. Rotational coordinate value is in radians and Translational in meters.-->
-							<default_value>0.4</default_value>
+							<default_value>0.40000000000000002</default_value>
 							<!--The speed value of this coordinate before any value has been set. Rotational coordinate value is in rad/s and Translational in m/s.-->
 							<default_speed_value>0</default_speed_value>
 							<!--The minimum and maximum values that the coordinate can range between. Rotational coordinate range in radians and Translational in meters.-->
@@ -347,11 +362,5 @@
 			<groups />
 		</MarkerSet>
 		<!--Geometry to be used in contact forces.-->
-		<ContactGeometrySet name="contactgeometryset">
-			<objects>
-				
-			</objects>
-			<groups />
-		</ContactGeometrySet>
 	</Model>
 </OpenSimDocument>
