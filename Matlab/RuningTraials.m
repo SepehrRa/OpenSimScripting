@@ -65,8 +65,8 @@ TimeT=zeros(4,2);
                     analysis.setExternalLoadsFileName(NewExForcefile);
                     analysis.setLoadModelAndInput(true);
                     analysis.setResultsDir(append(results_folder2(1)));
-                    analysis.print(append(results_folder2(1),filename,"_",AnalyzeMethod(1),"_Setup.xml"))
-                    analysis.run();
+%                     analysis.print(append(results_folder2(1),filename,"_",AnalyzeMethod(1),"_Setup.xml"))
+%                     analysis.run();
                     %% CMC %%%%%
                     cmc = CMCTool(append(results_folder,psname,"_CMC_Setup_ref.xml"));
                     cmc.setName(append(Modelname(m),'_',filename,'_',Terials3(itr),'_CMC'))
