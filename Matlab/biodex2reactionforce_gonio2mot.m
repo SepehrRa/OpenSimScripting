@@ -1,128 +1,201 @@
 clear all;
-% close all;
+close all;
 clc;
- % Some times there is no need to import raw data because all data will
- % save in FinalDatafor first time. readflage=1 means import files again.
-readflage=1; 
-folder=uigetdir(); % get Data directory 
-fname = 'P005_T001_RKnee_';
+% Some times there is no need to import raw data because all data will
+% save in FinalDatafor first time. readflage=1 means import files again.
+readflage= 1;
+% folder=uigetdir(); % get Data directory
+SubjectNumber='T002';
+Project='P005';
+folder=append('C:\MyCloud\OneDriveUcf\Real\Simulation\Source\',SubjectNumber);
+Datafolder=append(folder,'\Data');
+results_folder = append(folder,'\Result');
+Pardata=importdata(append(Datafolder,"\","Parameters.csv"));
+ResultData.info.ForceRatio=Pardata.data(1);
+ResultData.info.M_ThresholdMin=Pardata.data(2);
+ResultData.info.M_ThresholdMax=Pardata.data(3);
+psname=append(Project,'_',SubjectNumber);
+legname='RKnee';
+Subjectname =append(psname,"_",legname,"_");
 Terials1=["Ex","Fl"];
-Terials2=["IsoK60","IsoK120","IsoK180","IsoK240","IsoM10","IsoM30","IsoM60","IsoM90"];
+Terials2=["IsoK60","IsoK120","IsoK180","IsoK240","IsoM10","IsoM30","IsoM45","IsoM60","IsoM90"];
+Terials3=["iter1","iter2","iter3"];
 % Terials1=["Fl"];
 % Terials2=["IsoK60"];
+ArmWeight=2.72;
+ArmCOM=0.218;
 Fdata=[];
 Gdata=[0];
 k=0;
-DStime=0.01; % desierd sampling time 
+% DStime=0.0005192; % desired sampling time
+DStime=0.01;
 %
-if readflage 
+ExpMuscle=["RBICF","RSEMT","RMGAS","RRECF","RVASL","RVASM"];
+
+if readflage
     for T1=1:length(Terials1)
-        k=k+1;
         for T2=1:length(Terials2)
             
-            Namedr(k)=append(Terials1(T1),'_',Terials2(T2));
-            Datadr=append(folder,"\",fname,Terials1(T1),"_",Terials2(T2),".csv");
+            filename=append(Terials1(T1),'_',Terials2(T2));
+            Datadr=append(Datafolder,"\",Subjectname,Terials1(T1),"_",Terials2(T2),".csv");
             data=importdata(Datadr);
-            [rf,cf]=find(strncmp(data.textdata,'Biodex',6));
-            [rg,cg]=find(strncmp(data.textdata,'Gn',2));
-            [rt,cT]=find(strncmp(data.textdata,'Biodex',6)|strncmp(data.textdata,'Gn',2));
-            sr = data.data(3,cf-1)-data.data(2,cf-1);%finds sampling rates force
-            srg =data.data(3,cT-1)-data.data(2,cT-1);%finds sampling rates Gonio
-            for ii=1:length(cT)
+            for ii=2:2:length(data.textdata)
                 kk=1;
                 tflage=0;
                 ww=0;
                 for jj=1:length(data.data)%# of data points in a given trial
-                    if ~isnan(data.data(jj,cT(ii)))&&data.data(jj,cT(ii))~=0
+                    if ~isnan(data.data(jj,ii))&&data.data(jj,ii)~=0
                         kk=jj;  %finding zero data at the end of each chanel
-                        tflage=1;                        
-                    elseif tflage==0 
-                        ww=jj;  %finding zero data at the begining 
+                        tflage=1;
+                    elseif tflage==0
+                        ww=jj;  %finding zero data at the begining
                     end
                 end
-
-                if ii==1
-                    ts=data.data(ww+1,1);
+                
+                if ii==2
+                    ts=data.data(ww+1,1); % first time of first chanel to set as final time for every other channel.
                     te=data.data(kk,1); % final time of first chanel to set as final time for every other channel.
-                end 
-                y=interp1(data.data(ww+1:kk,cT(ii)-1),data.data(ww+1:kk,cT(ii)),[ts:DStime:te]); %Interpolates data to match sampling time to desierd sampling time 
+                end
+                y=interp1(data.data(ww+1:kk,ii-1),data.data(ww+1:kk,ii),[ts:DStime:te],'linear','extrap'); %Interpolates data to match sampling time to desierd sampling time
+                
                 b=y';
-                ends(ii)=length(b);
+                %                 ends(ii)=length(b);
                 if (size(Gdata(:,1)) == 1) %recombines data into a matrix padded with NaN
                     Gdata = [[data.data(ww+1,1):DStime:data.data(kk,1)]' b];
-                else 
+                else
                     Gdata = [Gdata b];
-                 end
+                end
                 
             end
-            FinalData.(Namedr(k)).data=Gdata;
-            FinalData.(Namedr(k)).colheaders=["time" data.textdata(cT)];
+            FinalData.(filename).data=Gdata;
+            FinalData.(filename).colheaders=["time" data.textdata(2:2:end)];
             clear Gdata
             Gdata=[0];
             
         end
     end
-
-save ([folder 'FinalData.mat'],'FinalData');
-
+    
+    save ([Datafolder '\RawData.mat'],'FinalData');
+    
 end
 %%
-load ([folder 'FinalData.mat']);
+load ([Datafolder '\RawData.mat']);
+Dataheadermotion=['time\tpelvis_tilt\tpelvis_tx\tpelvis_ty\thip_flexion_r\thip_adduction_r\thip_rotation_r\tknee_angle_r\tsubtalar_angle_r\tankle_angle_r'];
+Dataheaderforce=['time\treaction_force_vx\treaction_force_vy\treaction_force_vz\treaction_force_px\treaction_force_py\treaction_force_pz\treaction_torque_x\treaction_torque_y\treaction_torque_z'];
+DataheaderEMG=['time\t'];
+%getting goniometer calibration coefficient
+[Ph,Pk,Pa]= GnCalib(Datafolder,psname,0);
 for T1=1:length(Terials1)
-        k=k+1;
-    for T2=1:length(Terials2)        
-        Namedr(k)=append(Terials1(T1),"_",Terials2(T2));
-        Data=FinalData.(Namedr(k)).data;
-        HData=FinalData.(Namedr(k)).colheaders;
-        [rg,cg]=find(strncmp(HData,'Gn',2));
+    for T2=1:length(Terials2)
+        EMGHDdata=[""];
+        filename=append(Terials1(T1),"_",Terials2(T2));
+        Data=FinalData.(filename).data;
+        HData=FinalData.(filename).colheaders;
+        [rg,ca]=find(strncmp(HData,'Gn A',2));
         %find Knee Goniometer
         [rk,ck]=find(strncmp(HData,'Gn K',4));
         %find Hip goniometer
         [rh,ch]=find(strncmp(HData,'Gn H',4));
+        %find Biodex
         [rb,cb]=find(strncmp(HData,'Biodex',6));
+        %find EMG
+        [re,ce]=find(contains(HData,'EMG')&~contains(HData,'RMS'));
         [r,c]=size(Data);
-%% Process on Motion Data
-        Gon=Data(:,cg);
-        CalGon=-0.0058.*Gon.^2-1.62.*Gon+1.14;  % Goniometer calibration, This equation would change base on ne calibration curve
-        CalGon(CalGon<0)=0;
-        Data(:,cg)=CalGon.*pi()./180;
-%% Save Motion
-        fnames=[fname,char(Namedr{k}),'_Motion.mot'];
-        fid=fopen([folder '\' char(fnames)], "w");
-        if fid < 0
-            fprintf('\nERROR: %s could not be opened for writing...\n\n', fname);
-            return
+        %% Process on Motion Data
+        
+        %knee calibration
+        GonK=Data(:,ck(2));
+        GonCalibratedK = polyval(Pk,GonK);
+        GonCalibratedK(GonCalibratedK<0)=0;
+        %Hip calibration
+        GonH=Data(:,ch(2));
+        GonCalibratedH = polyval(Ph,GonH);
+        %Ankle calibration
+        GonA=Data(:,ca(2));
+        GonCalibratedA = polyval(Pa,GonA);
+
+        %% Save Motion
+        delimiterIn='\t';
+        F_fnames=append(Subjectname,char(filename),'_Motion.mot');
+        Title='\nversion=1\nnRows=%d\nnColumns=%d\nInDegrees=no\nendheader\n';
+        MDatadata=[1,0,0.055,1.059,1,0,0,1,0,0].*ones(r,10);
+        MDatadata(:,[1,5,8,10])=[Data(:,1),GonCalibratedH,GonCalibratedK,GonCalibratedA];
+        Titledata=[r,length(MDatadata(1,:))];
+%         makefile(Datafolder,F_fnames,Title,Titledata,Dataheadermotion,MDatadata,5,delimiterIn);
+        
+        %% Process Force
+        %%% Caculating Torque from Arm
+        BiodexAngle=-35.55*Data(:,cb(2))+105;
+        ArmTorque=cos(BiodexAngle*pi()/180)*ArmWeight*9.8*ArmCOM;
+        %%% Calcuating Torque from biodex
+        x=1*Data(:,cb(1)); %data of a trial
+        TotalTorque=-1.*(141.81.*x-25.047);
+        %%% Arm weight compensation 
+        Mb=TotalTorque-ArmTorque;
+        %% Save Force
+        F_fnames=append(Subjectname,char(filename),'_Torque.mot');
+        FDatadata=[Data(:,1),zeros(r,8),Mb];
+        Titledata=[r,length(FDatadata(1,:))];
+%         makefile(Datafolder,F_fnames,Title,Titledata,Dataheaderforce,FDatadata,5,delimiterIn);
+        
+        %% Process on EMG
+        %         EMGChecker(Data(:,ce(1)),HData(ce(1)));
+        EMGfilt = EMGFilter(Data(:,ce),0.5,5,4,1/DStime);
+        %% Save EMG
+        delimiterIn=',';
+        F_fnames=append(Subjectname,char(filename),'_EMG.csv');
+        DataheaderEMG=['time' delimiterIn];
+        for hh=1:length(ce)
+%             HD=char(HData(ce(hh)));
+%             HD=HD(1:5);
+%             switch HD([1:3])
+%                 case 'LLH'
+%                     HData(ce(hh))='RBICF';
+%                 case 'LRF'
+%                     HData(ce(hh))='RRECF';
+%                 case 'LVL'
+%                     HData(ce(hh))='RVASL';
+%                 case 'LVM'
+%                     HData(ce(hh))='RVASM';
+%                 case 'LMH'
+%                     HData(ce(hh))='RSEMT';
+%                 case 'LMG'
+%                     HData(ce(hh))='RMGAS';
+%             end
+%             DataheaderEMG=[DataheaderEMG char(HData(ce(hh)))(1:5) delimiterIn];
+        EMGHDdata(hh) = eraseBetween(HData(ce(hh)),6,length(char(HData(ce(hh)))));
+        
+        DataheaderEMG=[DataheaderEMG char(EMGHDdata(hh)) delimiterIn];
         end
-        fprintf(fid,[char(fnames) '\nversion=1\nnRows=%d\nnColumns=%d\nInDegrees=no\nendheader\n'],r,7);
-        fprintf(fid,'time\tpelvis_tilt\tpelvis_tx\tpelvis_ty\thip_flexion_r\tknee_angle_r\tankle_angle_r\n');
-        for i = 1:r
-            fprintf(fid,'%.5f\t%.5f\t%.5f\t%.5f\t%.5f\t%.5f\t%.5f\t',Data(i,1),0,0.055,1.059,Data(i,ch(2)),Data(i,ck(2)),0);
-            fprintf(fid, '\n');
+        EMGHDdata=["time",EMGHDdata];
+        Datadata=[Data(:,1),EMGfilt];
+        Titledata=[r,length(Datadata(1,:))];
+%         makefile (Datafolder,F_fnames,Title,Titledata,DataheaderEMG,Datadata,8,delimiterIn);
+        
+        %% Finding events
+        Event=EventDetection(filename,FDatadata(:,1),FDatadata(:,10),ResultData.info.ForceRatio,MDatadata(:,8),[ResultData.info.M_ThresholdMin ResultData.info.M_ThresholdMax]);
+        Stime=Event(:,1);
+        Etime=Event(:,2);
+        %% Trail check
+        if length(Stime)~=3||length(Etime)~=3
+            fprintf('\nERROR: %s Wrong trail ...\n\n', filename);
         end
-            fclose(fid);
-            fprintf('Saved %s\n', [folder char(fnames)])
-%% Process Force
-            A=[];
-            x=1*Data(:,cb(1)); %data of a trial
-            if x<0.176  %Converting votage of biodex to the torque
-                Mb=-1.*((-142.25).*x+24.8);
-            else
-                Mb=-1*(142.07.*x-25.32);
+        %% Strat reading Simulation files
+        ResultData.(filename).('ExpForce').('full')=[Data(:,1),Mb];
+        ResultData.(filename).('Motion').('full')=[Data(:,1),GonCalibratedK];
+        ResultData.(filename).('ExpEMG').('full')=[Data(:,1),EMGfilt];
+        ResultData.(filename).('ExpEMG').('colheaders')=EMGHDdata;
+        for itr=1:length(Stime)
+            Expindx=find(Data(:,1)>=Stime(itr)&Data(:,1)<=Etime(itr));
+            ResultData.(filename).('time').Exp.(Terials3(itr))=Data(Expindx,1);
+            ResultData.(filename).('Motion').(Terials3(itr))=ResultData.(filename).Motion.full(Expindx,2);
+            ResultData.(filename).('ExpForce').(Terials3(itr))=ResultData.(filename).ExpForce.full(Expindx,2);
+            for Flexmus=1:length(ExpMuscle)
+                ResultData.(filename).('ExpEMG').(ExpMuscle(Flexmus)).(Terials3(itr))= ResultData.(filename).ExpEMG.full(Expindx,strncmp(EMGHDdata,ExpMuscle(Flexmus),5));
             end
-%% Save Force
-            F_fnames=[fname,char(Namedr{k}),'_Torque.mot'];
-            fid=fopen([folder '\' char(F_fnames)], "w");
-            if fid < 0
-                fprintf('\nERROR: %s could not be opened for writing...\n\n', fname);
-            return
-            end
-            fprintf(fid,[char(F_fnames) '\nversion=1\nnRows=%d\nnColumns=%d\nInDegrees=no\nendheader\n'],r,10);
-            fprintf(fid,['time\treaction_force_vx\treaction_force_vy\treaction_force_vz\treaction_force_px\treaction_force_py\treaction_force_pz\treaction_torque_x\treaction_torque_y\treaction_torque_z\n']);
-                for i = 1:r
-                    fprintf(fid,'%.5f\t%.5f\t%.5f\t%.5f\t%.5f\t%.5f\t%.5f\t%.5f\t%.5f\t%.5f\t',Data(i,1),0,0,0,0,0,0,0,0,Mb(i));
-                    fprintf(fid, '\n');
-                end
-            fclose(fid);
-            fprintf('Saved %s\n', [folder char(F_fnames)])
+        end
+        
     end
 end
+save (append(results_folder,"\",psname,"_ResultData.mat"),'ResultData');
+
