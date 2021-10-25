@@ -82,6 +82,7 @@ analysis.setLowpassCutoffFrequency(6);
 analysis.setCoordinatesFileName(IK_file);
 analysis.setExternalLoadsFileName(NewExForcesetup);
 analysis.setLoadModelAndInput(true);
+analysis.updAnalysisSet().adoptAndAppend(MuscleAnalysis());
 analysis.setResultsDir([results_folder 'SOP']);
 analysis.run();
 % static optim
