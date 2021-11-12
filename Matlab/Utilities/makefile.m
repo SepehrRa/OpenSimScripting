@@ -3,7 +3,7 @@ function makefile (folder,F_fnames,Dataheader,Datadata,Resulotion,delimiterIn)
 Datah=[];
             [r,c]=size(Datadata);
             for t=1:length(Dataheader)
-            Datah=[Datah char(Dataheader(t)),'\t']
+            Datah=[Datah char(Dataheader(t)),delimiterIn];
             end
             Title='\nversion=1\nnRows=%d\nnColumns=%d\nInDegrees=no\nendheader\n';
             fid=fopen(append(folder,'\',F_fnames), "w");
