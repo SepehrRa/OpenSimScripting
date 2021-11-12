@@ -3,11 +3,11 @@ close all;
 clc;
 % Some times there is no need to import raw data because all data will
 % save in FinalDatafor first time. readflage=1 means import files again.
-readflage= 1;
+readflage= 0;
 % folder=uigetdir(); % get Data directory
 SubjectNumber='T002';
 Project='P005';
-folder=append('C:\MyCloud\OneDriveUcf\Real\Simulation\Source\',SubjectNumber);
+folder=append('C:\MyCloud\OneDriveUcf\Real\Simulation\Source\',Project,'\',SubjectNumber);
 Datafolder=append(folder,'\Data');
 results_folder = append(folder,'\Result');
 Pardata=importdata(append(Datafolder,"\","Parameters.csv"));
@@ -80,9 +80,9 @@ if readflage
 end
 %%
 load ([Datafolder '\RawData.mat']);
-Dataheadermotion=['time\tpelvis_tilt\tpelvis_tx\tpelvis_ty\thip_flexion_r\thip_adduction_r\thip_rotation_r\tknee_angle_r\tsubtalar_angle_r\tankle_angle_r'];
-Dataheaderforce=['time\treaction_force_vx\treaction_force_vy\treaction_force_vz\treaction_force_px\treaction_force_py\treaction_force_pz\treaction_torque_x\treaction_torque_y\treaction_torque_z'];
-DataheaderEMG=['time\t'];
+Dataheadermotion=["time","pelvis_tilt","pelvis_tx","pelvis_ty","hip_flexion_r","hip_adduction_r","hip_rotation_r","knee_angle_r","subtalar_angle_r","ankle_angle_r"];
+Dataheaderforce=["time","reaction_force_vx","reaction_force_vy","reaction_force_vz","reaction_force_px","reaction_force_py","reaction_force_pz","reaction_torque_x","reaction_torque_y","reaction_torque_z"];
+
 %getting goniometer calibration coefficient
 [Ph,Pk,Pa]= GnCalib(Datafolder,psname,0);
 for T1=1:length(Terials1)
@@ -117,12 +117,10 @@ for T1=1:length(Terials1)
         %% Save Motion
         delimiterIn='\t';
         F_fnames=append(Subjectname,char(filename),'_Motion.mot');
-        Title='\nversion=1\nnRows=%d\nnColumns=%d\nInDegrees=no\nendheader\n';
         MDatadata=[1,0,0.055,1.059,1,0,0,1,0,0].*ones(r,10);
         MDatadata(:,[1,5,8,10])=[Data(:,1),GonCalibratedH,GonCalibratedK,GonCalibratedA];
         Titledata=[r,length(MDatadata(1,:))];
-%         makefile(Datafolder,F_fnames,Title,Titledata,Dataheadermotion,MDatadata,5,delimiterIn);
-        
+%         makefile(Datafolder,F_fnames,Dataheadermotion,MDatadata,5,delimiterIn);    
         %% Process Force
         %%% Caculating Torque from Arm
         BiodexAngle=-35.55*Data(:,cb(2))+105;
@@ -136,7 +134,7 @@ for T1=1:length(Terials1)
         F_fnames=append(Subjectname,char(filename),'_Torque.mot');
         FDatadata=[Data(:,1),zeros(r,8),Mb];
         Titledata=[r,length(FDatadata(1,:))];
-%         makefile(Datafolder,F_fnames,Title,Titledata,Dataheaderforce,FDatadata,5,delimiterIn);
+%         makefile(Datafolder,F_fnames,Dataheaderforce,FDatadata,5,delimiterIn);
         
         %% Process on EMG
         %         EMGChecker(Data(:,ce(1)),HData(ce(1)));
@@ -162,15 +160,11 @@ for T1=1:length(Terials1)
 %                 case 'LMG'
 %                     HData(ce(hh))='RMGAS';
 %             end
-%             DataheaderEMG=[DataheaderEMG char(HData(ce(hh)))(1:5) delimiterIn];
         EMGHDdata(hh) = eraseBetween(HData(ce(hh)),6,length(char(HData(ce(hh)))));
-        
-        DataheaderEMG=[DataheaderEMG char(EMGHDdata(hh)) delimiterIn];
         end
         EMGHDdata=["time",EMGHDdata];
         Datadata=[Data(:,1),EMGfilt];
-        Titledata=[r,length(Datadata(1,:))];
-%         makefile (Datafolder,F_fnames,Title,Titledata,DataheaderEMG,Datadata,8,delimiterIn);
+%         makefile (Datafolder,F_fnames,EMGHDdata,Datadata,8,delimiterIn);
         
         %% Finding events
         Event=EventDetection(filename,FDatadata(:,1),FDatadata(:,10),ResultData.info.ForceRatio,MDatadata(:,8),[ResultData.info.M_ThresholdMin ResultData.info.M_ThresholdMax]);
