@@ -1,6 +1,12 @@
-function makefile (folder,F_fnames,Title,Titledata,Dataheader,Datadata,Resulotion,delimiterIn)
+function makefile (folder,F_fnames,Dataheader,Datadata,Resulotion,delimiterIn)
 % Resulotion number of digit after zero
-           fid=fopen(append(folder,'\',F_fnames), "w");
+Datah=[];
+            [r,c]=size(Datadata);
+            for t=1:length(Dataheader)
+            Datah=[Datah char(Dataheader(t)),'\t']
+            end
+            Title='\nversion=1\nnRows=%d\nnColumns=%d\nInDegrees=no\nendheader\n';
+            fid=fopen(append(folder,'\',F_fnames), "w");
             if fid < 0
                 fprintf('\nERROR: %s could not be opened for writing...\n\n', fname);
             return
@@ -10,8 +16,8 @@ function makefile (folder,F_fnames,Title,Titledata,Dataheader,Datadata,Resulotio
             for f=1:c
                 ft=[ft '%.' num2str(Resulotion) 'f' delimiterIn];
             end
-            fprintf(fid,[char(F_fnames) Title],Titledata);
-            fprintf(fid,[Dataheader '\n']);
+            fprintf(fid,[char(F_fnames) Title],[r,c]);
+            fprintf(fid,[Datah '\n']);
                 for i = 1:r
                     fprintf(fid,ft,Datadata(i,:));
                     fprintf(fid, '\n');
