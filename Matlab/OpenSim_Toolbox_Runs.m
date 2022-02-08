@@ -2,7 +2,8 @@ clear all
 import org.opensim.modeling.*
 path='C:\Program Files\OpenSim 4.1\Geometry';
 ModelVisualizer.addDirToGeometrySearchPaths(path);
-
+myLog = JavaLogSink();
+Logger.addSink(myLog)
 %% File address %%
 folder = 'C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\';
 Scalemodel='subject01_scaledOnly.osim';
@@ -29,7 +30,9 @@ model.initSystem();
 ExLoad=ExternalLoads([folder ExForceSetup],true);
 ExLoad.setDataFileName([folder 'New_subject01_walk1_grf.mot']);
 ExLoad.print(NewExForcesetup)
-
+%% Reading trc
+opensimTable = TimeSeriesTableVec3(filenamedir);
+matlabStruct_markerData = osimTableToStruct(opensimTable);
 %% IK %%
 %%% Get trc data to determine time range
 markerData = MarkerData(Markerfile); 
