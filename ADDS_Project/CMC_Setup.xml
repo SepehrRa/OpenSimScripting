@@ -8,7 +8,7 @@
 		<!--List of xml files used to construct a force set for the model.-->
 		<force_set_files> actuators_WPelvis.xml</force_set_files>
 		<!--Directory used for writing results.-->
-		<results_directory>C:\MyCloud\GitHub\OpenSimScripting\ADDS_Project\CMC</results_directory>
+		<results_directory>CMC</results_directory>
 		<!--Output precision.  It is 8 by default.-->
 		<output_precision>8</output_precision>
 		<!--Initial time for the simulation.-->

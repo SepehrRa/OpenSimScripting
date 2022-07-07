@@ -31,7 +31,6 @@
 		<!--List of bodies that make up this model.-->
 		<BodySet name="bodyset">
 			<objects>
-	
 				<Body name="RightShank">
 					<!--List of components that this component owns and serializes.-->
 					<components>
@@ -300,47 +299,35 @@
 		<!--Markers in the model.-->
 		<MarkerSet name="markerset">
 			<objects>
-				<Marker name="LateralKnee">
-					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
-					<socket_parent_frame>/bodyset/RightShank</socket_parent_frame>
-					<!--The fixed location of the station expressed in its parent frame.-->
-					<location>-0.0030735050627215266 0.18219467413189494 0.039528490615614365</location>
-				</Marker>
-				<Marker name="MedialKnee">
-					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
-					<socket_parent_frame>/bodyset/RightShank</socket_parent_frame>
-					<!--The fixed location of the station expressed in its parent frame.-->
-					<location>0.0021698008032454696 0.18231586783930825 -0.037073373615990141</location>
-				</Marker>
 				<Marker name="Heel">
 					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
 					<socket_parent_frame>/bodyset/rightfoot</socket_parent_frame>
 					<!--The fixed location of the station expressed in its parent frame.-->
-					<location>-0.065250711559002306 -0.066235817487737186 0.0042233434833975902</location>
+					<location>-0.087999999999999995 -0.024799999999999999 0</location>
 				</Marker>
 				<Marker name="SpringTop">
 					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
 					<socket_parent_frame>/bodyset/RightShank</socket_parent_frame>
 					<!--The fixed location of the station expressed in its parent frame.-->
-					<location>-0.053937882669845449 -0.096910744183336228 0.0058526111043768758</location>
+					<location>-0.087999999999999995 -0.14694251513541534 0</location>
 				</Marker>
 				<Marker name="Toe">
 					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
 					<socket_parent_frame>/bodyset/rightfoot</socket_parent_frame>
 					<!--The fixed location of the station expressed in its parent frame.-->
-					<location>0.17657032715560872 -0.065758968960773434 -0.0045451378630508299</location>
+					<location>0.17657 -0.070999999999999994 -0.010200000000000001</location>
 				</Marker>
 				<Marker name="MP5">
 					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
 					<socket_parent_frame>/bodyset/rightfoot</socket_parent_frame>
 					<!--The fixed location of the station expressed in its parent frame.-->
-					<location>0.103969553264324 -0.071493136228949455 0.059203149946210093</location>
+					<location>0.10397000000000001 -0.071400000000000005 0.050999999999999997</location>
 				</Marker>
 				<Marker name="Shank">
 					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
 					<socket_parent_frame>/bodyset/RightShank</socket_parent_frame>
 					<!--The fixed location of the station expressed in its parent frame.-->
-					<location>0.0645869485212901 -0.014905993915336646 -0.0065041038730007661</location>
+					<location>0.0424 -0.0029425151354153523 -0.0070000000000000001</location>
 					<!--Flag (true or false) specifying whether the marker is fixed in its parent frame during the marker placement step of scaling.  If false, the marker is free to move within its parent Frame to match its experimental counterpart.-->
 					<fixed>false</fixed>
 				</Marker>
@@ -348,19 +335,36 @@
 					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
 					<socket_parent_frame>/bodyset/RightShank</socket_parent_frame>
 					<!--The fixed location of the station expressed in its parent frame.-->
-					<location>-0.0045184417411675559 -0.17215534997344023 0.059863810119926919</location>
+					<location>-0.0045184400000000003 -0.172155 0.063</location>
 					<!--Flag (true or false) specifying whether the marker is fixed in its parent frame during the marker placement step of scaling.  If false, the marker is free to move within its parent Frame to match its experimental counterpart.-->
 					<fixed>false</fixed>
 				</Marker>
 				<Marker name="MMAL">
 					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
+					<socket_parent_frame>/bodyset/rightfoot</socket_parent_frame>
+					<!--The fixed location of the station expressed in its parent frame.-->
+					<location>-0.0089999999999999993 0 -0.0545</location>
+				</Marker>
+				<Marker name="Foot">
+					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
+					<socket_parent_frame>/bodyset/rightfoot</socket_parent_frame>
+					<!--The fixed location of the station expressed in its parent frame.-->
+					<location>0.112 -0.063 0</location>
+				</Marker>
+				<Marker name="S_Top">
+					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
 					<socket_parent_frame>/bodyset/RightShank</socket_parent_frame>
 					<!--The fixed location of the station expressed in its parent frame.-->
-					<location>-0.0049034649932901964 -0.1744175264958312 -0.062415043226239475</location>
+					<location>-0.069000000000000006 -0.14694299999999999 0</location>
+				</Marker>
+				<Marker name="S_Bottom">
+					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
+					<socket_parent_frame>/bodyset/rightfoot</socket_parent_frame>
+					<!--The fixed location of the station expressed in its parent frame.-->
+					<location>-0.069000000000000006 -0.024799999999999999 0</location>
 				</Marker>
 			</objects>
 			<groups />
 		</MarkerSet>
-		<!--Geometry to be used in contact forces.-->
 	</Model>
 </OpenSimDocument>
