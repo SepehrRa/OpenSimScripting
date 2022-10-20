@@ -98,7 +98,6 @@ cmc.setStartTime(0.9);
 cmc.setFinalTime(0.95);
 cmc.setResultsDir([folder 'CMC']);
 cmc.run();
-%% Momentum Arm or othe muscle property Calculation %%
 Musclename='bflh_l';
 coordinatename='knee_angle_l';
 state = model.initSystem();
@@ -110,6 +109,3 @@ osismmodel.updCoordinateSet().get(1).setValue(state, q);
 coord.setValue(state,0.1);
 model.realizePosition(state);
 muscle.computeMomentArm(state, coord);
-muscle.getLength(state);
-muscle.getTendonLength(state);
-
