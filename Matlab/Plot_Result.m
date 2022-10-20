@@ -90,7 +90,7 @@ for A=1:length(AnalyzeMethod)
             figure;
             movegui('center');
             kk = tiledlayout(2,2);
-%             title(kk,'Comparsion of Simulated Activation to EMG');
+            title(kk,'Isokinetic trials');
             figure;
             movegui('center');
             t = tiledlayout(2,2);
@@ -112,9 +112,9 @@ for A=1:length(AnalyzeMethod)
                 RA2=mean(ExpMotion,2)+std(ExpMotion,0,2);
                 RA3=mean(ExpMotion,2);
                 % Making avarage and +- sd of Force              
-                LA1=mean(ExpForce,2)-std(ExpForce,0,2);
-                LA2=mean(ExpForce,2)+std(ExpForce,0,2);
-                LA3=mean(ExpForce,2);
+                Force1=mean(ExpForce,2)-std(ExpForce,0,2);
+                Force2=mean(ExpForce,2)+std(ExpForce,0,2);
+                Force3=mean(ExpForce,2);
                 %%% ploting motion 
                 nexttile(t);
                 x=RefT;
@@ -130,11 +130,11 @@ for A=1:length(AnalyzeMethod)
                 ylabel('Angle(degree)');
                 %%% changing y axis
                 yyaxis right
-                LABetween = [LA1', fliplr(LA2')];
+                LABetween = [Force1', fliplr(Force2')];
                 %%% ploting std of force 
                 fill(x2, LABetween,[Rcolorcode]*.8,'EdgeAlpha',0,'FaceAlpha',0.2)
                 %%% ploting avarage of force
-                plot(x,LA3,'color',[Rcolorcode],'LineStyle','-');
+                plot(x,Force3,'color',[Rcolorcode],'LineStyle','-');
                 xlabel('Normalized Time (%)');
                 ylabel('Force(N)');
                 hold off
@@ -148,7 +148,8 @@ for A=1:length(AnalyzeMethod)
                 hold on
                 plot(x,VA3,'color',[Lcolorcode],'LineStyle','-');
                 ylabel('Veocity(degree/s)');
-                %%% Ploting EMG and activation of each muscle              
+                %%% Ploting EMG and activation of each muscle    
+                
                 for Flexmus=1:2
                     count=count+1;
                     % Making new plot
@@ -159,61 +160,45 @@ for A=1:length(AnalyzeMethod)
 %                     for i=1:3
 %                     y2=interp1(ExpMotion(:,i),ExpMucs(:,i),x','linear','extrap');
 %                     end
-                    SimMusc1=ResultData.(filename).(Modelname(1)).(AnalyzeMethod(A)).NormalSimActivation.(Transfername((SelectedMuscle(Flexmus)==ExpMuscle)));
-                    SimMusc2=ResultData.(filename).(Modelname(2)).(AnalyzeMethod(A)).NormalSimActivation.(Transfername((SelectedMuscle(Flexmus)==ExpMuscle)));
-                    RA1=mean(ExpMucs,2)-std(ExpMucs,0,2);
-                    RA2=mean(ExpMucs,2)+std(ExpMucs,0,2);
-                    RA3=mean(ExpMucs,2);
-                    LA1=mean(SimMusc1,2)-std(SimMusc1,0,2);
-                    LA2=mean(SimMusc1,2)+std(SimMusc1,0,2);
-                    LA3=mean(SimMusc1,2);
-                    PA1=mean(SimMusc2,2)-std(SimMusc2,0,2);
-                    PA2=mean(SimMusc2,2)+std(SimMusc2,0,2);
-                    PA3=mean(SimMusc2,2);
+                    SimMuscArnold=ResultData.(filename).(Modelname(1)).(AnalyzeMethod(A)).NormalSimActivation.(Transfername((SelectedMuscle(Flexmus)==ExpMuscle)));
+                    SimMuscRaja=ResultData.(filename).(Modelname(2)).(AnalyzeMethod(A)).NormalSimActivation.(Transfername((SelectedMuscle(Flexmus)==ExpMuscle)));
+                    EMG1=mean(ExpMucs,2)-std(ExpMucs,0,2);
+                    EMG2=mean(ExpMucs,2)+std(ExpMucs,0,2);
+                    EMG3=mean(ExpMucs,2);
+                    Arnold1=mean(SimMuscArnold,2)-std(SimMuscArnold,0,2);
+                    Arnold2=mean(SimMuscArnold,2)+std(SimMuscArnold,0,2);
+                    Arnold3=mean(SimMuscArnold,2);
+                    Raj1=mean(SimMuscRaja,2)-std(SimMuscRaja,0,2);
+                    Raj2=mean(SimMuscRaja,2)+std(SimMuscRaja,0,2);
+                    Raj3=mean(SimMuscRaja,2);
                     %%%
-                    x2 = [x, fliplr(x)];
-                    RABetween = [RA1', fliplr(RA2')];
-%                     yyaxis right
-                    
+                    x2 = [x, fliplr(x)];                 
                     
                     hold on
-                    plot(x,RA3,'color',[Rcolorcode],'LineStyle','-');
-                       plot(x,LA3,'color',[Lcolorcode],'LineStyle','-');
-                    plot(x,PA3,'color',[Pcolorcode],'LineStyle','-');
+                    plot(x,EMG3,'color',[Rcolorcode],'LineStyle','-','LineWidth',1);
+                       plot(x,Arnold3,'color',[Lcolorcode],'LineStyle','-','LineWidth',1);
+                    plot(x,Raj3,'color',[Pcolorcode],'LineStyle','-','LineWidth',1);
                     ylim([0 1])
-                     if count==1 
-                        ylabel('Isokinetic Velocity 60 (deg/s)');
-                     elseif count==2
-                         yyaxis right
-                         ylabel('Activation');
-                         elseif count==4
-                             yyaxis right
-                         ylabel('Activation');
-                             elseif count==3
-                         ylabel('Isokinetic Velocity 120 (deg/s)');
-                     end
-                    % ylabel('Experiment activation');
                     %%%
-%                     hold on
-%                     yyaxis left
-                    
-                 
-                    fill(x2, RABetween,[Rcolorcode]*.8,'EdgeAlpha',0,'FaceAlpha',0.2)
-%                     legend('Ar','Rag')
-                    LABetween = [LA1', fliplr(LA2')];
-                    fill(x2, LABetween,[Lcolorcode]*.8,'EdgeAlpha',0,'FaceAlpha',0.2)
-                    LABetween = [PA1', fliplr(PA2')];
-                    fill(x2, LABetween,[Pcolorcode]*.8,'EdgeAlpha',0,'FaceAlpha',0.2)
-                    ylim([0 1])
+                    EMGBetween = [EMG1', fliplr(EMG2')];
+                    fill(x2, EMGBetween,[Rcolorcode]*.8,'EdgeAlpha',0,'FaceAlpha',0.2)
+                    ArnoldBetween = [Arnold1', fliplr(Arnold2')];
+                    fill(x2, ArnoldBetween,[Lcolorcode]*.8,'EdgeAlpha',0,'FaceAlpha',0.2)
+                    RajBetween = [Raj1', fliplr(Raj2')];
+                    fill(x2, RajBetween,[Pcolorcode]*.8,'EdgeAlpha',0,'FaceAlpha',0.2)
+                    if count==1 || count==3
+                        ylabel('Activation');
+                    end
+                    if count==2
+                        legend('Exp','Arnold','Rajagopal');
+                    end
+%                     ylim([0 1])
                     title([SelectedMuscle(Flexmus)]);
                     %%%
                     if count>2
                          xlabel('Normalized Time (%)');
                     else
                     end
-%                     ylabel('activation ');
-%                     xlabel('Normalized Time (%)');
-%                     legend('SD of Exp','SD of Sim','Mean of Exp','Mean of Sim');
                     hold off
                 end
             end
@@ -222,25 +207,26 @@ for A=1:length(AnalyzeMethod)
 end
 end
 TrialCounter=0;
+% Normalizing EMG base on the maximum value of EMG : 
+% 1- Averaging data within the each trials. 2- Getting maximum of all Isometric trials   
 %% Isometric condition
 for T1=1:2
     for T2=1:6
         TrialCounter=TrialCounter+1;
         filename=append(ExTerials1(T1),"_",Terials2(T2));
         for Flmus=1:length(ExpMuscle)
-             for itr=1:length(fieldnames(ResultData.(filename).time.Exp))
-            
-            MeanEmgIsoM(itr)=mean(ResultData.(filename).ExpEMG.(ExpMuscle(Flmus)).(Terials3(itr)));
+             for itr=1:length(fieldnames(ResultData.(filename).time.Exp))            
+             MeanEmgIsoM(itr)=mean(ResultData.(filename).ExpEMG.(ExpMuscle(Flmus)).(Terials3(itr)));
              end
              MeanEmgIsoM2(TrialCounter,Flmus)=mean(MeanEmgIsoM,2);
           
         end
     end
 end
- MaxEMGIsoM=max(MeanEmgIsoM2);
+MaxEMGIsoM=max(MeanEmgIsoM2);
 figure
 tid = tiledlayout(2,2);
-title(tid,'Comparsion of the EMG in different traials');
+title(tid,'Isometric trials');
 for Flexmus=1:length(SelectedMuscle)
 nexttile
 Y=MeanEmgIsoM2(1:4,(SelectedMuscle(Flexmus)==ExpMuscle))./MaxEMGIsoM((SelectedMuscle(Flexmus)==ExpMuscle));
@@ -249,11 +235,23 @@ X=[10 30 45 60];
 Y2=MeanArnoldActivation2(:,(SelectedMuscle(Flexmus)==ExpMuscle));
 Y3=MeanRajActivation2(:,(SelectedMuscle(Flexmus)==ExpMuscle));
 
-plot(X,Y','o',X,Y2','*',X,Y3','d');
+plot(X,Y','o','color',Rcolorcode);
+hold on
+plot(X,Y2','*','color',Lcolorcode);
+plot(X,Y3','d','color',Pcolorcode);
+hold off
 title(ExpMuscle((SelectedMuscle(Flexmus)==ExpMuscle)));
 ylim([0 1])
-ylabel('Activation');
+if Flexmus==2
 legend('Exp','Arnold','Rajagopal')
+end
+if Flexmus>2
+xlabel('Knee angle (deg)');
+ylim([0 0.1])
+end
+if Flexmus==1||Flexmus==3
+ylabel('Activation');
+end
 end
 
 % %%%%% EMG plot

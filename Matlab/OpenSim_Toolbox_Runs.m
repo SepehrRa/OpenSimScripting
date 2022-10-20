@@ -2,7 +2,8 @@ clear all
 import org.opensim.modeling.*
 path='C:\Program Files\OpenSim 4.1\Geometry';
 ModelVisualizer.addDirToGeometrySearchPaths(path);
-
+myLog = JavaLogSink();
+Logger.addSink(myLog)
 %% File address %%
 folder = 'C:\MyCloud\GitHub\OpenSimScripting\Matlab\Data\Gait2354_Simbody\';
 Scalemodel='subject01_scaledOnly.osim';
@@ -29,7 +30,9 @@ model.initSystem();
 ExLoad=ExternalLoads([folder ExForceSetup],true);
 ExLoad.setDataFileName([folder 'New_subject01_walk1_grf.mot']);
 ExLoad.print(NewExForcesetup)
-
+%% Reading trc
+opensimTable = TimeSeriesTableVec3(filenamedir);
+matlabStruct_markerData = osimTableToStruct(opensimTable);
 %% IK %%
 %%% Get trc data to determine time range
 markerData = MarkerData(Markerfile); 
@@ -82,6 +85,7 @@ analysis.setLowpassCutoffFrequency(6);
 analysis.setCoordinatesFileName(IK_file);
 analysis.setExternalLoadsFileName(NewExForcesetup);
 analysis.setLoadModelAndInput(true);
+analysis.updAnalysisSet().adoptAndAppend(MuscleAnalysis());
 analysis.setResultsDir([results_folder 'SOP']);
 analysis.run();
 % static optim
@@ -94,15 +98,14 @@ cmc.setStartTime(0.9);
 cmc.setFinalTime(0.95);
 cmc.setResultsDir([folder 'CMC']);
 cmc.run();
-%% Momentum Arm Calculation %%
-state=osimmodel.initSystem();
 Musclename='bflh_l';
 coordinatename='knee_angle_l';
+state = model.initSystem();
 force = model.getForceSet().get(Musclename);
 muscle = Millard2012EquilibriumMuscle.safeDownCast(force);
 coord = model.updCoordinateSet().get(coordinatename);
+% or 
+osismmodel.updCoordinateSet().get(1).setValue(state, q);
 coord.setValue(state,0.1);
+model.realizePosition(state);
 muscle.computeMomentArm(state, coord);
-%% plotting TimeSeries data
-TimeSeries=tableProcessor.process;
-Data=TimeSeries.getDependentColumnAtIndex(iLabel).getAsMat();
