@@ -95,6 +95,7 @@ cmc.setFinalTime(0.95);
 cmc.setResultsDir([folder 'CMC']);
 cmc.run();
 %% Momentum Arm Calculation %%
+state=osimmodel.initSystem();
 Musclename='bflh_l';
 coordinatename='knee_angle_l';
 force = model.getForceSet().get(Musclename);
@@ -102,3 +103,6 @@ muscle = Millard2012EquilibriumMuscle.safeDownCast(force);
 coord = model.updCoordinateSet().get(coordinatename);
 coord.setValue(state,0.1);
 muscle.computeMomentArm(state, coord);
+%% plotting TimeSeries data
+TimeSeries=tableProcessor.process;
+Data=TimeSeries.getDependentColumnAtIndex(iLabel).getAsMat();
