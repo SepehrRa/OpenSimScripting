@@ -98,6 +98,7 @@ cmc.setStartTime(0.9);
 cmc.setFinalTime(0.95);
 cmc.setResultsDir([folder 'CMC']);
 cmc.run();
+state=osimmodel.initSystem();
 Musclename='bflh_l';
 coordinatename='knee_angle_l';
 state = model.initSystem();
@@ -109,3 +110,8 @@ osismmodel.updCoordinateSet().get(1).setValue(state, q);
 coord.setValue(state,0.1);
 model.realizePosition(state);
 muscle.computeMomentArm(state, coord);
+%% plotting TimeSeries data
+TimeSeries=tableProcessor.process;
+Data=TimeSeries.getDependentColumnAtIndex(iLabel).getAsMat();
+muscle.getLength(state);
+muscle.getTendonLength(state);
