@@ -110,8 +110,8 @@ osismmodel.updCoordinateSet().get(1).setValue(state, q);
 coord.setValue(state,0.1);
 model.realizePosition(state);
 muscle.computeMomentArm(state, coord);
+muscle.getLength(state);
+muscle.getTendonLength(state);
 %% plotting TimeSeries data
 TimeSeries=tableProcessor.process;
 Data=TimeSeries.getDependentColumnAtIndex(iLabel).getAsMat();
-muscle.getLength(state);
-muscle.getTendonLength(state);
