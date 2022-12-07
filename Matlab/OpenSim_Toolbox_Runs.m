@@ -79,6 +79,7 @@ model.addAnalysis(static_optimization)
 analysis = AnalyzeTool(model);
 analysis.setName(name);
 analysis.setModel(model);
+analysis.setStatesStorage(motion);
 analysis.setInitialTime(motion.getFirstTime());
 analysis.setFinalTime(motion.getLastTime());
 analysis.setLowpassCutoffFrequency(6);
@@ -115,3 +116,10 @@ muscle.getTendonLength(state);
 %% plotting TimeSeries data
 TimeSeries=tableProcessor.process;
 Data=TimeSeries.getDependentColumnAtIndex(iLabel).getAsMat();
+%% finding the <socket_parent>/bodyset/femur_r</socket_parent> of PhysicalOffsetFrame of frames of specific joint
+curjoint=osimmodel.getJointSet.get(0);
+%%% Parent
+curjoint.getParentFrame().getSocket('parent').getConnecteePath()
+%%% Child
+curjoint.getChildFrame().getSocket('parent').getConnecteePath()
+%%% or
