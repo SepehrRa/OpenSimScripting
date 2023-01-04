@@ -50,6 +50,15 @@ ikTool.setMarkerDataFileName(Markerfile);
 ikTool.setStartTime(initial_time);
 ikTool.setEndTime(final_time);
 ikTool.setOutputMotionFileName(IK_file);
+% To get the ik_error:
+ikTool.setName(fname)
+% path for saving error output
+ikTool.setResultsDir(Trc_path)
+% it will create a file with name of "fname_model_marker_locations.sto" and
+% in the Trc_path which included all marker error
+ikTool.set_report_marker_locations(true);
+% this one creates a file with the total error.
+ikTool.set_report_errors(true);
 ikTool.print([results_folder name '_IK_Setup.xml']);
 % % ikTool.getIKTaskSet() % to change the scale files
 % ikTool.run();
