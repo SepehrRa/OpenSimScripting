@@ -125,6 +125,7 @@ muscle.getTendonLength(state);
 %% plotting TimeSeries data
 TimeSeries=tableProcessor.process;
 Data=TimeSeries.getDependentColumnAtIndex(iLabel).getAsMat();
+Columlabs=TimeSeries.getColumnLabels.toString();
 %% finding the <socket_parent>/bodyset/femur_r</socket_parent> of PhysicalOffsetFrame of frames of specific joint
 curjoint=osimmodel.getJointSet.get(0);
 %%% Parent
