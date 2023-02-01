@@ -122,6 +122,9 @@ model.realizePosition(state);
 muscle.computeMomentArm(state, coord);
 muscle.getLength(state);
 muscle.getTendonLength(state);
+% if we want to plot forces we need to  equblitare the muscles
+osimmodel.equilibrateMuscles(state)
+muscle.getPassiveFiberForce(state);
 %% plotting TimeSeries data
 TimeSeries=tableProcessor.process;
 Data=TimeSeries.getDependentColumnAtIndex(iLabel).getAsMat();
