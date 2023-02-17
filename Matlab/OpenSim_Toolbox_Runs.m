@@ -136,5 +136,7 @@ curjoint.getParentFrame().getSocket('parent').getConnecteePath()
 %%% Child
 curjoint.getChildFrame().getSocket('parent').getConnecteePath()
 %%% or
-%% Clone a joint or 
-ModifedJoint=osimmodel.getJointSet().get(0).clone();
+%% Clone a joint and reindx it
+ModifedJoint=osimmodel.getJointSet().get('ground_pelvis').clone();
+osimmodel.updJointSet().remove(osimmodel.getJointSet().get('ground_pelvis'));
+osimmodel.getJointSet().insert(0,ModifedJoint)
