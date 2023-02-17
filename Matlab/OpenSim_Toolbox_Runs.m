@@ -136,3 +136,5 @@ curjoint.getParentFrame().getSocket('parent').getConnecteePath()
 %%% Child
 curjoint.getChildFrame().getSocket('parent').getConnecteePath()
 %%% or
+%% Clone a joint or 
+ModifedJoint=osimmodel.getJointSet().get(0).clone();
